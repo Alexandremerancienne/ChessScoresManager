@@ -1,7 +1,9 @@
-from player import Player
-from match import Match
-from round import Round
+from model_player import Player
+from model_match import Match
+from model_round import Round
 from datetime import datetime
+from operator import attrgetter
+from operator import itemgetter
 
 class Tournament:
 
@@ -14,23 +16,23 @@ class Tournament:
     - Start date (YYY-MM-DD HH:MM:SS);
     - End date (YYY-MM-DD HH:MM:SS);
     - Number of rounds (default value 4); 
-    - List of rounds;
+    - List of rounds (tournament starts with an empty list);
     - List of players;
     - Time control: Rapid (game between 10 and 60 minutes), Blitz (game under 10 minutes), Bullet (game under 3 minutes); 
     - Description of the tournament."""
 
     number_of_rounds = 0
 
-    def __init__(self, name, location, start_date, end_date, rounds_list, players_list, time_control, description):
+    def __init__(self, name, location, start_date, end_date, players_list, time_control, description):
         Tournament.number_of_rounds +=1
         self._name = name
         self._location = location
         self._start_date = start_date
         self._end_date = end_date
-        self._rounds_list = rounds_list
         self._players_list = players_list
         self._time_control = time_control
         self._description = description
+        self._rounds_list = []
 
     def __str__(self):
         return(f"End of {self.name} of {self.location}!\n\nDates: from {self.start_date} to {self.end_date} \n\nDescription: {self.description} \n\nParticipants: {self.players_list} \n\nTime control: {self.time_control} \n\nResults: \n\n{self.rounds_list}")
@@ -101,7 +103,7 @@ class Tournament:
 
     @property
     def time_control(self):
-        return self._time_control
+        return self._time_control.capitalize()
 
     @time_control.setter
     def time_control(self, new_time_control):
@@ -117,6 +119,106 @@ class Tournament:
     def description(self, new_description):
         self._description = new_description
 
+    def generate_pairs_by_ranking(self):
+
+        """A function to generate pairs of players 
+        before the first round, 
+        according to Swiss pairing algorithm.
+
+        The players are ranked in descending order:
+
+        [1,2,3,4,5,6,7,8]
+        
+        then divided in two groups : 
+
+        [1,2,3,4]   [5,6,7,8]
+        then paired as follows :
+
+        (1,5) (2,6) (3,7) (4,8)""" 
+
+        rankings_to_sort = sorted(players, key=attrgetter("ranking"), reverse=True)
+        first_half = rankings_to_sort[:4]
+        second_half = rankings_to_sort[4:]
+        ranking_pairs = [(first_half[i], second_half[i]) for i in range(0,4)]
+        return ranking_pairs
+
+    def generate_pairs_by_score(self):	
+
+        """A function to generate pairs of players 
+        after the first round, 
+        according to Swiss pairing algorithm.
+
+        The players are sorted by score:
+
+        [1,2,3,4,5,6,7,8]
+        
+        then paired as follows :
+
+        (1,2) (3,4) (5,6) (7,8)
+
+        If a match has already been played 
+        (for instance, 1 and 2 already played each other)
+        then 1 plays against 3 (and so on...)""" 
+
+        rankings_sorted = sorted(players, key=attrgetter("ranking"), reverse=True)
+        scores_to_sort = [(player, player.score) for player in rankings_sorted]
+        players_by_score = sorted(scores_to_sort, key=itemgetter(1), reverse = True)
+        players_by_score = [pair[0] for pair in players_by_score]
+        score_pairs = [(players_by_score[i], players_by_score[i+1]) for i in range(0,7,2)]
+        round_pairs = [players_by_score, score_pairs]
+
+        players_by_score = round_pairs[0]
+        round_pairs = round_pairs[1]
+
+        for pair in round_pairs:
+            inverted_pair = (pair[1],pair[0])
+            pair_index = round_pairs.index(pair)
+            n = pair_index
+            if (pair or inverted_pair) in pairs_list:
+                print(f"Redundant pair: {pair}")
+
+                if n in range(0,2):
+                    round_pairs[n] = (players_by_score[2*n], players_by_score[2*n+2])
+                    round_pairs[n+1] = (players_by_score[2*n+1],players_by_score[2*n+3])
+                    if (round_pairs[n] or (round_pairs[n][1], round_pairs[n][0])) in pairs_list:
+                        print(f"Redundant pair: {round_pairs[n]}")
+                        round_pairs[n] = (players_by_score[2*n], players_by_score[2*n+3])
+                        round_pairs[n+1] = (players_by_score[2*n+1],players_by_score[2*n+2])
+
+                        if (round_pairs[n] or (round_pairs[n][1], round_pairs[n][0])) in pairs_list:
+                            print(f"Redundant pair: {round_pairs[n]}")
+                            round_pairs[n] = (players_by_score[2*n], players_by_score[2*n+4])
+                            round_pairs[n+1] = (players_by_score[2*n+2], players_by_score[2*n+3])
+                            round_pairs[n+2] = (players_by_score[2*n+1],players_by_score[2*n+5])
+                            
+                elif n == 2:
+                    round_pairs[2] = (players_by_score[4], players_by_score[4+2])
+                    round_pairs[3] = (players_by_score[5],players_by_score[4+3])
+                    if (round_pairs[2] or (round_pairs[2][1],round_pairs[2][0])) in pairs_list:
+                        print(f"Redundant pair: {round_pairs[2]}")
+                        round_pairs[2] = (players_by_score[4], players_by_score[4+3])
+                        round_pairs[3] = (players_by_score[5],players_by_score[4+2])
+                        if (round_pairs[2] or (round_pairs[2][1],round_pairs[2][0])) in pairs_list:
+                            print(f"Redundant pair: {round_pairs[2]}")
+                            round_pairs[2] = (players_by_score[4], players_by_score[3])
+                            round_pairs[3] = (players_by_score[6], players_by_score[7])
+                            round_pairs[1] = (players_by_score[5],players_by_score[2])
+
+                elif n == 3:
+                    round_pairs[3] = (players_by_score[6], players_by_score[5])
+                    round_pairs[2] = (players_by_score[7],players_by_score[4])
+                    if (round_pairs[3] or (round_pairs[3][1],round_pairs[3][0])) in pairs_list:
+                        print(f"Redundant pair: {round_pairs[2]}")
+                        round_pairs[3] = (players_by_score[6], players_by_score[4])
+                        round_pairs[2] = (players_by_score[7],players_by_score[5])
+                        if (round_pairs[3] or (round_pairs[3][1],round_pairs[3][0])) in pairs_list:
+                            print(f"Redundant pair: {round_pairs[2]}")
+                            round_pairs[3] = (players_by_score[6], players_by_score[3])
+                            round_pairs[2] = (players_by_score[4], players_by_score[5])
+                            round_pairs[1] = (players_by_score[7],players_by_score[2])
+
+        return round_pairs
+
 
 if __name__ == "__main__":
 
@@ -129,18 +231,43 @@ if __name__ == "__main__":
 
 	The program finally repeats the above steps to generate 4 rounds. 
 
-    As no pairing algorithm has been defined yet, 
-    the matches are defined arbitrarily."""
+    For each round, the matches are defined according to Swiss pairing algorithm.
+
+    Before the first round, 
+    the players are ranked in descending order:
+
+    [1,2,3,4,5,6,7,8]
+    
+    then divided in two groups : 
+
+    [1,2,3,4]   [5,6,7,8]
+
+    then paired as follows :
+
+    (1,5) (2,6) (3,7) (4,8)
+
+    After the first round, 
+    the players are sorted by score:
+
+    [1,2,3,4,5,6,7,8]
+    
+    then paired as follows :
+
+    (1,2) (3,4) (5,6) (7,8)
+
+    If a match has already been played 
+    (for instance, 1 and 2 already played each other)
+    then 1 plays against 3 (and so on...)"""
 
 
     #Step 1: Creating the tournament
 
-    tournament = Tournament("", "", "", "", "", "", "", "")
+    tournament = Tournament("", "", "", "", "", "", "")
 
     name = input("Please enter the name of the tournament: ")
     while not all (x.isalpha() or x.isspace() for x in name):
         print("Please enter a valid name of tournament.")
-        name = input("Please enter the name of the tournament.")
+        name = input("Please enter the name of the tournament: ")
         continue
     tournament.name = name
 
@@ -166,7 +293,6 @@ if __name__ == "__main__":
         continue
     tournament.time_control = time_control
 
-
     #Step 2: Generating 8 players from Player class
 
     print("Number of players: 8 \n Please enter each player's details")
@@ -178,6 +304,7 @@ if __name__ == "__main__":
         print(f"Player {i}")
 
         player = Player("", "", "", "", "")
+        players.append(player)
 
         family_name = input("Enter player's family name: ")
         while family_name.isalpha() is False:
@@ -226,14 +353,15 @@ if __name__ == "__main__":
                 ranking = input("Enter player's ranking: ")
         player.ranking = ranking
 
-        players.append(player.family_name)
+    tournament.players_list = players
 
     #Step 3: Generating a loop of 4 rounds
 
     rounds_list = []
+    pairs_list = []
 
     for i in range(1,5):
-    
+        
         round = Round("", "", "")
 
         #Step 4: For each round, starting the clock to initiate the round
@@ -241,23 +369,41 @@ if __name__ == "__main__":
         print("--------------------------------------")
         input(f"Press Enter to start Round {i}")
         start_date = datetime.now().replace(microsecond=0)
+        print("--------------------------------------")
 
-        #Step 5: Dividing the players into 4 matches from Match class
+        #Step 5: For each round, generating new pairs of players 
+        #according to Swiss pairing algorithm :
 
+        #Before first round
+
+        if len(rounds_list) == 0:
+            round_pairs = Tournament.generate_pairs_by_ranking(tournament)
+            print(f"List of matches: {round_pairs}")
+            pairs_list.extend(round_pairs)
+
+        #After first round
+
+        elif len(rounds_list) in range(1,5):
+            round_pairs = Tournament.generate_pairs_by_score(tournament)
+            print(f"List of matches: {round_pairs}")
+            pairs_list.extend(round_pairs)
+
+        #Step 6: Dividing the players into 4 matches from Match class
+        #on the basis of the pairs previously defined
+        
+        list_of_matches = []
         print("--------------------------------------")
         print("Number of matches : 4")   
 
-        list_of_matches = []
-
-        for i in range(1, 5):
+        for i in range(1,5):
 
             match = Match("", "", "", "")
-            match.first_player = players[2*i-2]
-            match.second_player = players[2*i-1]
+            match.first_player = round_pairs[i-1][0].family_name
+            match.second_player = round_pairs[i-1][1].family_name
             print("--------------------------------------")
             print(f"Match {i}: {match.first_player}, {match.second_player}")
 
-            #Step 6: For each loop of matches, playing the match
+            #Step 7: Playing each match of the round
 
             result = input(f"Enter result for {match.first_player} - W (wins), L (loose), D (draw): ")
             while str(result) not in "wWlLdD" or result.isalpha() is False:
@@ -269,31 +415,30 @@ if __name__ == "__main__":
             if result in "wW":
                 result = Match.first_player_wins(match)
                 print(f"{match.first_player} wins")
+                round_pairs[i-1][0].score +=1
 
             elif result in "lL":
                 result = Match.second_player_wins(match)
                 print(f"{match.second_player} wins")
+                round_pairs[i-1][1].score +=1
 
             elif result in "dD":
                 result = Match.draw(match)
                 print(f"Draw")
+                round_pairs[i-1][0].score +=0.5
+                round_pairs[i-1][1].score +=0.5
 
             print(match)
 
             list_of_matches.append(match)
-
-        #Step 7: Mixing the list of players for the next loop 
-
-        players.insert(0,players.pop())
         
-        #Step 8: Printing the round
+        #Step 8: Ending the round
 
         print("--------------------------------------")
         print(f"Round results : {list_of_matches}")
 
         round.matches = list_of_matches
         round.start_date = start_date
-        input("Press Enter to end the round")
         end_date = datetime.now().replace(microsecond=0)
         round.end_date = end_date
         rounds_list.append(round)
@@ -301,7 +446,6 @@ if __name__ == "__main__":
     #Step 9: Printing the tournament
 
     tournament.rounds_list = rounds_list
-    tournament.players_list = players
 
     print("--------------------------------------")
     input(f"Press Enter to end the tournament")

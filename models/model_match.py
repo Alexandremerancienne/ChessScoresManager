@@ -1,4 +1,4 @@
-from player import Player
+from model_player import Player
 from datetime import datetime
 
 
@@ -32,7 +32,7 @@ class Match:
     @first_score.setter
     def first_score(self, new_score):
         if new_score not in [0, 0.5, 1]:
-            print("Please enter a valid score (0   0.5   1).")
+            print("Please enter a valid score (0 - 0.5 - 1).")
         self._first_score = new_score
 
     @property
@@ -42,7 +42,7 @@ class Match:
     @second_score.setter
     def second_score(self, new_score):
         if new_score not in [0, 0.5, 1]:
-            print("Please enter a valid score (0   0.5   1).")
+            print("Please enter a valid score (0 - 0.5 - 1).")
         self._second_score = new_score
 
     def first_player_wins(self):
@@ -62,15 +62,9 @@ if __name__ == "__main__":
     """Testing program generating 3 matches.
 
     The program first generates 2 players from Player class,
-    then creates 3 matches with the following outcomes:
+    then plays a match and print the corresponding result."""
 
-    - Player 1 wins;
-    - Player 2 wins;
-    - Draw
-
-    And print the corresponding results."""
-
-    next_match = []
+    players = []
     print("Next Match")
 
     #Step 1: Generating 2 players
@@ -129,14 +123,14 @@ if __name__ == "__main__":
                 ranking = input("Enter player's ranking: ")
         player.ranking = ranking
 
-        next_match.append(player.family_name)
+        players.append(Player(player.family_name, player.first_name, player.birth_date, player.gender, player.ranking))
 
     #Step 2: Generating a match
-    
+   
     match = Match("", "", "", "")
 
-    match.first_player = next_match[0]
-    match.second_player = next_match[1]
+    match.first_player = players[0].family_name
+    match.second_player = players[1].family_name
 
     print("--------------------------------------")
     print(f"Next match: {match.first_player} vs {match.second_player}")
@@ -150,13 +144,17 @@ if __name__ == "__main__":
     if result in "wW":
         result = Match.first_player_wins(match)
         print(f"{match.first_player} wins")
+        players[0].score += 1
 
     elif result in "lL":
         result = Match.second_player_wins(match)
         print(f"{match.second_player} wins")
+        players[1].score += 1
 
     elif result in "dD":
         result = Match.draw(match)
         print(f"Draw")
-
+        players[0].score += 0.5
+        players[1].score += 0.5
+        
     print(match)

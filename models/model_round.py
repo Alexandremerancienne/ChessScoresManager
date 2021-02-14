@@ -1,5 +1,5 @@
-from player import Player
-from match import Match
+from model_player import Player
+from model_match import Match
 from datetime import datetime
 
 
@@ -85,8 +85,8 @@ if __name__ == "__main__":
     then plays the 4 matches to generate results,
     then creates a round.
 
-    As no pairing algorithm has been defined yet, 
-    the matches are defined arbitrarily."""
+    As only one round is generated,
+    the program does not use pairing algorithm."""
 
     #Step 1: Generating 8 players from Player class
 

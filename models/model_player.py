@@ -23,7 +23,7 @@ class Player:
         self._score = 0
 
     def __repr__(self):
-    	return self.family_name
+    	return(f"(Player: {self.first_name} {self.family_name}, Gender: {self.gender}, Date of birth: {self.birth_date}, Ranking: {self.ranking}, Score: {self.score})")
 
     def __str__(self):
         return(f"Player: {self.first_name} {self.family_name} \
@@ -90,7 +90,7 @@ class Player:
 
     @score.setter
     def score(self, new_score):
-        if not isinstance(2*new_score, int):
+        if not new_score % 0.5 == 0:
             print("Please enter a valid score.")
         self._score = new_score
 
