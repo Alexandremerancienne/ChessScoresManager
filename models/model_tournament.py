@@ -142,6 +142,33 @@ class Tournament:
         ranking_pairs = [(first_half[i], second_half[i]) for i in range(0,4)]
         return ranking_pairs
 
+
+    def invert_pair(pair):
+        return(pair[1], pair[0])
+
+
+    def pair_with_other_pair(list1, n, list2, k,i,j):
+
+        """Function to pair list1[n] pair
+        with list1[n+k] pair
+
+        input :
+
+                 list1[n]             ...      list1[n+k]         ----->  list1
+
+         (list2[2*n], list2[2*n+1])   ...  (list2[i], list2[j])   ----->  list2
+            |_____|_____________________________|        |
+                  |______________________________________|
+
+        output : 
+
+                 list1[n]             ...      list1[n+k]           --->  list1
+
+           (list2[2*n], list2[i])   ...   (list2[2*n+1], list2[j])  --->  list2"""
+
+        list1[n] = (list2[2*n], list2[2*n+i])
+        list1[n+k] = (list2[2*n+1], list2[2*n+j])
+
     def generate_pairs_by_score(self):	
 
         """A function to generate pairs of players 
@@ -158,7 +185,11 @@ class Tournament:
 
         If a match has already been played 
         (for instance, 1 and 2 already played each other)
-        then 1 plays against 3 (and so on...)""" 
+        then 1 plays against 3 (and so on...)
+
+        Note : if player 7 and 8 already played each other,
+        the same logic applies backwards :
+        7 plays with 6 (and 8 plays with 5)""" 
 
         rankings_sorted = sorted(players, key=attrgetter("ranking"), reverse=True)
         scores_to_sort = [(player, player.score) for player in rankings_sorted]
@@ -171,51 +202,37 @@ class Tournament:
         round_pairs = round_pairs[1]
 
         for pair in round_pairs:
-            inverted_pair = (pair[1],pair[0])
+            inverted_pair = Tournament.invert_pair(pair)
             pair_index = round_pairs.index(pair)
             n = pair_index
             if (pair or inverted_pair) in pairs_list:
                 print(f"Redundant pair: {pair}")
 
                 if n in range(0,2):
-                    round_pairs[n] = (players_by_score[2*n], players_by_score[2*n+2])
-                    round_pairs[n+1] = (players_by_score[2*n+1],players_by_score[2*n+3])
-                    if (round_pairs[n] or (round_pairs[n][1], round_pairs[n][0])) in pairs_list:
+                    Tournament.pair_with_other_pair(round_pairs, n, players_by_score, 1, 2, 3)
+                    inverted_pair = Tournament.invert_pair(round_pairs[n])
+                    if (round_pairs[n] or inverted_pair) in pairs_list:
                         print(f"Redundant pair: {round_pairs[n]}")
-                        round_pairs[n] = (players_by_score[2*n], players_by_score[2*n+3])
-                        round_pairs[n+1] = (players_by_score[2*n+1],players_by_score[2*n+2])
-
-                        if (round_pairs[n] or (round_pairs[n][1], round_pairs[n][0])) in pairs_list:
+                        Tournament.pair_with_other_pair(round_pairs, n, players_by_score, 1, 3, 2)
+                        if (round_pairs[n] or inverted_pair) in pairs_list:
                             print(f"Redundant pair: {round_pairs[n]}")
-                            round_pairs[n] = (players_by_score[2*n], players_by_score[2*n+4])
-                            round_pairs[n+1] = (players_by_score[2*n+2], players_by_score[2*n+3])
-                            round_pairs[n+2] = (players_by_score[2*n+1],players_by_score[2*n+5])
-                            
-                elif n == 2:
-                    round_pairs[2] = (players_by_score[4], players_by_score[4+2])
-                    round_pairs[3] = (players_by_score[5],players_by_score[4+3])
-                    if (round_pairs[2] or (round_pairs[2][1],round_pairs[2][0])) in pairs_list:
-                        print(f"Redundant pair: {round_pairs[2]}")
-                        round_pairs[2] = (players_by_score[4], players_by_score[4+3])
-                        round_pairs[3] = (players_by_score[5],players_by_score[4+2])
-                        if (round_pairs[2] or (round_pairs[2][1],round_pairs[2][0])) in pairs_list:
-                            print(f"Redundant pair: {round_pairs[2]}")
-                            round_pairs[2] = (players_by_score[4], players_by_score[3])
-                            round_pairs[3] = (players_by_score[6], players_by_score[7])
-                            round_pairs[1] = (players_by_score[5],players_by_score[2])
+                            if n in range(0,2):
+                                Tournament.pair_with_other_pair(round_pairs, n, players_by_score, 2, 4, 5)
+                                round_pairs[n+1] = (players_by_score[2*n+2], players_by_score[2*n+3])
+                            elif n == 2:
+                                Tournament.pair_with_other_pair(round_pairs, n, players_by_score, -1, -1, -2)   
+                                round_pairs[n+1] = (players_by_score[2*n+2], players_by_score[2*n+3])
 
                 elif n == 3:
-                    round_pairs[3] = (players_by_score[6], players_by_score[5])
-                    round_pairs[2] = (players_by_score[7],players_by_score[4])
-                    if (round_pairs[3] or (round_pairs[3][1],round_pairs[3][0])) in pairs_list:
-                        print(f"Redundant pair: {round_pairs[2]}")
-                        round_pairs[3] = (players_by_score[6], players_by_score[4])
-                        round_pairs[2] = (players_by_score[7],players_by_score[5])
-                        if (round_pairs[3] or (round_pairs[3][1],round_pairs[3][0])) in pairs_list:
-                            print(f"Redundant pair: {round_pairs[2]}")
-                            round_pairs[3] = (players_by_score[6], players_by_score[3])
-                            round_pairs[2] = (players_by_score[4], players_by_score[5])
-                            round_pairs[1] = (players_by_score[7],players_by_score[2])
+                    Tournament.pair_with_other_pair(round_pairs, n, players_by_score, -1, -1, -2)          
+                    inverted_pair = Tournament.invert_pair(round_pairs[n])
+                    if (round_pairs[n] or inverted_pair) in pairs_list:
+                        print(f"Redundant pair: {round_pairs[n]}")
+                        Tournament.pair_with_other_pair(round_pairs, n, players_by_score, -1, -2, -1)          
+                        if (round_pairs[n] or inverted_pair) in pairs_list:
+                            print(f"Redundant pair: {round_pairs[n]}")
+                            Tournament.pair_with_other_pair(round_pairs, n,players_by_score, -2, -3, -4)   
+                            round_pairs[n-1] = (players_by_score[4], players_by_score[5])
 
         return round_pairs
 
