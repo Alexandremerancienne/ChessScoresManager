@@ -119,7 +119,7 @@ class Tournament:
     def description(self, new_description):
         self._description = new_description
 
-    def generate_pairs_by_ranking(self):
+    def generate_pairs_by_ranking():
 
         """A function to generate pairs of players 
         before the first round, 
@@ -157,8 +157,8 @@ class Tournament:
                  list1[n]             ...      list1[n+k]         ----->  list1
 
          (list2[2*n], list2[2*n+1])   ...  (list2[i], list2[j])   ----->  list2
-            |_____|_____________________________|        |
-                  |______________________________________|
+            |______________|____________________|        |
+                           |_____________________________|
 
         output : 
 
@@ -394,7 +394,7 @@ if __name__ == "__main__":
         #Before first round
 
         if len(rounds_list) == 0:
-            round_pairs = Tournament.generate_pairs_by_ranking(tournament)
+            round_pairs = Tournament.generate_pairs_by_ranking()
             print(f"List of matches: {round_pairs}")
             pairs_list.extend(round_pairs)
 
