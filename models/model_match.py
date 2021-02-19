@@ -1,8 +1,14 @@
-from model_player import Player
+import os
+import sys
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(current_dir)
+
+from model_player import ModelPlayer
 from datetime import datetime
 
 
-class Match:
+class ModelMatch:
 
     """A class to represent a match.
 
@@ -127,7 +133,7 @@ if __name__ == "__main__":
 
     #Step 2: Generating a match
    
-    match = Match("", "", "", "")
+    match = ModelMatch("", "", "", "")
 
     match.first_player = players[0].family_name
     match.second_player = players[1].family_name
@@ -142,17 +148,17 @@ if __name__ == "__main__":
     print("--------------------------------------")
     
     if result in "wW":
-        result = Match.first_player_wins(match)
+        result = ModelMatch.first_player_wins(match)
         print(f"{match.first_player} wins")
         players[0].score += 1
 
     elif result in "lL":
-        result = Match.second_player_wins(match)
+        result = ModelMatch.second_player_wins(match)
         print(f"{match.second_player} wins")
         players[1].score += 1
 
     elif result in "dD":
-        result = Match.draw(match)
+        result = ModelMatch.draw(match)
         print(f"Draw")
         players[0].score += 0.5
         players[1].score += 0.5
