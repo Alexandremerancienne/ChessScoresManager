@@ -41,8 +41,8 @@ if __name__ == "__main__":
 
     start_date = ControllerRound.start_round(1)
 
-    for _ in range(1,9):
-        ControllerPlayer.add_player_to_tournament()
+    for i in range(1,9):
+        ControllerPlayer.add_player_to_tournament(i)
 
     round_players = ControllerPlayer.sort_tournament_players_by_ranking()
 
@@ -58,7 +58,6 @@ if __name__ == "__main__":
         match = ControllerMatch.print_winner_and_score(f_p, s_p)
 
         ModelRound.list_of_matches.append(match)
-        print(f"Liste des Matches : {ModelRound.list_of_matches}")
 
 
     end_date = ControllerRound.end_round()
