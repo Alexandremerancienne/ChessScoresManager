@@ -136,7 +136,7 @@ if __name__ == "__main__":
             gender = input("Enter player's gender (M/F): ")
             continue
         player.gender = gender
-
+        
         ranking = input("Enter player's ranking: ")
         while isinstance(ranking, float) is False:
             try:
