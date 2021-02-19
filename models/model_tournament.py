@@ -1,11 +1,11 @@
-from model_player import Player
-from model_match import Match
-from model_round import Round
+from model_player import ModelPlayer
+from model_match import ModelMatch
+from model_round import ModelRound
 from datetime import datetime
 from operator import attrgetter
 from operator import itemgetter
 
-class Tournament:
+class ModelTournament:
 
     """A class to represent a tournament.
 
@@ -18,13 +18,13 @@ class Tournament:
     - Number of rounds (default value 4); 
     - List of rounds (tournament starts with an empty list);
     - List of players;
-    - Time control: Rapid (game between 10 and 60 minutes), Blitz (game under 10 minutes), Bullet (game under 3 minutes); 
+    - Time control: Rapid (game between 10 and 100 minutes), Blitz (game under 10 minutes), Bullet (game under 3 minutes); 
     - Description of the tournament."""
 
     number_of_rounds = 0
 
     def __init__(self, name, location, start_date, end_date, players_list, time_control, description):
-        Tournament.number_of_rounds +=1
+        ModelTournament.number_of_rounds +=1
         self._name = name
         self._location = location
         self._start_date = start_date
@@ -202,36 +202,36 @@ class Tournament:
         round_pairs = round_pairs[1]
 
         for pair in round_pairs:
-            inverted_pair = Tournament.invert_pair(pair)
+            inverted_pair = ModelTournament.invert_pair(pair)
             pair_index = round_pairs.index(pair)
             n = pair_index
             if (pair or inverted_pair) in pairs_list:
                 print(f"Redundant pair: {pair}")
 
                 if n in range(0,2):
-                    Tournament.pair_with_other_pair(round_pairs, n, players_by_score, 1, 2, 3)
-                    inverted_pair = Tournament.invert_pair(round_pairs[n])
+                    ModelTournament.pair_with_other_pair(round_pairs, n, players_by_score, 1, 2, 3)
+                    inverted_pair = ModelTournament.invert_pair(round_pairs[n])
                     if (round_pairs[n] or inverted_pair) in pairs_list:
                         print(f"Redundant pair: {round_pairs[n]}")
-                        Tournament.pair_with_other_pair(round_pairs, n, players_by_score, 1, 3, 2)
+                        ModelTournament.pair_with_other_pair(round_pairs, n, players_by_score, 1, 3, 2)
                         if (round_pairs[n] or inverted_pair) in pairs_list:
                             print(f"Redundant pair: {round_pairs[n]}")
                             if n in range(0,2):
-                                Tournament.pair_with_other_pair(round_pairs, n, players_by_score, 2, 4, 5)
+                                ModelTournament.pair_with_other_pair(round_pairs, n, players_by_score, 2, 4, 5)
                                 round_pairs[n+1] = (players_by_score[2*n+2], players_by_score[2*n+3])
                             elif n == 2:
-                                Tournament.pair_with_other_pair(round_pairs, n, players_by_score, -1, -1, -2)   
+                                ModelTournament.pair_with_other_pair(round_pairs, n, players_by_score, -1, -1, -2)   
                                 round_pairs[n+1] = (players_by_score[2*n+2], players_by_score[2*n+3])
 
                 elif n == 3:
-                    Tournament.pair_with_other_pair(round_pairs, n, players_by_score, -1, -1, -2)          
+                    ModelTournament.pair_with_other_pair(round_pairs, n, players_by_score, -1, -1, -2)          
                     inverted_pair = Tournament.invert_pair(round_pairs[n])
                     if (round_pairs[n] or inverted_pair) in pairs_list:
                         print(f"Redundant pair: {round_pairs[n]}")
-                        Tournament.pair_with_other_pair(round_pairs, n, players_by_score, -1, -2, -1)          
+                        ModelTournament.pair_with_other_pair(round_pairs, n, players_by_score, -1, -2, -1)          
                         if (round_pairs[n] or inverted_pair) in pairs_list:
                             print(f"Redundant pair: {round_pairs[n]}")
-                            Tournament.pair_with_other_pair(round_pairs, n,players_by_score, -2, -3, -4)   
+                            ModelTournament.pair_with_other_pair(round_pairs, n,players_by_score, -2, -3, -4)   
                             round_pairs[n-1] = (players_by_score[4], players_by_score[5])
 
         return round_pairs
@@ -279,7 +279,7 @@ if __name__ == "__main__":
 
     #Step 1: Creating the tournament
 
-    tournament = Tournament("", "", "", "", "", "", "")
+    tournament = ModelTournament("", "", "", "", "", "", "")
 
     name = input("Please enter the name of the tournament: ")
     while not all (x.isalpha() or x.isspace() for x in name):
@@ -320,7 +320,7 @@ if __name__ == "__main__":
         print("--------------------------------------")
         print(f"Player {i}")
 
-        player = Player("", "", "", "", "")
+        player = ModelPlayer("", "", "", "", "")
         players.append(player)
 
         family_name = input("Enter player's family name: ")
@@ -379,7 +379,7 @@ if __name__ == "__main__":
 
     for i in range(1,5):
         
-        round = Round("", "", "")
+        round = ModelRound("", "", "")
 
         #Step 4: For each round, starting the clock to initiate the round
 
@@ -394,14 +394,14 @@ if __name__ == "__main__":
         #Before first round
 
         if len(rounds_list) == 0:
-            round_pairs = Tournament.generate_pairs_by_ranking()
+            round_pairs = ModelTournament.generate_pairs_by_ranking()
             print(f"List of matches: {round_pairs}")
             pairs_list.extend(round_pairs)
 
         #After first round
 
         elif len(rounds_list) in range(1,5):
-            round_pairs = Tournament.generate_pairs_by_score(tournament)
+            round_pairs = ModelTournament.generate_pairs_by_score(tournament)
             print(f"List of matches: {round_pairs}")
             pairs_list.extend(round_pairs)
 
@@ -414,7 +414,7 @@ if __name__ == "__main__":
 
         for i in range(1,5):
 
-            match = Match("", "", "", "")
+            match = ModelMatch("", "", "", "")
             match.first_player = round_pairs[i-1][0].family_name
             match.second_player = round_pairs[i-1][1].family_name
             print("--------------------------------------")
@@ -430,17 +430,17 @@ if __name__ == "__main__":
             print("--------------------------------------")
 		    
             if result in "wW":
-                result = Match.first_player_wins(match)
+                result = ModelMatch.first_player_wins(match)
                 print(f"{match.first_player} wins")
                 round_pairs[i-1][0].score +=1
 
             elif result in "lL":
-                result = Match.second_player_wins(match)
+                result = ModelMatch.second_player_wins(match)
                 print(f"{match.second_player} wins")
                 round_pairs[i-1][1].score +=1
 
             elif result in "dD":
-                result = Match.draw(match)
+                result = ModelMatch.draw(match)
                 print(f"Draw")
                 round_pairs[i-1][0].score +=0.5
                 round_pairs[i-1][1].score +=0.5
