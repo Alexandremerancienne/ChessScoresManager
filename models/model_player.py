@@ -1,7 +1,7 @@
 from datetime import datetime
 
 
-class Player:
+class ModelPlayer:
 
     """A class to represent a player.
 
@@ -14,6 +14,11 @@ class Player:
     - Ranking (positive float);
     - Score (initial value 0)."""
 
+    player_number = 0
+    p_nb = player_number
+    tournament_players = []
+    database_players = []
+
     def __init__(self, family_name, first_name, birth_date, gender, ranking):
         self._family_name = family_name
         self._first_name = first_name
@@ -21,12 +26,15 @@ class Player:
         self._gender = gender
         self._ranking = ranking
         self._score = 0
+        ModelPlayer.p_nb += 1
+        self.p_nb = ModelPlayer.p_nb
+        ModelPlayer.database_players.append(self)
 
     def __repr__(self):
-    	return(f"(Player: {self.first_name} {self.family_name}, Gender: {self.gender}, Date of birth: {self.birth_date}, Ranking: {self.ranking}, Score: {self.score})")
+    	return(f"(Player {self.p_nb}: {self.first_name} {self.family_name}, Gender: {self.gender}, Date of birth: {self.birth_date}, Ranking: {self.ranking}, Score: {self.score})")
 
     def __str__(self):
-        return(f"Player: {self.first_name} {self.family_name} \
+        return(f"Player {ModelPlayer.p_nb} : {self.first_name} {self.family_name} \
             \nGender: {self.gender} \
             \nDate of birth (YYYY-MM-DD): {self.birth_date} \
             \nCurrent ranking: {self.ranking} \
@@ -105,7 +113,7 @@ if __name__ == "__main__":
         print("--------------------------------------")
         print(f"Player {i}")
 
-        player = Player("", "", "", "", "")
+        player = ModelPlayer("", "", "", "", "")
 
         family_name = input("Enter player's family name: ")
         while family_name.isalpha() is False:
@@ -156,3 +164,7 @@ if __name__ == "__main__":
 
         print("--------------------------------------")
         print(player)
+
+        print(f"player number: {player.p_nb}")
+
+        print(ModelPlayer.database_players)
