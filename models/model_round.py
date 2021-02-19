@@ -1,9 +1,9 @@
-from model_player import Player
-from model_match import Match
+from model_player import ModelPlayer
+from model_match import ModelMatch
 from datetime import datetime
 
 
-class Round:
+class ModelRound:
 
     """A class to represent a round.
 
@@ -15,11 +15,12 @@ class Round:
     - End date (YYY-MM-DD HH:MM:SS);"""
 
     number_of_rounds = 0
+    list_of_matches = []
 
     def __init__(self, matches, start_date, end_date):
-        Round.number_of_rounds += 1
+        ModelRound.number_of_rounds += 1
         self._matches = matches
-        self._round_name = "Round " + str(Round.number_of_rounds)
+        self._round_name = "Round " + str(ModelRound.number_of_rounds)
         self._start_date = start_date
         self._end_date = end_date
 
@@ -98,7 +99,7 @@ if __name__ == "__main__":
         print("--------------------------------------")
         print(f"Player {i}")
 
-        player = Player("", "", "", "", "")
+        player = ModelPlayer("", "", "", "", "")
 
         family_name = input("Enter player's family name: ")
         while family_name.isalpha() is False:
@@ -159,11 +160,9 @@ if __name__ == "__main__":
     print("--------------------------------------")
     print("Number of matches : 4")   
 
-    list_of_matches = []
-
     for i in range(1, 5):
 
-        match = Match("", "", "", "")
+        match = ModelMatch("", "", "", "")
         match.first_player = players[2*i-2]
         match.second_player = players[2*i-1]
         print("--------------------------------------")
@@ -179,28 +178,28 @@ if __name__ == "__main__":
         print("--------------------------------------")
 	    
         if result in "wW":
-            result = Match.first_player_wins(match)
+            result = ModelMatch.first_player_wins(match)
             print(f"{match.first_player} wins")
 
         elif result in "lL":
-            result = Match.second_player_wins(match)
+            result = ModelMatch.second_player_wins(match)
             print(f"{match.second_player} wins")
 
         elif result in "dD":
-            result = Match.draw(match)
+            result = ModelMatch.draw(match)
             print(f"Draw")
 
         print(match)
 
-        list_of_matches.append(match)
+        ModelRound.list_of_matches.append(match)
 
     print("--------------------------------------")
     print(f"Round results : {list_of_matches}")
    
     #Step 5: Creating a round
 
-    round = Round("", "", "")
-    round.matches = list_of_matches
+    round = ModelRound("", "", "")
+    round.matches = ModelRound.list_of_matches
     round.start_date = start_date
     input("Press Enter to finish the round")
     end_date = datetime.now().replace(microsecond=0)
