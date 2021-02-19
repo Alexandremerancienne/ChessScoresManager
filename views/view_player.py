@@ -1,6 +1,8 @@
 from datetime import datetime
 
-class View():
+class ViewPlayer():
+
+    line = (60*"-")
 
     @staticmethod
     def get_player_inputs():
@@ -54,15 +56,15 @@ class View():
 
     @staticmethod
     def print_player(i, player):
-        print("--------------------------------------------------------------")
+        print(ViewPlayer.line)
         print(f"Player {i} \n")
         print(f"- Player name : {player.first_name} {player.family_name}")
         print(f"- Gender : {player.gender}")
         print(f"- Date of birth (YYYY-MM-DD) : {player.birth_date}")
         print(f"- Current ranking : {player.ranking}")
         print(f"- Score : {player.score}")
-        print("--------------------------------------------------------------")
-        
+        print(ViewPlayer.line)
+
     @staticmethod
     def get_player_ranking():
         print("Player's ranking")
@@ -76,11 +78,10 @@ class View():
 
     @staticmethod
     def print_player_ranking(player_name, ranking):
-        print("--------------------------------------------------------------")
+        print(ViewPlayer.line)
         print(f"- Player name : {player_name}")
         print(f"- Ranking : {ranking}")
-        print("--------------------------------------------------------------")
-
+        print(ViewPlayer.line)
 
     @staticmethod
     def change_player_ranking():   
@@ -104,36 +105,37 @@ class View():
 
     @staticmethod
     def print_player_new_ranking(family_name, new_ranking):
-        print("--------------------------------------------------------------")
+        print(ViewPlayer.line)
         print(f"- Player name : {family_name}")
         print(f"- Ranking : {new_ranking}")
-        print("--------------------------------------------------------------")
+        print(ViewPlayer.line)
 
 
     @staticmethod
     def print_tournament_players_by_name(players_list):
-        print("--------------------------------------------------------------")
+        print(ViewPlayer.line)
         print("Tournament players (sorted by name)")
         print(players_list)
-        print("--------------------------------------------------------------")     
+        print(ViewPlayer.line)
+
 
     @staticmethod
     def print_tournament_players_by_ranking(players_list):
-        print("--------------------------------------------------------------")
+        print(ViewPlayer.line)
         print("Tournament players (sorted by ranking)")
         print(players_list)
-        print("--------------------------------------------------------------")        
+        print(ViewPlayer.line)
 
     @staticmethod
     def print_all_players_by_name(players_list):
-        print("--------------------------------------------------------------")
+        print(ViewPlayer.line)
         print("Database players (sorted by name)")
         print(players_list)
-        print("--------------------------------------------------------------")     
+        print(ViewPlayer.line)
 
     @staticmethod
     def print_all_players_by_ranking(players_list):
-        print("--------------------------------------------------------------")
+        print(ViewPlayer.line)
         print("Database players (sorted by ranking)")
         print(players_list)
-        print("--------------------------------------------------------------")
+        print(ViewPlayer.line)

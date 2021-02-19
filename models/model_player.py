@@ -31,7 +31,9 @@ class ModelPlayer:
         ModelPlayer.database_players.append(self)
 
     def __repr__(self):
-    	return(f"(Player {self.p_nb}: {self.first_name} {self.family_name}, Gender: {self.gender}, Date of birth: {self.birth_date}, Ranking: {self.ranking}, Score: {self.score})")
+    	return(f"(Player {self.p_nb}: {self.first_name} {self.family_name}, \
+    		Gender: {self.gender}, Date of birth: {self.birth_date}, \
+    		Ranking: {self.ranking}, Score: {self.score})")
 
     def __str__(self):
         return(f"Player {ModelPlayer.p_nb} : {self.first_name} {self.family_name} \
@@ -110,7 +112,8 @@ if __name__ == "__main__":
     print("Number of players: 8 \n Please enter each player's details")
 
     for i in range(1, 9):
-        print("--------------------------------------")
+        line = 50*"-"
+        print(line)
         print(f"Player {i}")
 
         player = ModelPlayer("", "", "", "", "")
@@ -162,9 +165,7 @@ if __name__ == "__main__":
                 ranking = input("Enter player's ranking: ")
         player.ranking = ranking
 
-        print("--------------------------------------")
+        print(line)
         print(player)
 
         print(f"player number: {player.p_nb}")
-
-        print(ModelPlayer.database_players)
