@@ -16,13 +16,13 @@ class ControllerPlayer:
 		self.model = model_player
 		self.view = view_player
 
-	def add_player_to_tournament():
+	def add_player_to_tournament(i):
 
-		player_features = ViewPlayer.get_player_inputs()
+		player_features = ViewPlayer.get_player_inputs(i)
 		p_f = player_features
 		player = ModelPlayer(p_f[0], p_f[1], p_f[2], p_f[3], p_f[4])
 		ModelPlayer.tournament_players.append(player)
-		return ViewPlayer.print_player(ModelPlayer.p_nb, player)
+		ViewPlayer.print_player(ModelPlayer.p_nb, player)
 
 	def print_player_ranking():
 		ViewPlayer.get_player_ranking()
@@ -35,26 +35,26 @@ class ControllerPlayer:
 				return ViewPlayer.print_player_ranking(p_n, p_r)
 
 	def change_ranking():
-		player_name = View.change_player_ranking()
+		player_name = ViewPlayer.change_player_ranking()
 		p_n = player_name
 		for i in range(0,8):
 			if p_n in ModelPlayer.tournament_players[i].family_name:
-				new_ranking = View.enter_new_ranking()
+				new_ranking = ViewPlayer.enter_new_ranking()
 				ModelPlayer.tournament_players[i].ranking = new_ranking
-				return ViewPlayer.print_player_new_ranking(p_n, new_ranking) 
+				ViewPlayer.print_player_new_ranking(p_n, new_ranking) 
 
 	def sort_tournament_players_by_name():
 
 		names_sorted = sorted(ModelPlayer.tournament_players, key=attrgetter("family_name"))
 		length = len(names_sorted)
 		names_list = [names_sorted[i].family_name for i in range(length)]
-		return ViewPlayer.print_tournament_players_by_name(names_list)
+		ViewPlayer.print_tournament_players_by_name(names_list)
 
 
 	def sort_tournament_players_by_ranking():
 
 		rankings_sorted = sorted(ModelPlayer.tournament_players, key=attrgetter("ranking"), reverse = True)
-		return ViewPlayer.print_tournament_players_by_ranking(rankings_sorted)
+		ViewPlayer.print_tournament_players_by_ranking(rankings_sorted)
 
 
 	def sort_all_players_by_name():
@@ -62,19 +62,19 @@ class ControllerPlayer:
 		names_sorted = sorted(ModelPlayer.database_players, key=attrgetter("family_name"))
 		length = len(names_sorted)
 		names_list = [names_sorted[i].family_name for i in range(length)]
-		return ViewPlayer.print_all_players_by_name(names_list)
+		ViewPlayer.print_all_players_by_name(names_list)
 
 
 	def sort_all_players_by_ranking():
 
 		rankings_sorted = sorted(ModelPlayer.database_players, key=attrgetter("ranking"), reverse = True)
-		return ViewPlayer.print_all_players_by_ranking(rankings_sorted)
+		ViewPlayer.print_all_players_by_ranking(rankings_sorted)
 
 
 if __name__ == "__main__":
 
-	for _ in range(1,4):
-		ControllerPlayer.add_player_to_tournament()
+	for i in range(1,9):
+		ControllerPlayer.add_player_to_tournament(i)
 
 	ControllerPlayer.print_player_ranking()
 

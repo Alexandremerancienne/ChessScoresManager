@@ -31,16 +31,10 @@ class ModelPlayer:
         ModelPlayer.database_players.append(self)
 
     def __repr__(self):
-    	return(f"(Player {self.p_nb}: {self.first_name} {self.family_name}, \
-    		Gender: {self.gender}, Date of birth: {self.birth_date}, \
-    		Ranking: {self.ranking}, Score: {self.score})")
+    	return(f"(Player {self.p_nb}: {self.first_name} {self.family_name}, Gender: {self.gender}, Date of birth: {self.birth_date}, Ranking: {self.ranking}, Score: {self.score})")
 
     def __str__(self):
-        return(f"Player {ModelPlayer.p_nb} : {self.first_name} {self.family_name} \
-            \nGender: {self.gender} \
-            \nDate of birth (YYYY-MM-DD): {self.birth_date} \
-            \nCurrent ranking: {self.ranking} \
-            \nScore: {self.score}")
+        return(f"Player {ModelPlayer.p_nb} : {self.first_name} {self.family_name}, Gender: {self.gender}, Date of birth (YYYY-MM-DD): {self.birth_date}, Current ranking: {self.ranking}, Score: {self.score}")
 
     @property
     def family_name(self):

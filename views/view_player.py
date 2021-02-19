@@ -2,10 +2,12 @@ from datetime import datetime
 
 class ViewPlayer():
 
-    line = (60*"-")
+    line = (100*"-")
 
     @staticmethod
-    def get_player_inputs():
+    def get_player_inputs(i):
+
+        print(f"Player {i}\n")
 
         family_name = input("Enter player's family name: ")
         while family_name.isalpha() is False:
