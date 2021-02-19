@@ -52,11 +52,11 @@ class ControllerMatch:
 	        ViewMatch.print_draw(f_p, s_p)
 
 	    return match
-	    
+
 if __name__ == "__main__":
 
-	for _ in range(1,3):
-		ControllerPlayer.add_player_to_tournament()
+	for i in range(1,3):
+		ControllerPlayer.add_player_to_tournament(i)
 
 	first_player = ModelPlayer.tournament_players[0]
 	second_player = ModelPlayer.tournament_players[1]
