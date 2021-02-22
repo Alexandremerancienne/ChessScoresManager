@@ -2,10 +2,10 @@ class ViewMatch():
 
     line = (100*"-")
 
+
     @staticmethod
     def start_match(first_player, second_player):
         print(f"NEXT MATCH : {first_player} vs {second_player}")
-        print(ViewMatch.line)
 
     @staticmethod
     def get_match_result(first_player):

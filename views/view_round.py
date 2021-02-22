@@ -4,6 +4,7 @@ class ViewRound():
 
     @staticmethod
     def start_round(i):
+        print("\n")
         round_i = (f" ROUND {i} ").center(100,"*")
         print(round_i)
         print("Number of matches : 4")

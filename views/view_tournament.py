@@ -1,13 +1,12 @@
 class ViewTournament():
 
-    line = (100*"#")
+    line = (100*"-")
     star_line = (100*"*")
 
     @staticmethod
     def get_tournament_inputs():
-        print(ViewTournament.line)
         name = input("Please enter tournament name: ")
-        while not all (x.isalpha() or x.isspace() for x in name):
+        while not all (x.isalpha() or x.isspace() for x in name) or name =="":
             print("Please enter a valid name.")
             name = input("Please enter tournament name: ")
             continue
@@ -59,6 +58,9 @@ class ViewTournament():
         print(f"End of {name} of {location}!")
         print(f"Dates: from {start_date} to {end_date}")
         print(f"Description: {description}")
-        print(f"Time control: {time_control}")
+        print(f"Time control: {time_control.capitalize()}")
         print(f"Participants: {players_list}")
-        print(f"Rounds results: {rounds_list}")
+        print("Rounds results:")
+        for round_results in rounds_list : 
+            print(round_results)
+
