@@ -10,16 +10,16 @@ from models.model_player import ModelPlayer
 from models.model_round import ModelRound
 from views.view_match import ViewMatch
 from views.view_round import ViewRound
-from controller_player import ControllerPlayer
-from controller_match import ControllerMatch
+from controllers.controller_player import ControllerPlayer
+from controllers.controller_match import ControllerMatch
 from datetime import datetime
 from operator import attrgetter
 
 class ControllerRound:
 
     def __init__(self, model, view):
-        self.model = model_match
-        self.view = view_match
+        self.model = model_round
+        self.view = view_round
 
     def start_round(i):
         ViewRound.start_round(i)
@@ -27,7 +27,6 @@ class ControllerRound:
         return start_date
 
     def end_round():
-        ViewRound.end_round()
         end_date = datetime.now().replace(microsecond=0)
         return end_date
 

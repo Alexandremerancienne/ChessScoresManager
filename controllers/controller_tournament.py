@@ -13,9 +13,9 @@ from views.view_player import ViewPlayer
 from views.view_match import ViewMatch
 from views.view_round import ViewRound
 from views.view_tournament import ViewTournament
-from controller_player import ControllerPlayer
-from controller_match import ControllerMatch
-from controller_round import ControllerRound
+from controllers.controller_player import ControllerPlayer
+from controllers.controller_match import ControllerMatch
+from controllers.controller_round import ControllerRound
 from datetime import datetime
 from operator import attrgetter
 

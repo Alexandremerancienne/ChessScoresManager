@@ -8,7 +8,7 @@ sys.path.append(root_dir)
 from models.model_match import ModelMatch
 from models.model_player import ModelPlayer
 from views.view_match import ViewMatch
-from controller_player import ControllerPlayer
+from controllers.controller_player import ControllerPlayer
 from datetime import datetime
 from operator import attrgetter
 
