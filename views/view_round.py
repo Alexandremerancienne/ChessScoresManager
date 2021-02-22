@@ -10,12 +10,6 @@ class ViewRound():
         input("Press Enter to start the round").center(100," ")
         print(ViewRound.line)
 
-    @staticmethod
-    def end_round():
-        print(ViewRound.line)
-        input("Press Enter to end the round")    	
-        print(ViewRound.line)
-
 
     @staticmethod
     def print_round_results(i, start_date, end_date, list_of_matches):

@@ -6,7 +6,7 @@ class ViewPlayer():
 
     @staticmethod
     def get_player_inputs(i):
-
+        print(ViewPlayer.line)
         print(f"Player {i}\n")
 
         family_name = input("Enter player's family name: ")
@@ -65,7 +65,6 @@ class ViewPlayer():
         print(f"- Date of birth (YYYY-MM-DD) : {player.birth_date}")
         print(f"- Current ranking : {player.ranking}")
         print(f"- Score : {player.score}")
-        print(ViewPlayer.line)
 
     @staticmethod
     def get_player_ranking():
