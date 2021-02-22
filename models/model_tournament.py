@@ -35,7 +35,7 @@ class ModelTournament:
         self._rounds_list = []
 
     def __str__(self):
-        return(f"End of {self.name} of {self.location}!\n\nDates: from {self.start_date} to {self.end_date} \n\nDescription: {self.description} \n\nParticipants: {self.players_list} \n\nTime control: {self.time_control} \n\nResults: \n\n{self.rounds_list}")
+        return(f"End of {self.name} of {self.location}!\n\nDates: from {self.start_date} to {self.end_date} \n\nDescription: {self.description}\n\nTime control: {self.time_control} \n\nParticipants: {self.players_list} \n\nResults: \n\n{self.rounds_list}")
 
     @property
     def name(self):
@@ -119,7 +119,7 @@ class ModelTournament:
     def description(self, new_description):
         self._description = new_description
 
-    def generate_pairs_by_ranking():
+    def generate_pairs_by_ranking(players):
 
         """A function to generate pairs of players 
         before the first round, 
@@ -164,12 +164,26 @@ class ModelTournament:
 
                  list1[n]             ...      list1[n+k]           --->  list1
 
-           (list2[2*n], list2[i])   ...   (list2[2*n+1], list2[j])  --->  list2"""
+           (list2[2*n], list2[i])   ...   (list2[2*n+1], list2[j])  --->  list2
+
+        In our program, list1 corresponds to the list of matches,
+        while list2 correponds to the list of players :
+
+                  match[n]             ...       match[n+k]
+        (players[2*n], players[2*n+1])     (players[i], players[j])
+
+        As players[2*n] already played against players[2*n+1], we want to pair
+        players[2*n] with players[i], and players[2*n+1] with players[j]
+        as follows :
+
+                  match[n]             ...       match[n+k]
+          (players[2*n], players[i])     (players[2*n+1], players[j])"""
 
         list1[n] = (list2[2*n], list2[2*n+i])
         list1[n+k] = (list2[2*n+1], list2[2*n+j])
 
-    def generate_pairs_by_score(self):	
+
+    def generate_pairs_by_score(self, players, pairs_list):	
 
         """A function to generate pairs of players 
         after the first round, 
@@ -225,7 +239,7 @@ class ModelTournament:
 
                 elif n == 3:
                     ModelTournament.pair_with_other_pair(round_pairs, n, players_by_score, -1, -1, -2)          
-                    inverted_pair = Tournament.invert_pair(round_pairs[n])
+                    inverted_pair = ModelTournament.invert_pair(round_pairs[n])
                     if (round_pairs[n] or inverted_pair) in pairs_list:
                         print(f"Redundant pair: {round_pairs[n]}")
                         ModelTournament.pair_with_other_pair(round_pairs, n, players_by_score, -1, -2, -1)          
@@ -394,14 +408,14 @@ if __name__ == "__main__":
         #Before first round
 
         if len(rounds_list) == 0:
-            round_pairs = ModelTournament.generate_pairs_by_ranking()
+            round_pairs = ModelTournament.generate_pairs_by_ranking(players)
             print(f"List of matches: {round_pairs}")
             pairs_list.extend(round_pairs)
 
         #After first round
 
         elif len(rounds_list) in range(1,5):
-            round_pairs = ModelTournament.generate_pairs_by_score(tournament)
+            round_pairs = ModelTournament.generate_pairs_by_score(tournament, players, pairs_list)
             print(f"List of matches: {round_pairs}")
             pairs_list.extend(round_pairs)
 
