@@ -59,8 +59,13 @@ class ViewTournament():
         print(f"Dates: from {start_date} to {end_date}")
         print(f"Description: {description}")
         print(f"Time control: {time_control.capitalize()}")
-        print(f"Participants: {players_list}")
+        print(f"Participants:")
+        for player in players_list:
+            print(player)
+        print("\n")
         print("Rounds results:")
+        print("\n")
         for round_results in rounds_list : 
             print(round_results)
+            print("\n")
 
