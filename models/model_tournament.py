@@ -14,8 +14,8 @@ class ModelTournament:
 
     - Name of the tournament;
     - Location;
-    - Start date (YYY-MM-DD HH:MM:SS);
-    - End date (YYY-MM-DD HH:MM:SS);
+    - Start date (YYYY.MM.DD HH:MM:SS);
+    - End date (YYYY.MM.DD HH:MM:SS);
     - Number of rounds (default value 4);
     - List of rounds (tournament starts with an empty list);
     - List of players;
@@ -76,7 +76,7 @@ class ModelTournament:
         try:
             new_date: datetime.strptime(new_date, "%Y-%m-%d %H:%M:%S").date()
         except ValueError:
-            print("Please enter a valid start date (YYYY-MM-DD HH:MM:SS).")
+            print("Please enter a valid start date (YYYY.MM.DD HH:MM:SS).")
         self._start_date = new_date
 
     @property
@@ -88,7 +88,7 @@ class ModelTournament:
         try:
             new_date: datetime.strptime(new_date, "%Y-%m-%d %H:%M:%S").date()
         except ValueError:
-            print("Please enter a valid start date (YYYY-MM-DD HH:MM:SS).")
+            print("Please enter a valid start date (YYYY.MM.DD HH:MM:SS).")
         self._end_date = new_date
 
     @property
@@ -234,16 +234,22 @@ class ModelTournament:
             pair_index = r_p.index(pair)
             n = pair_index
             if (pair or inverted_pair) in pairs_list:
-                print(f"Redundant pair: {pair}")
+                print(f"Redundant pair: ")
+                for elt in pair:
+                    print(elt)
 
                 if n in range(0, 2):
                     ModelTournament.swiss_pair(r_p, n, pbs, 1, 2, 3)
                     inverted_pair = ModelTournament.invert_pair(r_p[n])
                     if (r_p[n] or inverted_pair) in pairs_list:
-                        print(f"Redundant pair: {r_p[n]}")
+                        print(f"Redundant pair: ")
+                        for elt in r_p[n]:
+                            print(elt)
                         ModelTournament.swiss_pair(r_p, n, pbs, 1, 3, 2)
                         if (r_p[n] or inverted_pair) in pairs_list:
-                            print(f"Redundant pair: {r_p[n]}")
+                            print(f"Redundant pair: ")
+                            for elt in r_p[n]:
+                                print(elt)
                             if n in range(0, 2):
                                 ModelTournament.swiss_pair(r_p, n, pbs,
                                                            2, 4, 5)
