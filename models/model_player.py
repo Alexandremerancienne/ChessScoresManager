@@ -17,8 +17,8 @@ class ModelPlayer:
     - Score (initial value 0) ;
     - ID Number (6-digit unique identification number)."""
 
-    players_database = TinyDB("jsons/players_database.json")
-    tournament_players = TinyDB("jsons/tournament_players.json")
+    players_database = TinyDB("../players_database.json")
+    tournament_players = TinyDB("../tournament_players.json")
 
     def __init__(self, surname, first_name, id_number, birth_date, gender, ranking):
         self._surname = surname
@@ -30,20 +30,20 @@ class ModelPlayer:
         self._score = 0
 
     def __repr__(self):
-        return(f"\nPlayer {self.id_number}: " 
+        return(f"(Player {self.id_number}: " 
                + f"{self.first_name} {self.surname}"
-               + f"\nGender: {self.gender}" 
-               + f"\nDate of birth: {self.birth_date}"
-               + f"\nRanking: {self.ranking}"
-               + f"\nScore: {self.score}")
+               + f", Gender: {self.gender}" 
+               + f", Date of birth: {self.birth_date}"
+               + f", Ranking: {self.ranking}"
+               + f", Score: {self.score})")
 
     def __str__(self):
         return(f"\nPlayer {self.id_number}: "
                + f"{self.first_name} {self.surname}"
-               + f"\nGender: {self.gender}"
-               + f"\nDate of birth (YYYY.MM.DD): {self.birth_date}" 
-               + f"\nCurrent ranking: {self.ranking}"
-               + f"\nScore: {self.score}")
+               + f", Gender: {self.gender}"
+               + f", Date of birth (YYYY.MM.DD): {self.birth_date}" 
+               + f",Current ranking: {self.ranking}"
+               + f", Score: {self.score}")
 
     @property
     def surname(self):
