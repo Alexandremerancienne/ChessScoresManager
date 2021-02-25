@@ -9,7 +9,7 @@ from models.model_player import ModelPlayer
 from views.view_player import ViewPlayer
 from operator import attrgetter
 from tinydb import TinyDB, Query
-from id_numbers_database import id_numbers_database
+from id_database.id_numbers_database import id_numbers_database
 
 
 class ControllerPlayer:

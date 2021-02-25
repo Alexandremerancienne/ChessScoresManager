@@ -17,8 +17,8 @@ class ModelPlayer:
     - Score (initial value 0) ;
     - ID Number (6-digit unique identification number)."""
 
-    players_database = TinyDB("players_database.json")
-    tournament_players = TinyDB("tournament_players.json")
+    players_database = TinyDB("jsons/players_database.json")
+    tournament_players = TinyDB("jsons/tournament_players.json")
 
     def __init__(self, surname, first_name, id_number, birth_date, gender, ranking):
         self._surname = surname
