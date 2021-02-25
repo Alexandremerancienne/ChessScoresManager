@@ -81,13 +81,6 @@ class ControllerTournament:
             player = ControllerPlayer.check_id_number()            
             ModelPlayer.save_tournament_player(player)
 
-            print("DATABASE")
-            for player in ModelPlayer.players_database:
-                print(player)
-            print("TOURNAMENT")
-            for player in ModelPlayer.tournament_players:
-                print(player)
-
         rounds_list = []
         pairs_list = []
 
@@ -252,3 +245,8 @@ if __name__ == "__main__":
                                                   end_date, t_i[2], t_i[3],
                                                   tournament_players_names,
                                                   rounds_list)
+
+
+if __name__ == "__main__":
+
+    print(len(ModelPlayer.players_database))
