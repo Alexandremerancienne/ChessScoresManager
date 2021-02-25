@@ -26,10 +26,12 @@ class ModelMatch:
         self._second_score = second_score
 
     def __repr__(self):
-    	return(f"[({self.first_player}, {self.first_score}), ({self.second_player}, {self.second_score})]") 
+        return(f"[({self.first_player}, {self.first_score}),"
+               + f"({self.second_player}, {self.second_score})]")
 
     def __str__(self):
-        return(f"Result: [({self.first_player}, {self.first_score}), ({self.second_player}, {self.second_score})]")
+        return(f"Result: [({self.first_player}, {self.first_score}),"
+               + f"({self.second_player}, {self.second_score})]")
 
     @property
     def first_score(self):
@@ -63,6 +65,7 @@ class ModelMatch:
         self.second_score = 0.5
         self.first_score = 0.5
 
+
 if __name__ == "__main__":
 
     """Testing program generating 3 matches.
@@ -73,21 +76,22 @@ if __name__ == "__main__":
     players = []
     print("Next Match")
 
-    #Step 1: Generating 2 players
+    # Step 1: Generating 2 players
 
     for i in range(1, 3):
 
         print("--------------------------------------")
         print(f"Player {i}")
 
-        player = Player("", "", "", "", "")
+        player = ModelPlayer("", "", "", "", "")
 
-        family_name = input("Enter player's family name: ")
-        while family_name.isalpha() is False:
-            print("Please enter a valid family name.")
-            family_name = input("Enter player's family name: ")
+        surname = input("Enter player's surname: ")
+        while surname.isalpha() is False:
+            print("Please enter a valid surname.")
+            surname = input("Enter player's surname: ")
             continue
-        player.family_name = family_name
+        player.surname = surname
+        p_fmilyname = player.surname
 
         first_name = input("Enter player's first name: ")
         while first_name.isalpha() is False:
@@ -95,6 +99,7 @@ if __name__ == "__main__":
             first_name = input("Enter player's first name: ")
             continue
         player.first_name = first_name
+        p_fstname = player.first_name
 
         year_of_birth = input("Enter player's year of birth (YYYY): ")
         month_of_birth = input("Enter player's month of birth (MM): ")
@@ -105,12 +110,13 @@ if __name__ == "__main__":
                 birth_date = datetime.strptime(date, "%Y-%m-%d").date()
                 break
             except ValueError:
-                print("Please enter a valid birth date (YYYY-MM-DD)")
+                print("Please enter a valid birth date (YYYY.MM.DD)")
                 year_of_birth = input("Enter player's year of birth (YYYY): ")
                 month_of_birth = input("Enter player's month of birth (MM): ")
                 day_of_birth = input("Enter player's day of birth (DD): ")
                 date = (f"{year_of_birth}-{month_of_birth}-{day_of_birth}")
         player.birth_date = birth_date
+        p_bd = player.birth_date
 
         gender = input("Enter player's gender (M/F): ")
         while str(gender) not in "mMfF" or gender.isalpha() is False:
@@ -118,6 +124,7 @@ if __name__ == "__main__":
             gender = input("Enter player's gender (M/F): ")
             continue
         player.gender = gender
+        p_g = player.gender
 
         ranking = input("Enter player's ranking: ")
         while isinstance(ranking, float) is False:
@@ -128,25 +135,28 @@ if __name__ == "__main__":
                 print("Please enter a valid ranking (positive float).")
                 ranking = input("Enter player's ranking: ")
         player.ranking = ranking
+        p_r = player.ranking
 
-        players.append(Player(player.family_name, player.first_name, player.birth_date, player.gender, player.ranking))
+        players.append(ModelPlayer(p_fmilyname, p_fstname, p_bd, p_g, p_r))
 
-    #Step 2: Generating a match
-   
+    # Step 2: Generating a match
+
     match = ModelMatch("", "", "", "")
 
-    match.first_player = players[0].family_name
-    match.second_player = players[1].family_name
+    match.first_player = players[0].surname
+    match.second_player = players[1].surname
 
     print("--------------------------------------")
     print(f"Next match: {match.first_player} vs {match.second_player}")
-    result = input(f"Enter result for {match.first_player} - W (wins), L (loose), D (draw): ")
+    result = input(f"Enter result for {match.first_player}"
+                   + "- W (wins), L (loose), D (draw): ")
     while str(result) not in "wWlLdD" or result.isalpha() is False:
         print("Please enter a result (W/L/D).")
-        result = input(f"Enter result for {match.first_player} - W (wins), L (loose), D (draw): ")
+        result = input(f"Enter result for {match.first_player}"
+                       + "- W (wins), L (loose), D (draw): ")
         continue
     print("--------------------------------------")
-    
+
     if result in "wW":
         result = ModelMatch.first_player_wins(match)
         print(f"{match.first_player} wins")
@@ -159,8 +169,8 @@ if __name__ == "__main__":
 
     elif result in "dD":
         result = ModelMatch.draw(match)
-        print(f"Draw")
+        print("Draw")
         players[0].score += 0.5
         players[1].score += 0.5
-        
+
     print(match)

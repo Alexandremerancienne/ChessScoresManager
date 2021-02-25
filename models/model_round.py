@@ -89,7 +89,7 @@ if __name__ == "__main__":
     As only one round is generated,
     the program does not use pairing algorithm."""
 
-    #Step 1: Generating 8 players from Player class
+    # Step 1: Generating 8 players from Player class
 
     print("Number of players: 8 \n Please enter each player's details")
 
@@ -137,7 +137,7 @@ if __name__ == "__main__":
             gender = input("Enter player's gender (M/F): ")
             continue
         player.gender = gender
-        
+
         ranking = input("Enter player's ranking: ")
         while isinstance(ranking, float) is False:
             try:
@@ -149,16 +149,16 @@ if __name__ == "__main__":
         player.ranking = ranking
         players.append(player.family_name)
 
-    #Step 2: Starting the clock to initiate the round
+    # Step 2: Starting the clock to initiate the round
 
     print("--------------------------------------")
     input("Press Enter to start the round")
     start_date = datetime.now().replace(microsecond=0)
 
-    #Step 3: Dividing the players into 4 matches from Match class
+    # Step 3: Dividing the players into 4 matches from Match class
 
     print("--------------------------------------")
-    print("Number of matches : 4")   
+    print("Number of matches : 4")
 
     for i in range(1, 5):
 
@@ -168,15 +168,17 @@ if __name__ == "__main__":
         print("--------------------------------------")
         print(f"Match {i}: {match.first_player}, {match.second_player}")
 
-        #Step 4: For each loop, playing the match to generate results
+        # Step 4: For each loop, playing the match to generate results
 
-        result = input(f"Enter result for {match.first_player} - W (wins), L (loose), D (draw): ")
+        result = input(f"Enter result for {match.first_player}"
+                       + " - W (wins), L (loose), D (draw): ")
         while str(result) not in "wWlLdD" or result.isalpha() is False:
             print("Please enter a result (W/L/D).")
-            result = input(f"Enter result for {match.first_player} - W (wins), L (loose), D (draw): ")
+            result = input(f"Enter result for {match.first_player}"
+                           + " - W (wins), L (loose), D (draw): ")
             continue
         print("--------------------------------------")
-	    
+
         if result in "wW":
             result = ModelMatch.first_player_wins(match)
             print(f"{match.first_player} wins")
@@ -187,16 +189,16 @@ if __name__ == "__main__":
 
         elif result in "dD":
             result = ModelMatch.draw(match)
-            print(f"Draw")
+            print("Draw")
 
         print(match)
 
         ModelRound.list_of_matches.append(match)
 
     print("--------------------------------------")
-    print(f"Round results : {list_of_matches}")
-   
-    #Step 5: Creating a round
+    print(f"Round results : {ModelRound.list_of_matches}")
+
+    # Step 5: Creating a round
 
     round = ModelRound("", "", "")
     round.matches = ModelRound.list_of_matches

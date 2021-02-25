@@ -6,14 +6,14 @@ class ViewTournament():
     @staticmethod
     def get_tournament_inputs():
         name = input("Please enter tournament name: ")
-        while not all (x.isalpha() or x.isspace() for x in name) or name =="":
+        while not all(x.isalpha() or x.isspace() for x in name) or name == "":
             print("Please enter a valid name.")
             name = input("Please enter tournament name: ")
             continue
 
         location = input("Please enter tournament location: ")
         while location.isalpha() is False:
-            print("Please enter a valid location.")        
+            print("Please enter a valid location.")
             location = input("Please enter tournament location: ")
             continue
 
@@ -27,45 +27,42 @@ class ViewTournament():
 
         return(name, location, description, time_control)
 
-
     @staticmethod
     def start_tournament(tournament_name, tournament_location):
         print(ViewTournament.line)
         print(f"Welcome to the {tournament_name} of {tournament_location}!")
-        input(f"Press Enter to start the tournament")
+        input("Press Enter to start the tournament")
         print(ViewTournament.line)
-
 
     @staticmethod
     def enter_tournament_players():
-        print("Number of players: 8") 
+        print("Number of players: 8")
         print("Please enter each player's details")
-
+        print(ViewTournament.line)
 
     @staticmethod
     def announce_round_matches():
         print("Next round matches:")
 
-
     @staticmethod
     def print_pairs(i, pair):
         print(f"Match {i}: {pair[0]} vs {pair[1]}")
 
-
     @staticmethod
-    def print_tournament_results(name, location, start_date, end_date, description, time_control, players_list, rounds_list):
+    def print_tournament_results(name, location, start_date, end_date,
+                                 description, time_control, players_list,
+                                 rounds_list):
         print(ViewTournament.line)
-        print(f"End of {name} of {location}!")
-        print(f"Dates: from {start_date} to {end_date}")
-        print(f"Description: {description}")
-        print(f"Time control: {time_control.capitalize()}")
-        print(f"Participants:")
+        print(f"End of {name} of {location}!\n")
+        print(f"Dates: from {start_date} to {end_date}\n")
+        print(f"Description: {description}\n")
+        print(f"Time control: {time_control.capitalize()}\n")
+        print("Participants:\n")
         for player in players_list:
             print(player)
         print("\n")
         print("Rounds results:")
         print("\n")
-        for round_results in rounds_list : 
+        for round_results in rounds_list:
             print(round_results)
             print("\n")
-
