@@ -1,5 +1,6 @@
 import os
 import sys
+import json
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 root_dir = os.path.abspath(os.path.dirname(current_dir))
@@ -48,13 +49,16 @@ class ControllerTournament:
         end_date = datetime.now().replace(microsecond=0)
         return end_date
 
+    def print_ending_message():
+        return ViewTournament.print_ending_message()
+
     def print_tournament_results(name, location, start_date, end_date,
                                  description, time_control, players_list,
-                                 rounds_list):
+                                 rounds):
         ViewTournament.print_tournament_results(name, location, start_date,
                                                 end_date, description,
                                                 time_control, players_list,
-                                                rounds_list)
+                                                rounds)
 
     def generate_new_tournament():
 
@@ -81,7 +85,7 @@ class ControllerTournament:
             player = ControllerPlayer.check_id_number()            
             ModelPlayer.save_tournament_player(player)
 
-        rounds_list = []
+        ModelTournament.rounds_list = []
         pairs_list = []
 
         deserialized_players = []
@@ -92,6 +96,8 @@ class ControllerTournament:
 
         # Step3: Starting a loop of 4 rounds
 
+        deserialized_rounds = []
+
         for i in range(1, 5):
 
             # Step4: Starting the Round
@@ -100,13 +106,13 @@ class ControllerTournament:
 
             # Step5: Generating pairs according to Swiss-pairing algorithm
 
-            if len(rounds_list) == 0:
+            if len(ModelTournament.rounds_list) == 0:
                 d_p = deserialized_players
                 round_pairs = ModelTournament.generate_pairs_by_ranking(d_p)
                 ControllerTournament.generate_pairs(round_pairs)
                 pairs_list.extend(round_pairs)
 
-            elif len(rounds_list) in range(1, 5):
+            elif len(ModelTournament.rounds_list) in range(1, 5):
                 gen_pairs_by_score = ModelTournament.generate_pairs_by_score
                 round_pairs = gen_pairs_by_score(ModelTournament, d_p,
                                                  pairs_list)
@@ -116,7 +122,9 @@ class ControllerTournament:
             print(ViewTournament.star_line)
 
             # Step6 : Playing the matches of the round
-
+            
+            deserialized_matches = []
+            
             for i in range(0, 4):
 
                 first_player = round_pairs[i][0]
@@ -124,23 +132,44 @@ class ControllerTournament:
                 second_player = round_pairs[i][1]
                 s_p = second_player
 
-                match = ModelMatch("", "", "", "")
+                #match = ModelMatch("", "", "", "")
 
                 ControllerMatch.start_match(f_p, s_p)
                 match = ControllerMatch.print_winner_and_score(f_p, s_p)
+                print("match")
+                print(match)
 
-                ModelRound.list_of_matches.append(match)
+                serialized_match = ModelMatch.serialize_match(match)
+                ModelRound.list_of_matches.append(serialized_match)
+
+                deserialized_match = ModelMatch.deserialize_match(serialized_match)
+                deserialized_matches.append(deserialized_match)
+
+                print("deserialized_matches")
+                print(deserialized_matches)
+                print(deserialized_match)
 
             # Step7 : Ending the round before iterating to other rounds
 
             end_date = ControllerRound.end_round()
 
             ControllerRound.print_round_results(i, start_date, end_date,
-                                                ModelRound.list_of_matches)
+                                                deserialized_matches)
 
-            round = ModelRound(ModelRound.list_of_matches,
+            round = ModelRound(deserialized_matches,
                                start_date, end_date)
-            rounds_list.append(round)
+
+            deserialized_rounds.append(round)
+            print("deserialized_round")
+            print(deserialized_rounds)
+
+            round.matches = ModelRound.list_of_matches 
+            serialized_round = ModelRound.serialize_round(round)         
+
+            print("serialized_round")
+            print(serialized_round)   
+            ModelTournament.rounds_list.append(serialized_round)
+
             ModelRound.list_of_matches = []
 
         # Step8 : Ending the tournament and printing the results
@@ -150,103 +179,28 @@ class ControllerTournament:
         for player in ModelPlayer.tournament_players:
             player_name = player["surname"]
             tournament_players_names.append(player_name)
-        ModelTournament.rounds_list = rounds_list
+
+        ControllerTournament.print_ending_message()
 
         ControllerTournament.print_tournament_results(t_i[0], t_i[1],
                                                       start_date, end_date,
                                                       t_i[2], t_i[3],
                                                       tournament_players_names,
-                                                      rounds_list)
+                                                      deserialized_rounds)
+        print("deserialized_rounds")
+        print(deserialized_rounds)
 
-if __name__ == "__main__":
+        tournament = ModelTournament(t_i[0], t_i[1], start_date, end_date,
+                                     t_i[2], t_i[3], tournament_players_names)
 
-    # Step1: Starting the tournament
+        print("TOURNAMENT")
+        print(tournament)
 
-    tournament_inputs = ControllerTournament.print_tournament_inputs()
-    t_i = tournament_inputs
+        tournament.rounds = ModelTournament.rounds_list
+        print("TOURNAMENT ROUNDS")
+        print(tournament.rounds)
 
-    start_date = ControllerTournament.start_tournament()
-
-    # Step2: Adding 8 players to the tournament
-
-    ControllerTournament.introduce_players()
-
-    for i in range(1, 9):
-        ControllerPlayer.add_player_to_tournament(i)
-
-    rounds_list = []
-    pairs_list = []
-
-    # Step3: Starting a loop of 4 rounds
-
-    for i in range(1, 5):
-
-        # Step4: Starting the Round
-
-        start_date = ControllerRound.start_round(i)
-
-        # Step5: Generating pairs according to Swiss-pairing algorithm
-
-        if len(rounds_list) == 0:
-            t_p = ModelPlayer.tournament_players
-            round_pairs = ModelTournament.generate_pairs_by_ranking(t_p)
-            ControllerTournament.generate_pairs(round_pairs)
-            pairs_list.extend(round_pairs)
-
-        elif len(rounds_list) in range(1, 5):
-            gen_pairs_by_score = ModelTournament.generate_pairs_by_score
-            round_pairs = gen_pairs_by_score(ModelTournament, t_p,
-                                             pairs_list)
-            ControllerTournament.generate_pairs(round_pairs)
-            pairs_list.extend(round_pairs)
-
-        print(ViewTournament.star_line)
-
-        # Step6 : Playing the matches of the round
-
-        for i in range(0, 4):
-
-            first_player = round_pairs[i][0]
-            f_p = first_player
-            second_player = round_pairs[i][1]
-            s_p = second_player
-
-            match = ModelMatch("", "", "", "")
-
-            ControllerMatch.start_match(f_p, s_p)
-            match = ControllerMatch.print_winner_and_score(f_p, s_p)
-
-            ModelRound.list_of_matches.append(match)
-
-        # Step7 : Ending the round before iterating to other rounds
-
-        end_date = ControllerRound.end_round()
-
-        ControllerRound.print_round_results(i, start_date, end_date,
-                                            ModelRound.list_of_matches)
-
-        round = ModelRound(ModelRound.list_of_matches, start_date, end_date)
-        rounds_list.append(round)
-        ModelRound.list_of_matches = []
-
-    # Step8 : Ending the tournament and printing the results
-
-    end_date = ControllerTournament.end_tournament()
-    tournament_players_names = []
-    for i in range(0, 8):
-        player = ModelPlayer.tournament_players[i].surname
-        tournament_players_names.append(player)
-    ModelTournament.rounds_list = rounds_list
-
-    tournament = ModelTournament(t_i[0], t_i[1], start_date, end_date, t_i[2],
-                                 t_i[3], tournament_players_names)
-
-    ControllerTournament.print_tournament_results(t_i[0], t_i[1], start_date,
-                                                  end_date, t_i[2], t_i[3],
-                                                  tournament_players_names,
-                                                  rounds_list)
-
-
-if __name__ == "__main__":
-
-    print(len(ModelPlayer.players_database))
+        serialized_tournament = ModelTournament.serialize_tournament(tournament)
+        print("SERIALIZED TOURNAMENT")
+        print(serialized_tournament)
+        ModelTournament.save_tournament_to_tournaments_database(serialized_tournament)

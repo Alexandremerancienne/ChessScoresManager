@@ -32,33 +32,3 @@ class ControllerRound:
     def print_round_results(i, start_date, end_date, list_of_matches):
         return ViewRound.print_round_results(i, start_date, end_date,
                                              list_of_matches)
-
-
-if __name__ == "__main__":
-
-    round = ModelRound("", "", "")
-
-    start_date = ControllerRound.start_round(1)
-
-    for i in range(1, 9):
-        ControllerPlayer.add_player_to_tournament(i)
-
-    round_players = ControllerPlayer.sort_tournament_players_by_ranking()
-
-    for i in range(0, 4):
-        first_player = ModelPlayer.tournament_players[i]
-        f_p = first_player
-        second_player = ModelPlayer.tournament_players[i+4]
-        s_p = second_player
-
-        match = ModelMatch("", "", "", "")
-
-        ControllerMatch.start_match(f_p, s_p)
-        match = ControllerMatch.print_winner_and_score(f_p, s_p)
-
-        ModelRound.list_of_matches.append(match)
-
-    end_date = ControllerRound.end_round()
-
-    ControllerRound.print_round_results(1, start_date, end_date,
-                                        ModelRound.list_of_matches)

@@ -4,7 +4,9 @@ from model_round import ModelRound
 from datetime import datetime
 from operator import attrgetter
 from operator import itemgetter
-
+from tinydb import TinyDB, Query
+import json
+import re
 
 class ModelTournament:
 
@@ -24,28 +26,31 @@ class ModelTournament:
       Blitz (game under 10 minutes),
       Bullet (game under 3 minutes)
     - Description of the tournament."""
-
+    
+    tournaments_database = TinyDB("tournaments_database.json")
     number_of_rounds = 0
+    rounds_list = []
 
     def __init__(self, name, location, start_date,
-                 end_date, players_list, time_control, description):
+                 end_date, description, time_control, players_list):
         ModelTournament.number_of_rounds += 1
         self._name = name
         self._location = location
         self._start_date = start_date
         self._end_date = end_date
-        self._players_list = players_list
-        self._time_control = time_control
         self._description = description
-        self._rounds_list = []
+        self._time_control = time_control
+        self._players_list = players_list
+        self._rounds = []
 
     def __str__(self):
-        return(f"End of {self.name} of {self.location}!\n\n"
+        return(f"Tournament name: {self.name}\n\n"
+               + f"Location: {self.location} \n\n"
                + f"Dates: from {self.start_date} to {self.end_date} \n\n"
                + f"Description: {self.description}\n\n"
                + f"Time control: {self.time_control} \n\n"
                + f"Participants: {self.players_list} \n\n"
-               + f"Results: \n\n{self.rounds_list}")
+               + f"Results: \n\n{self.rounds}")
 
     @property
     def name(self):
@@ -74,9 +79,9 @@ class ModelTournament:
     @start_date.setter
     def start_date(self, new_date):
         try:
-            new_date: datetime.strptime(new_date, "%Y-%m-%d %H:%M:%S").date()
+            new_date: datetime.strptime(new_date, "%Y.%m.%d (%H:%M:%S)").date()
         except ValueError:
-            print("Please enter a valid start date (YYYY.MM.DD HH:MM:SS).")
+            print("Please enter a valid start date (YYYY.MM.DD (HH:MM:SS))")
         self._start_date = new_date
 
     @property
@@ -86,20 +91,20 @@ class ModelTournament:
     @end_date.setter
     def end_date(self, new_date):
         try:
-            new_date: datetime.strptime(new_date, "%Y-%m-%d %H:%M:%S").date()
+            new_date: datetime.strptime(new_date, "%Y.%m.%d (%H:%M:%S)").date()
         except ValueError:
-            print("Please enter a valid start date (YYYY.MM.DD HH:MM:SS).")
+            print("Please enter a valid start date (YYYY.MM.DD (HH:MM:SS))")
         self._end_date = new_date
 
     @property
-    def rounds_list(self):
-        return self._rounds_list
+    def rounds(self):
+        return self._rounds
 
-    @rounds_list.setter
-    def rounds_list(self, new_list):
+    @rounds.setter
+    def rounds(self, new_list):
         if not (isinstance(new_list, list) and len(new_list) == 4):
             print("Please enter a valid list of rounds.")
-        self._rounds_list = new_list
+        self._rounds = new_list
 
     @property
     def players_list(self):
@@ -234,7 +239,7 @@ class ModelTournament:
             pair_index = r_p.index(pair)
             n = pair_index
             if (pair or inverted_pair) in pairs_list:
-                print(f"Redundant pair: ")
+                print(f"\nRedundant pair: ")
                 for elt in pair:
                     print(elt)
 
@@ -242,12 +247,12 @@ class ModelTournament:
                     ModelTournament.swiss_pair(r_p, n, pbs, 1, 2, 3)
                     inverted_pair = ModelTournament.invert_pair(r_p[n])
                     if (r_p[n] or inverted_pair) in pairs_list:
-                        print(f"Redundant pair: ")
+                        print(f"\nRedundant pair: ")
                         for elt in r_p[n]:
                             print(elt)
                         ModelTournament.swiss_pair(r_p, n, pbs, 1, 3, 2)
                         if (r_p[n] or inverted_pair) in pairs_list:
-                            print(f"Redundant pair: ")
+                            print(f"\nRedundant pair: ")
                             for elt in r_p[n]:
                                 print(elt)
                             if n in range(0, 2):
@@ -272,242 +277,93 @@ class ModelTournament:
 
         return round_pairs
 
+    def serialize_tournament(self):
+        serialized_tournament = {}
+        json.dumps(serialized_tournament, default=str)
+        serialized_tournament["name"] = self.name
+        serialized_tournament["location"] = self.location
+        serialized_tournament["start_date"] = self.start_date.strftime("%Y.%m.%d (%H:%M:%S)")
+        serialized_tournament["end_date"] = self.end_date.strftime("%Y.%m.%d (%H:%M:%S)")
+        serialized_tournament["description"] = self.description
+        serialized_tournament["time_control"] = self.time_control
+        serialized_tournament["players_list"] = self.players_list
+        serialized_tournament["rounds"] = self.rounds
+        return serialized_tournament
 
-if __name__ == "__main__":
+    def deserialize_tournament(serialized_tournament):
+        name = serialized_tournament["name"]
+        location = serialized_tournament["location"]
+        start_date = serialized_tournament["start_date"]
+        end_date = serialized_tournament["end_date"]
+        description = serialized_tournament["description"]
+        time_control = serialized_tournament["time_control"]
+        players_list = serialized_tournament["players_list"]
+        rounds = serialized_tournament["rounds"]
+        deserialized_tournament = ModelTournament(name=name, location=location, start_date=start_date, end_date = end_date, description=description, time_control=time_control, players_list=players_list)
+        deserialized_tournament.rounds = rounds
+        return deserialized_tournament    
 
-    """Testing program generating a tournament.
+    def save_tournament_to_tournaments_database(self):
+        ModelTournament.tournaments_database.insert(self)
 
-    The program first generates 8 players from Player class,
-    then divides the 8 players into 4 matches from Match class,
-    then plays the 4 matches to generate results,
-    then creates a round from Round class.
+    def get_tournament():
+        Tournament = Query()
+        t_d = ModelTournament.tournaments_database
+        choice = input("\nSearch tournament (Enter option number): \n\n"
+                        + "By name [1]\n" 
+                        + "By location [2]\n"
+                        + "By year [3]\n\n")
 
-    The program finally repeats the above steps to generate 4 rounds.
-
-    For each round, the matches are defined according to
-    Swiss pairing algorithm.
-
-    Before the first round,
-    the players are ranked in descending order:
-
-    [1,2,3,4,5,6,7,8]
-
-    then divided in two groups :
-
-    [1,2,3,4]   [5,6,7,8]
-
-    then paired as follows :
-
-    (1,5) (2,6) (3,7) (4,8)
-
-    After the first round,
-    the players are sorted by score:
-
-    [1,2,3,4,5,6,7,8]
-
-    then paired as follows :
-
-    (1,2) (3,4) (5,6) (7,8)
-
-    If a match has already been played
-    (for instance, 1 and 2 already played each other)
-    then 1 plays against 3 (and so on...)"""
-
-    # Step 1: Creating the tournament
-
-    tournament = ModelTournament("", "", "", "", "", "", "")
-
-    name = input("Please enter the name of the tournament: ")
-    while not all(x.isalpha() or x.isspace() for x in name):
-        print("Please enter a valid name of tournament.")
-        name = input("Please enter the name of the tournament: ")
-        continue
-    tournament.name = name
-
-    location = input("Please enter the location of the tournament: ")
-    while location.isalpha() is False:
-        print("Please enter a valid location.")
-        location = input("Please enter the location of the tournament: ")
-        continue
-    tournament.location = location
-
-    print(f"Welcome to the {tournament.name} of {tournament.location}!")
-    input("Press Enter to start the tournament")
-    start_date = datetime.now().date()
-    tournament.start_date = start_date
-
-    description = input("Please enter a description of the tournament: ")
-    tournament.description = description
-
-    time_control = input("Choose time control (blitz, bullet, rapid): ")
-    while not time_control.lower() in ("blitz", "rapid", "bullet"):
-        print("Please enter a valid time control (blitz, bullet, rapid).")
-        time_control = input("Choose time control (blitz, bullet, rapid): ")
-        continue
-    tournament.time_control = time_control
-
-    # Step 2: Generating 8 players from Player class
-
-    print("Number of players: 8 \n Please enter each player's details")
-
-    players = []
-
-    for i in range(1, 9):
-        print("--------------------------------------")
-        print(f"Player {i}")
-
-        player = ModelPlayer("", "", "", "", "")
-        players.append(player)
-
-        surname = input("Enter player's surname: ")
-        while surname.isalpha() is False:
-            print("Please enter a valid surname.")
-            surname = input("Enter player's surname: ")
+        while choice not in "123":
+            print("Choose a correct number.")
+            choice = input("\nSearch tournament (Enter option number): \n\n"
+                        + "By name [1]\n" 
+                        + "By location [2]\n"
+                        + "By year [3]\n\n")
             continue
-        player.surname = surname
 
-        first_name = input("Enter player's first name: ")
-        while first_name.isalpha() is False:
-            print("Please enter a valid first name.")
-            first_name = input("Enter player's first name: ")
-            continue
-        player.first_name = first_name
+        if choice == "1":
+            name = input("Enter tournament name: ")
+            name = name.capitalize()
+            results = t_d.search(Tournament.name == name)            
+            number_of_results = 0
+            if len(results) == 0:
+                print("No tournament found")
+            elif len(results) > 0:
+                for result in results:
+                    number_of_results +=1
+                print(f"Number of results: {number_of_results}")
+                for result in results:
+                    result = ModelTournament.deserialize_tournament(result)
+                    print(result)
 
-        year_of_birth = input("Enter player's year of birth (YYYY): ")
-        month_of_birth = input("Enter player's month of birth (MM): ")
-        day_of_birth = input("Enter player's day of birth (DD): ")
-        date = (f"{year_of_birth}-{month_of_birth}-{day_of_birth}")
-        while True:
-            try:
-                birth_date = datetime.strptime(date, "%Y-%m-%d").date()
-                break
-            except ValueError:
-                print("Please enter a valid birth date (YYYY-MM-DD)")
-                year_of_birth = input("Enter player's year of birth (YYYY): ")
-                month_of_birth = input("Enter player's month of birth (MM): ")
-                day_of_birth = input("Enter player's day of birth (DD): ")
-                date = (f"{year_of_birth}-{month_of_birth}-{day_of_birth}")
-        player.birth_date = birth_date
+        elif choice == "2":
+            location = input("Enter tournament location: ")
+            location = location.capitalize()
+            results = t_d.search(Tournament.location == location)
+            number_of_results = 0
+            if len(results) == 0:
+                print("No tournament found\n")
+            elif len(results) > 0:
+                for result in results:
+                    number_of_results +=1
+                print(f"Number of results: {number_of_results}\n")           
+                for result in results:
+                    result = ModelTournament.deserialize_tournament(result)
+                    print(result)
 
-        gender = input("Enter player's gender (M/F): ")
-        while str(gender) not in "mMfF" or gender.isalpha() is False:
-            print("Please enter a valid gender (M/F).")
-            gender = input("Enter player's gender (M/F): ")
-            continue
-        player.gender = gender
-
-        ranking = input("Enter player's ranking: ")
-        while isinstance(ranking, float) is False:
-            try:
-                ranking = float(ranking)
-                break
-            except Exception:
-                print("Please enter a valid ranking (positive float).")
-                ranking = input("Enter player's ranking: ")
-        player.ranking = ranking
-
-    tournament.players_list = players
-
-    # Step 3: Generating a loop of 4 rounds
-
-    rounds_list = []
-    pairs_list = []
-
-    for i in range(1, 5):
-
-        round = ModelRound("", "", "")
-
-        # Step 4: For each round, starting the clock to initiate the round
-
-        print("--------------------------------------")
-        input(f"Press Enter to start Round {i}")
-        start_date = datetime.now().replace(microsecond=0)
-        print("--------------------------------------")
-
-        # Step 5: For each round, generating new pairs of players
-        # according to Swiss pairing algorithm :
-
-        # Before first round
-
-        if len(rounds_list) == 0:
-            round_pairs = ModelTournament.generate_pairs_by_ranking(players)
-            print(f"List of matches: {round_pairs}")
-            pairs_list.extend(round_pairs)
-
-        # After first round
-
-        elif len(rounds_list) in range(1, 5):
-            round_pairs = ModelTournament.generate_pairs_by_score(tournament,
-                                                                  players,
-                                                                  pairs_list)
-            print(f"List of matches: {round_pairs}")
-            pairs_list.extend(round_pairs)
-
-        # Step 6: Dividing the players into 4 matches from Match class
-        # on the basis of the pairs previously defined
-
-        list_of_matches = []
-        print("--------------------------------------")
-        print("Number of matches : 4")
-
-        for i in range(1, 5):
-
-            match = ModelMatch("", "", "", "")
-            match.first_player = round_pairs[i-1][0].surname
-            match.second_player = round_pairs[i-1][1].surname
-            print("--------------------------------------")
-            print(f"Match {i}: {match.first_player}, {match.second_player}")
-
-            # Step 7: Playing each match of the round
-
-            result = input(f"Enter result for {match.first_player}"
-                           + " - W (wins), L (loose), D (draw): ")
-            while str(result) not in "wWlLdD" or result.isalpha() is False:
-                print("Please enter a result (W/L/D).")
-                result = input(f"Enter result for {match.first_player}"
-                               + " - W (wins), L (loose), D (draw): ")
-                continue
-            print("--------------------------------------")
-
-            if result in "wW":
-                result = ModelMatch.first_player_wins(match)
-                print(f"{match.first_player} wins")
-                round_pairs[i-1][0].score += 1
-
-            elif result in "lL":
-                result = ModelMatch.second_player_wins(match)
-                print(f"{match.second_player} wins")
-                round_pairs[i-1][1].score += 1
-
-            elif result in "dD":
-                result = ModelMatch.draw(match)
-                print("Draw")
-                round_pairs[i-1][0].score += 0.5
-                round_pairs[i-1][1].score += 0.5
-
-            print(match)
-
-            list_of_matches.append(match)
-
-        # Step 8: Ending the round
-
-        print("--------------------------------------")
-        print(f"Round results : {list_of_matches}")
-
-        round.matches = list_of_matches
-        round.start_date = start_date
-        end_date = datetime.now().replace(microsecond=0)
-        round.end_date = end_date
-        rounds_list.append(round)
-
-    # Step 9: Printing the tournament
-
-    tournament.rounds_list = rounds_list
-
-    print("--------------------------------------")
-    input("Press Enter to end the tournament")
-    end_date = datetime.now().date()
-    tournament.end_date = end_date
-
-    print("--------------------------------------")
-    print(tournament)
+        elif choice == "3":
+            year = input("Enter tournament year: ")
+            matching_tournaments = []
+            number_of_results = 0
+            for tournament in t_d:
+                if re.match(year, tournament["start_date"]):
+                    number_of_results += 1
+                    matching_tournaments.append(tournament)
+            if number_of_results == 0:
+                print("No tournament found\n")
+            elif number_of_results > 0:
+                print(f"Number of results: {number_of_results}\n")           
+                for matching_tournament in matching_tournaments:
+                    matching_tournament = ModelTournament.deserialize_tournament(matching_tournament)
+                    print(matching_tournament)

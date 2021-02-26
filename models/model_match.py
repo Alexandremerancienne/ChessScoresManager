@@ -1,5 +1,6 @@
 import os
 import sys
+import json
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(current_dir)
@@ -65,112 +66,19 @@ class ModelMatch:
         self.second_score = 0.5
         self.first_score = 0.5
 
+    def serialize_match(self):
+        serialized_match = {}
+        json.dumps(serialized_match, default=str)
+        serialized_match["first_player"] = self.first_player
+        serialized_match["first_score"] = self.first_score
+        serialized_match["second_player"] = self.second_player
+        serialized_match["second_score"] = self.second_score
+        return serialized_match
 
-if __name__ == "__main__":
-
-    """Testing program generating 3 matches.
-
-    The program first generates 2 players from Player class,
-    then plays a match and print the corresponding result."""
-
-    players = []
-    print("Next Match")
-
-    # Step 1: Generating 2 players
-
-    for i in range(1, 3):
-
-        print("--------------------------------------")
-        print(f"Player {i}")
-
-        player = ModelPlayer("", "", "", "", "")
-
-        surname = input("Enter player's surname: ")
-        while surname.isalpha() is False:
-            print("Please enter a valid surname.")
-            surname = input("Enter player's surname: ")
-            continue
-        player.surname = surname
-        p_fmilyname = player.surname
-
-        first_name = input("Enter player's first name: ")
-        while first_name.isalpha() is False:
-            print("Please enter a valid first name.")
-            first_name = input("Enter player's first name: ")
-            continue
-        player.first_name = first_name
-        p_fstname = player.first_name
-
-        year_of_birth = input("Enter player's year of birth (YYYY): ")
-        month_of_birth = input("Enter player's month of birth (MM): ")
-        day_of_birth = input("Enter player's day of birth (DD): ")
-        date = (f"{year_of_birth}-{month_of_birth}-{day_of_birth}")
-        while True:
-            try:
-                birth_date = datetime.strptime(date, "%Y-%m-%d").date()
-                break
-            except ValueError:
-                print("Please enter a valid birth date (YYYY.MM.DD)")
-                year_of_birth = input("Enter player's year of birth (YYYY): ")
-                month_of_birth = input("Enter player's month of birth (MM): ")
-                day_of_birth = input("Enter player's day of birth (DD): ")
-                date = (f"{year_of_birth}-{month_of_birth}-{day_of_birth}")
-        player.birth_date = birth_date
-        p_bd = player.birth_date
-
-        gender = input("Enter player's gender (M/F): ")
-        while str(gender) not in "mMfF" or gender.isalpha() is False:
-            print("Please enter a valid gender (M/F).")
-            gender = input("Enter player's gender (M/F): ")
-            continue
-        player.gender = gender
-        p_g = player.gender
-
-        ranking = input("Enter player's ranking: ")
-        while isinstance(ranking, float) is False:
-            try:
-                ranking = float(ranking)
-                break
-            except Exception:
-                print("Please enter a valid ranking (positive float).")
-                ranking = input("Enter player's ranking: ")
-        player.ranking = ranking
-        p_r = player.ranking
-
-        players.append(ModelPlayer(p_fmilyname, p_fstname, p_bd, p_g, p_r))
-
-    # Step 2: Generating a match
-
-    match = ModelMatch("", "", "", "")
-
-    match.first_player = players[0].surname
-    match.second_player = players[1].surname
-
-    print("--------------------------------------")
-    print(f"Next match: {match.first_player} vs {match.second_player}")
-    result = input(f"Enter result for {match.first_player}"
-                   + "- W (wins), L (loose), D (draw): ")
-    while str(result) not in "wWlLdD" or result.isalpha() is False:
-        print("Please enter a result (W/L/D).")
-        result = input(f"Enter result for {match.first_player}"
-                       + "- W (wins), L (loose), D (draw): ")
-        continue
-    print("--------------------------------------")
-
-    if result in "wW":
-        result = ModelMatch.first_player_wins(match)
-        print(f"{match.first_player} wins")
-        players[0].score += 1
-
-    elif result in "lL":
-        result = ModelMatch.second_player_wins(match)
-        print(f"{match.second_player} wins")
-        players[1].score += 1
-
-    elif result in "dD":
-        result = ModelMatch.draw(match)
-        print("Draw")
-        players[0].score += 0.5
-        players[1].score += 0.5
-
-    print(match)
+    def deserialize_match(serialized_match):
+        first_player = serialized_match["first_player"]
+        first_score = serialized_match["first_score"]
+        second_player = serialized_match["second_player"]
+        second_score = serialized_match["second_score"]
+        deserialized_match = ModelMatch(first_player=first_player, first_score=first_score, second_player=second_player, second_score=second_score)
+        return deserialized_match

@@ -17,15 +17,15 @@ class ViewMenu:
 
     @staticmethod
     def return_first_choice_welcome_page():
-        option_choice = input(("Create New Tournament [1]"
-                              + "    See Players [2]"
-                              + "    See Previous Tournaments [3]"
+        option_choice = input(("Generate Tournament [1]"
+                              + "    Search Player [2]"
+                              + "    Search Tournament [3]"
                               + "    Quit Program [4]\n\n").center(80))
         while str(option_choice) not in "1234":
             print("Choose a number between 1 and 4.")
-            option_choice = input(("Create New Tournament [1]"
-                                  + "    See Players [2]"
-                                  + "    See Previous Tournaments [3]"
+            option_choice = input(("Generate Tournament [1]"
+                                  + "    Search Players [2]"
+                                  + "    Search Tournament [3]"
                                   + "    Quit Program [4]\n\n").center(80))
             continue
         return option_choice

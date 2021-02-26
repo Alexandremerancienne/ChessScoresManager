@@ -113,20 +113,3 @@ class ControllerPlayer:
         rankings_sorted = sorted(ModelPlayer.database_players,
                                  key=attrgetter("ranking"), reverse=True)
         ViewPlayer.print_all_players_by_ranking(rankings_sorted)
-
-
-if __name__ == "__main__":
-
-    ControllerPlayer.search_player()
-
-    ControllerPlayer.print_player_ranking()
-
-    ControllerPlayer.change_ranking()
-
-    ControllerPlayer.sort_tournament_players_by_name()
-
-    ControllerPlayer.sort_tournament_players_by_ranking()
-
-    ControllerPlayer.sort_all_players_by_name()
-
-    ControllerPlayer.sort_all_players_by_ranking()

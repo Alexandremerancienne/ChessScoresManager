@@ -1,6 +1,7 @@
 from model_player import ModelPlayer
 from model_match import ModelMatch
 from datetime import datetime
+import json
 
 
 class ModelRound:
@@ -9,7 +10,7 @@ class ModelRound:
 
     Attributes:
 
-    - Round matches (presented as a list);
+    - List of round matches (presented as a list);
     - Name of the round;
     - Start date (YYY-MM-DD HH:MM:SS);
     - End date (YYY-MM-DD HH:MM:SS);"""
@@ -26,11 +27,11 @@ class ModelRound:
 
     def __repr__(self):
         return(f"{self.round_name} \nDates: from {self.start_date}, to {self.end_date}\
-            \nMatches: {self._matches}\n\n")
+            \nMatches: {self.matches}\n\n")
 
     def __str__(self):
         return(f"{self.round_name}: \nDates: from {self.start_date}, to {self.end_date}\
-            \nMatches: {self._matches}")
+            \nMatches: {self.matches}")
 
     @property
     def matches(self):
@@ -59,9 +60,9 @@ class ModelRound:
     @start_date.setter
     def start_date(self, new_date):
         try:
-            new_date: datetime.strptime(new_date, "%Y-%m-%d %H:%M:%S")
+            new_date: datetime.strptime(new_date, "%Y.%m.%d (%H:%M:%S)")
         except ValueError:
-            print("Please enter a valid date (YYYY-MM-DD HH:MM:SS).")
+            print("Please enter a valid date (YYYY.MM.DD (HH:MM:SS))")
         self._start_date = new_date
 
     @property
@@ -71,141 +72,23 @@ class ModelRound:
     @end_date.setter
     def end_date(self, new_date):
         try:
-            new_date: datetime.strptime(new_date, "%Y-%m-%d %H:%M:%S")
+            new_date: datetime.strptime(new_date, "%Y.%m.%d (%H:%M:%S)")
         except ValueError:
-            print("Please enter a valid date (YYYY-MM-DD HH:MM:SS).")
+            print("Please enter a valid date (YYYY.MM.DD (HH:MM:SS))")
         self._end_date = new_date
 
 
-if __name__ == "__main__":
+    def serialize_round(self):
+        serialized_round = {}
+        json.dumps(serialized_round, default=str)
+        serialized_round["matches"] = self.matches
+        serialized_round["start_date"] = self.start_date.strftime("%Y.%m.%d (%H:%M:%S)")
+        serialized_round["end_date"] = self.end_date.strftime("%Y.%m.%d (%H:%M:%S)")
+        return serialized_round
 
-    """Testing program generating a round.
-
-    The program first generates 8 players from Player class,
-    then divides the 8 players into 4 matches from Match class,
-    then plays the 4 matches to generate results,
-    then creates a round.
-
-    As only one round is generated,
-    the program does not use pairing algorithm."""
-
-    # Step 1: Generating 8 players from Player class
-
-    print("Number of players: 8 \n Please enter each player's details")
-
-    players = []
-
-    for i in range(1, 9):
-        print("--------------------------------------")
-        print(f"Player {i}")
-
-        player = ModelPlayer("", "", "", "", "")
-
-        family_name = input("Enter player's family name: ")
-        while family_name.isalpha() is False:
-            print("Please enter a valid family name.")
-            family_name = input("Enter player's family name: ")
-            continue
-        player.family_name = family_name
-
-        first_name = input("Enter player's first name: ")
-        while first_name.isalpha() is False:
-            print("Please enter a valid first name.")
-            first_name = input("Enter player's first name: ")
-            continue
-        player.first_name = first_name
-
-        year_of_birth = input("Enter player's year of birth (YYYY): ")
-        month_of_birth = input("Enter player's month of birth (MM): ")
-        day_of_birth = input("Enter player's day of birth (DD): ")
-        date = (f"{year_of_birth}-{month_of_birth}-{day_of_birth}")
-        while True:
-            try:
-                birth_date = datetime.strptime(date, "%Y-%m-%d").date()
-                break
-            except ValueError:
-                print("Please enter a valid birth date (YYYY-MM-DD)")
-                year_of_birth = input("Enter player's year of birth (YYYY): ")
-                month_of_birth = input("Enter player's month of birth (MM): ")
-                day_of_birth = input("Enter player's day of birth (DD): ")
-                date = (f"{year_of_birth}-{month_of_birth}-{day_of_birth}")
-        player.birth_date = birth_date
-
-        gender = input("Enter player's gender (M/F): ")
-        while str(gender) not in "mMfF" or gender.isalpha() is False:
-            print("Please enter a valid gender (M/F).")
-            gender = input("Enter player's gender (M/F): ")
-            continue
-        player.gender = gender
-
-        ranking = input("Enter player's ranking: ")
-        while isinstance(ranking, float) is False:
-            try:
-                ranking = float(ranking)
-                break
-            except Exception:
-                print("Please enter a valid ranking (positive float).")
-                ranking = input("Enter player's ranking: ")
-        player.ranking = ranking
-        players.append(player.family_name)
-
-    # Step 2: Starting the clock to initiate the round
-
-    print("--------------------------------------")
-    input("Press Enter to start the round")
-    start_date = datetime.now().replace(microsecond=0)
-
-    # Step 3: Dividing the players into 4 matches from Match class
-
-    print("--------------------------------------")
-    print("Number of matches : 4")
-
-    for i in range(1, 5):
-
-        match = ModelMatch("", "", "", "")
-        match.first_player = players[2*i-2]
-        match.second_player = players[2*i-1]
-        print("--------------------------------------")
-        print(f"Match {i}: {match.first_player}, {match.second_player}")
-
-        # Step 4: For each loop, playing the match to generate results
-
-        result = input(f"Enter result for {match.first_player}"
-                       + " - W (wins), L (loose), D (draw): ")
-        while str(result) not in "wWlLdD" or result.isalpha() is False:
-            print("Please enter a result (W/L/D).")
-            result = input(f"Enter result for {match.first_player}"
-                           + " - W (wins), L (loose), D (draw): ")
-            continue
-        print("--------------------------------------")
-
-        if result in "wW":
-            result = ModelMatch.first_player_wins(match)
-            print(f"{match.first_player} wins")
-
-        elif result in "lL":
-            result = ModelMatch.second_player_wins(match)
-            print(f"{match.second_player} wins")
-
-        elif result in "dD":
-            result = ModelMatch.draw(match)
-            print("Draw")
-
-        print(match)
-
-        ModelRound.list_of_matches.append(match)
-
-    print("--------------------------------------")
-    print(f"Round results : {ModelRound.list_of_matches}")
-
-    # Step 5: Creating a round
-
-    round = ModelRound("", "", "")
-    round.matches = ModelRound.list_of_matches
-    round.start_date = start_date
-    input("Press Enter to finish the round")
-    end_date = datetime.now().replace(microsecond=0)
-    round.end_date = end_date
-
-    print("--------------------------------------")
-    print(round)
+    def deserialize_round(serialized_round):
+        matches = serialized_round["matches"]
+        start_date = serialized_round["start_date"]
+        end_date = serialized_round["end_date"]
+        deserialized_round = ModelRound(matches=matches, start_date=start_date, end_date = end_date)
+        return deserialized_round

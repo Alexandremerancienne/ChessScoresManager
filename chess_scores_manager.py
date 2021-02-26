@@ -8,6 +8,7 @@ sys.path.append(root_dir)
 from controllers.controller_tournament import ControllerTournament
 from views.view_menu import ViewMenu
 from models.model_player import ModelPlayer
+from models.model_tournament import ModelTournament
 
 """Chess Scores Manager Program.
 
@@ -97,7 +98,7 @@ while stay is True:
 
         # Option 3: See the results of a previous tournament
 
-        print("Next step : Create History of Tournaments with TinyDB")
+        ModelTournament.get_tournament()
 
         return_choice = ControllerMenu.quit_current_page()
 

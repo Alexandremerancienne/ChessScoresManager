@@ -49,20 +49,25 @@ class ViewTournament():
         print(f"Match {i}: {pair[0]} vs {pair[1]}")
 
     @staticmethod
+    def print_ending_message():
+        print("End of the tournament !")
+        print(ViewTournament.line)
+        print("Tournament recap")
+
+    @staticmethod
     def print_tournament_results(name, location, start_date, end_date,
                                  description, time_control, players_list,
-                                 rounds_list):
-        print(ViewTournament.line)
-        print(f"End of {name} of {location}!\n")
+                                 rounds):
+        print(f"Tournament name: {name}\n")
+        print(f"Location: {location}\n")
         print(f"Dates: from {start_date} to {end_date}\n")
         print(f"Description: {description}\n")
         print(f"Time control: {time_control.capitalize()}\n")
         print("Participants:\n")
         for player in players_list:
             print(player)
-        print("\n")
         print("Rounds results:")
         print("\n")
-        for round_results in rounds_list:
+        for round_results in rounds:
             print(round_results)
             print("\n")
