@@ -1,6 +1,6 @@
+import json
 from datetime import datetime
 from tinydb import TinyDB, Query
-import json
 
 
 class ModelPlayer:
@@ -9,7 +9,7 @@ class ModelPlayer:
 
     Attributes:
 
-    - Surname;
+    - Last name;
     - First name;
     - Date of birth (YYYY.MM.DD);
     - Gender (M/F);
@@ -20,8 +20,9 @@ class ModelPlayer:
     players_database = TinyDB("players_database.json")
     tournament_players = TinyDB("tournament_players.json")
 
-    def __init__(self, surname, first_name, id_number, birth_date, gender, ranking):
-        self._surname = surname
+    def __init__(self, last_name, first_name, id_number, birth_date,
+                 gender, ranking):
+        self._last_name = last_name
         self._first_name = first_name
         self._id_number = id_number
         self._birth_date = birth_date
@@ -30,30 +31,30 @@ class ModelPlayer:
         self._score = 0
 
     def __repr__(self):
-        return(f"(Player {self.id_number}: " 
-               + f"{self.first_name} {self.surname}"
-               + f", Gender: {self.gender}" 
+        return(f"(Player {self.id_number}: "
+               + f"{self.first_name} {self.last_name}"
+               + f", Gender: {self.gender}"
                + f", Date of birth: {self.birth_date}"
                + f", Ranking: {self.ranking}"
                + f", Score: {self.score})")
 
     def __str__(self):
         return(f"\nPlayer {self.id_number}: "
-               + f"{self.first_name} {self.surname}"
+               + f"{self.first_name} {self.last_name}"
                + f", Gender: {self.gender}"
-               + f", Date of birth (YYYY.MM.DD): {self.birth_date}" 
+               + f", Date of birth (YYYY.MM.DD): {self.birth_date}"
                + f",Current ranking: {self.ranking}"
                + f", Score: {self.score}")
 
     @property
-    def surname(self):
-        return self._surname.upper()
+    def last_name(self):
+        return self._last_name.upper()
 
-    @surname.setter
-    def surname(self, new_surname):
-        if new_surname.isalpha() is False:
-            print("Please enter a valid surname.")
-        self._surname = new_surname
+    @last_name.setter
+    def last_name(self, new_last_name):
+        if new_last_name.isalpha() is False:
+            print("Please enter a valid last name.")
+        self._last_name = new_last_name
 
     @property
     def first_name(self):
@@ -76,7 +77,7 @@ class ModelPlayer:
     @birth_date.setter
     def birth_date(self, new_date):
         try:
-            new_date: datetime.strptime(new_date, "%Y.%m.%d").date()
+            new_date = datetime.strptime(new_date, "%Y.%m.%d").date()
         except ValueError:
             print("Please enter a valid birth date (YYYY.MM.DD).")
         self._birth_date = new_date
@@ -112,9 +113,21 @@ class ModelPlayer:
         self._score = new_score
 
     def serialize_player(self):
+
+        """A function to serialize a player.
+        A serialized player is defined by the following keys:
+
+        - Last name ;
+        - First name ;
+        - ID number ;
+        - Birth Date ;
+        - Gender ;
+        - Ranking ;
+        - Score."""
+
         serialized_player = {}
         json.dumps(serialized_player, default=str)
-        serialized_player["surname"] = self.surname
+        serialized_player["last_name"] = self.last_name
         serialized_player["first_name"] = self.first_name
         serialized_player["id_number"] = self.id_number
         serialized_player["birth_date"] = self.birth_date
@@ -124,64 +137,95 @@ class ModelPlayer:
         return serialized_player
 
     def deserialize_player(serialized_player):
-        surname = serialized_player["surname"]
+
+        """A function to deserialize a player."""
+
+        last_name = serialized_player["last_name"]
         first_name = serialized_player["first_name"]
         id_number = serialized_player["id_number"]
         birth_date = serialized_player["birth_date"]
         gender = serialized_player["gender"]
         ranking = serialized_player["ranking"]
         score = serialized_player["score"]
-        deserialized_player = ModelPlayer(surname=surname, first_name=first_name, id_number=id_number, birth_date = birth_date, gender=gender, ranking=ranking)
-        return deserialized_player        
+        deserialized_player = ModelPlayer(last_name=last_name,
+                                          first_name=first_name,
+                                          id_number=id_number,
+                                          birth_date=birth_date,
+                                          gender=gender, ranking=ranking)
+        deserialized_player.score = score
+        return deserialized_player
 
     def save_tournament_player(self):
+
+        """A function to save a serialized player from a tournament
+        to tournament_players.json database."""
+
         ModelPlayer.tournament_players.insert(self)
 
     def save_player_to_database(self):
+
+        """A function to save a serialized player
+        to players_database.json database, registering all players."""
+
         ModelPlayer.players_database.insert(self)
 
-    def get_player():
+    def search_player_according_to_criteria(database, criteria):
+
+        """A function to search a player in a database
+        according to a defined criteria"""
+
         Player = Query()
+        results = database.search(Player.criteria == criteria)
+        number_of_results = 0
+        if len(results) == 0:
+            print("No player found\n")
+        elif len(results) > 0:
+            for result in results:
+                number_of_results += 1
+            print(f"Number of results: {number_of_results}")
+            for result in results:
+                print(result)
+
+    def get_player():
+
+        """A function to retrieve a serialized player
+        to players_database.json database.
+        The player can be found with his/her last name or ID number."""
+
         p_d = ModelPlayer.players_database
         choice = input("\nSearch player (Enter option number): \n\n"
-                        + "By surname [1]\n" 
-                        + "By ID number [2]\n\n")
+                       + "By last name [1]\n"
+                       + "By ID number [2]\n\n")
 
         while choice not in "12":
             print("Choose a correct number.")
-            choice = input("Search player (Enter option number): \n\n" 
-                            + "By surname [1]\n"
-                            + "By ID number [2]\n")
+            choice = input("Search player (Enter option number): \n\n"
+                           + "By last name [1]\n"
+                           + "By ID number [2]\n")
             continue
 
         if choice == "1":
-            surname = input("Enter player surname: ")
-            results = p_d.search(Player.surname == surname)
-            number_of_results = 0
-            if len(results) == 0:
-                print("No player found")
-            elif len(results) > 0:
-                for result in results:
-                    number_of_results +=1
-                print(f"Number of results: {number_of_results}")
-                for result in results:
-                    print(result)
+            last_name = input("Enter player last name: ")
+            ModelPlayer.search_player_according_to_criteria(p_d, last_name)
 
         elif choice == "2":
             id_number = input("Enter player ID number: ")
-            results = p_d.search(Player.id_number == int(id_number))
-            number_of_results = 0
-            if len(results) == 0:
-                print("No player found\n")
-            elif len(results) > 0:
-                for result in results:
-                    number_of_results +=1
-                print(f"Number of results: {number_of_results}\n")           
-                for result in results:
-                    print(result)
+            while not isinstance(id_number, int):
+                id_number = input("Enter player ID (positive number): ")
+                continue
+            ModelPlayer.search_player_according_to_criteria(p_d, id_number)
 
     def get_tournament_players():
+
+        """A function to retrieve all the serialized players
+        from a tournament
+        saved in tournament_players.json database"""
+
         print(ModelPlayer.tournament_players.all())
 
     def get_all_players():
-        print(ModelPlayer.players_database.all())
+
+        """A function to retrieve all the serialized players
+        saved in players_database.json database"""
+
+        return ModelPlayer.players_database.all()
