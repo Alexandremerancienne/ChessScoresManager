@@ -4,10 +4,16 @@ class ViewMatch():
 
     @staticmethod
     def start_match(first_player, second_player):
+
+        """A static method to announce a match."""
+
         print(f"NEXT MATCH : {first_player} vs {second_player}")
 
     @staticmethod
     def get_match_result(first_player):
+
+        """A static method to enter the results of a match."""
+
         result = input(f"Enter result for {first_player}"
                        + " => W (wins), L (looses), D (draw): ")
         while result not in ("wWlLdD"):
@@ -18,6 +24,9 @@ class ViewMatch():
 
     @staticmethod
     def print_first_player_wins_and_score(first_player, second_player):
+
+        """A static method to announce the victory of the first player."""
+
         print(ViewMatch.line)
         print(f"MATCH RESULT : {first_player} WINS")
         print(f"{first_player} : 1")
@@ -26,6 +35,9 @@ class ViewMatch():
 
     @staticmethod
     def print_draw(first_player, second_player):
+
+        """A static method to announce a draw."""
+
         print(ViewMatch.line)
         print("MATCH RESULT : DRAW")
         print(f"{first_player} : 0.5")
