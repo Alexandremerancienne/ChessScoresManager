@@ -1,7 +1,5 @@
-from model_player import ModelPlayer
-from model_match import ModelMatch
-from datetime import datetime
 import json
+from datetime import datetime
 
 
 class ModelRound:
@@ -12,8 +10,8 @@ class ModelRound:
 
     - List of round matches (presented as a list);
     - Name of the round;
-    - Start date (YYY-MM-DD HH:MM:SS);
-    - End date (YYY-MM-DD HH:MM:SS);"""
+    - Start date (YYYY.MM.DD HH:MM:SS);
+    - End date (YYYY.MM.DD HH:MM:SS);"""
 
     number_of_rounds = 0
     list_of_matches = []
@@ -26,8 +24,8 @@ class ModelRound:
         self._end_date = end_date
 
     def __repr__(self):
-        return(f"{self.round_name} \nDates: from {self.start_date}, to {self.end_date}\
-            \nMatches: {self.matches}\n\n")
+        return(f"{self.round_name} - From {self.start_date}"
+               + f" to {self.end_date}- Matches: {self.matches}")
 
     def __str__(self):
         return(f"{self.round_name}: \nDates: from {self.start_date}, to {self.end_date}\
@@ -60,7 +58,7 @@ class ModelRound:
     @start_date.setter
     def start_date(self, new_date):
         try:
-            new_date: datetime.strptime(new_date, "%Y.%m.%d (%H:%M:%S)")
+            new_date = datetime.strptime(new_date, "%Y.%m.%d (%H:%M:%S)")
         except ValueError:
             print("Please enter a valid date (YYYY.MM.DD (HH:MM:SS))")
         self._start_date = new_date
@@ -72,23 +70,37 @@ class ModelRound:
     @end_date.setter
     def end_date(self, new_date):
         try:
-            new_date: datetime.strptime(new_date, "%Y.%m.%d (%H:%M:%S)")
+            new_date = datetime.strptime(new_date, "%Y.%m.%d (%H:%M:%S)")
         except ValueError:
             print("Please enter a valid date (YYYY.MM.DD (HH:MM:SS))")
         self._end_date = new_date
 
-
     def serialize_round(self):
+
+        """A function to serialize a round.
+        A serialized round is defined by the following keys:
+
+        - Matches ;
+        - Start date ;
+        - End date."""
+
         serialized_round = {}
         json.dumps(serialized_round, default=str)
         serialized_round["matches"] = self.matches
-        serialized_round["start_date"] = self.start_date.strftime("%Y.%m.%d (%H:%M:%S)")
-        serialized_round["end_date"] = self.end_date.strftime("%Y.%m.%d (%H:%M:%S)")
+        serialized_round["start_date"] = self.start_date.strftime("%Y.%m.%d " +
+                                                                  "(%H:%M:%S)")
+        serialized_round["end_date"] = self.end_date.strftime("%Y.%m.%d " +
+                                                              "(%H:%M:%S)")
         return serialized_round
 
     def deserialize_round(serialized_round):
+
+        """A function to deserialize a round."""
+
         matches = serialized_round["matches"]
         start_date = serialized_round["start_date"]
         end_date = serialized_round["end_date"]
-        deserialized_round = ModelRound(matches=matches, start_date=start_date, end_date = end_date)
+        deserialized_round = ModelRound(matches=matches,
+                                        start_date=start_date,
+                                        end_date=end_date)
         return deserialized_round
