@@ -129,7 +129,7 @@ class ControllerPlayer:
         sorted_players = sorted(deserialized_players,
                                 key=attrgetter("last_name"))
         for sorted_player in sorted_players:
-            print(f"Player {sorted_player.id_number} :"
+            print(f"Player {sorted_player.id_number} : "
                   + f"{sorted_player.first_name} {sorted_player.last_name}")
 
     def sort_all_players_by_ranking():
@@ -144,5 +144,5 @@ class ControllerPlayer:
         """A function to sort all the players by last name."""
 
         ViewPlayer.print_all_players_by_last_name()
-        sort_plyrs_by_last_name = ControllerPlayer.sort_players_by_last_name()
-        sort_plyrs_by_last_name(ModelPlayer.players_database)
+        database = ModelPlayer.players_database
+        ControllerPlayer.sort_players_by_last_name(database)
