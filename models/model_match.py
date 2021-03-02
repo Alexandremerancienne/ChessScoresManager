@@ -5,9 +5,6 @@ import json
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(current_dir)
 
-from model_player import ModelPlayer
-from datetime import datetime
-
 
 class ModelMatch:
 
@@ -67,6 +64,15 @@ class ModelMatch:
         self.first_score = 0.5
 
     def serialize_match(self):
+
+        """A function to serialize a match.
+        A serialized match is defined by the following keys:
+
+        - First player ;
+        - First score ;
+        - Second player ;
+        - Second score."""
+
         serialized_match = {}
         json.dumps(serialized_match, default=str)
         serialized_match["first_player"] = self.first_player
@@ -76,9 +82,15 @@ class ModelMatch:
         return serialized_match
 
     def deserialize_match(serialized_match):
+
+        """A function to deserialize a match."""
+
         first_player = serialized_match["first_player"]
         first_score = serialized_match["first_score"]
         second_player = serialized_match["second_player"]
         second_score = serialized_match["second_score"]
-        deserialized_match = ModelMatch(first_player=first_player, first_score=first_score, second_player=second_player, second_score=second_score)
+        deserialized_match = ModelMatch(first_player=first_player,
+                                        first_score=first_score,
+                                        second_player=second_player,
+                                        second_score=second_score)
         return deserialized_match
