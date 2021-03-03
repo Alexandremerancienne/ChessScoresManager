@@ -121,26 +121,25 @@ class ViewPlayer():
     @staticmethod
     def change_player_ranking():
 
-        """A static method to announce a change of ranking for a player."""
-
-        print("Change player's ranking")
-        player_name = input("Enter player's last name: ")
-        return player_name
-
-    @staticmethod
-    def enter_new_ranking():
-
         """A static method to enter the ranking of a player."""
 
-        new_ranking = input("Enter new ranking: ")
+        new_ranking = input("\nEnter new ranking: ")
         while isinstance(new_ranking, float) is False:
             try:
                 new_ranking = float(new_ranking)
             except Exception:
                 print("Please enter a valid ranking (positive float).")
-                new_ranking = input("Enter new ranking: ")
+                new_ranking = input("\nEnter new ranking: ")
                 continue
         return new_ranking
+
+    @staticmethod
+    def confirm_ranking_change():
+
+        """A static method to confirm the ranking of a player
+        has been changed."""
+
+        print("\nRanking successfully changed !")
 
     @staticmethod
     def print_player_new_ranking(last_name, new_ranking):
@@ -171,11 +170,11 @@ class ViewPlayer():
 
         """A static method to print all players sorted by last name."""
 
-        print("Database players (sorted by last name)")
+        print("\nDatabase players (sorted by last name)\n")
 
     @staticmethod
     def print_all_players_by_ranking():
 
         """A static method to print all players sorted by ranking."""
 
-        print("Database players (sorted by ranking)")
+        print("\nDatabase players (sorted by ranking)\n")
