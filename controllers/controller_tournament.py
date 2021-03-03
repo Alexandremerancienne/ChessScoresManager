@@ -196,7 +196,8 @@ class ControllerTournament:
             player_name = player["last_name"]
             player_ranking = player["ranking"]
             player_id_number = player["id_number"]
-            tournament_players_names.append((player_name, player_id_number, player_ranking))
+            tournament_players_names.append((player_name, player_id_number,
+                                             player_ranking))
 
         ControllerTournament.print_ending_message()
 
