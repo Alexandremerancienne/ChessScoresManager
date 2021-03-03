@@ -2,7 +2,6 @@ from controllers.controller_tournament import ControllerTournament
 from controllers.controller_player import ControllerPlayer
 from views.view_menu import ViewMenu
 from models.model_tournament import ModelTournament
-from models.model_player import ModelPlayer
 
 """Chess Scores Manager Program.
 
@@ -12,8 +11,7 @@ This program aims at monitoring the results of a chess tournament.
 
 The matches are defined according to Swiss-pairing algorithm.
 
-If needed, the details of the algorithm are developed in
-models/model_tournament.py file.
+The details of the algorithm are developed in models/model_tournament.py file.
 
 The program also saves the results of each tournament for further use."""
 
@@ -34,19 +32,31 @@ class ControllerMenu:
         self.view = ViewMenu
 
     def choose_option_on_welcome_page():
+
+        """A function to choose an option on the welcome page."""
+
         return ViewMenu.return_first_choice_welcome_page()
 
     def quit_current_page():
+
+        """A function to quit the current page."""
+
         return ViewMenu.quit_current_page()
 
     def print_welcome_page():
+
+        """A function to print the welcome page."""
+
         return ViewMenu.print_welcome_page()
 
     def quit_program():
+
+        """A function to quit the program."""
+
         return ViewMenu.quit_program()
 
-
 # Welcome page
+
 
 ControllerMenu.print_welcome_page()
 
@@ -66,33 +76,53 @@ while stay is True:
 
         ControllerTournament.generate_new_tournament()
 
+        # Once the tournament is played, the user can return to welcome page
+        # or leave the program
+
         return_choice = ControllerMenu.quit_current_page()
+
+        # The user returns to welcome page
+
         if return_choice in "yY":
             ControllerMenu.print_welcome_page()
             continue
+
+        # The user quits the program
+
         elif return_choice in "nN":
             ControllerMenu.quit_program()
             break
 
     elif option_choice == "2":
 
-        # Option 2: See the ranking of a player
+        # Option 2: Access to players database
 
         player_search_option = ViewMenu.print_player_search_options()
 
         if player_search_option == "1":
 
+            # Option 2.1 : See all players
+
             ranking_or_name = ViewMenu.choose_ranking_or_name()
 
             if ranking_or_name in "aA":
 
+                # Option 2.1.A : Sort all players by ranking
+
                 ControllerPlayer.sort_all_players_by_ranking()
 
+                # Once the players are sorted,
+                # the user can return to welcome page or leave the program
+
                 return_choice = ControllerMenu.quit_current_page()
+
+                # The user returns to welcome page
 
                 if return_choice in "yY":
                     ControllerMenu.print_welcome_page()
                     continue
+
+                # The user quits the program
 
                 elif return_choice in "nN":
                     ControllerMenu.quit_program()
@@ -100,118 +130,101 @@ while stay is True:
 
             elif ranking_or_name in "bB":
 
+                # Option 2.1.B : Sort all players by last name
+
                 ControllerPlayer.sort_all_players_by_last_name()
 
+                # Once the players are sorted,
+                # the user can return to welcome page or leave the program
+
                 return_choice = ControllerMenu.quit_current_page()
+
+                # The user returns to welcome page
 
                 if return_choice in "yY":
                     ControllerMenu.print_welcome_page()
                     continue
+
+                # The user quits the program
 
                 elif return_choice in "nN":
                     ControllerMenu.quit_program()
                     break
 
         elif player_search_option == "2":
+
+            # Option 2.2 : Change the ranking of a player
+
             player = ControllerPlayer.change_ranking()
-     
-        elif player_search_option == "3":
-            tournament_search_option = ViewMenu.search_tournament()
 
-            if tournament_search_option in "aA":
-
-                ModelTournament.search_tournament_with_name()
-
-                return_choice = ControllerMenu.quit_current_page()
-
-                if return_choice in "yY":
-                    ControllerMenu.print_welcome_page()
-                    continue
-
-                elif return_choice in "nN":
-                    ControllerMenu.quit_program()
-                    break
-
-            elif tournament_search_option in "bB":
-
-                ModelTournament.search_tournament_with_location()
-
-                return_choice = ControllerMenu.quit_current_page()
-
-                if return_choice in "yY":
-                    ControllerMenu.print_welcome_page()
-                    continue
-
-                elif return_choice in "nN":
-                    ControllerMenu.quit_program()
-                    break
-
-            elif tournament_search_option in "cC":
-
-                ModelTournament.search_tournament_with_year()
-
-                return_choice = ControllerMenu.quit_current_page()
-
-                if return_choice in "yY":
-                    ControllerMenu.print_welcome_page()
-                    continue
-
-                elif return_choice in "nN":
-                    ControllerMenu.quit_program()
-                    break
+            # Once the change is made,
+            # the user can return to welcome page or leave the program
 
         return_choice = ControllerMenu.quit_current_page()
+
+        # The user returns to welcome page
 
         if return_choice in "yY":
             ControllerMenu.print_welcome_page()
             continue
+
+        # The user quits the program
+
         elif return_choice in "nN":
             ControllerMenu.quit_program()
             break
 
     elif option_choice == "3":
 
+        # Option 3: Access to tournaments database
+
         tournament_search_option = ViewMenu.print_tournament_search_options()
 
         if tournament_search_option == "1":
 
+            # Option 3.1: See all tournaments
+
             ModelTournament.get_all_tournaments()
 
+            # Once all tournaments have been displayed,
+            # the user can return to welcome page or leave the program
+
             return_choice = ControllerMenu.quit_current_page()
+
+            # The user returns to welcome page
 
             if return_choice in "yY":
                 ControllerMenu.print_welcome_page()
                 continue
+
+            # The user quits the program
+
             elif return_choice in "nN":
                 ControllerMenu.quit_program()
                 break
 
         elif tournament_search_option == "2":
 
+            # Option 3.2: See details of a tournament
+
             ModelTournament.get_tournament()
 
+            # Once the tournament has been displayed,
+            # the user can return to welcome page or leave the program
+
             return_choice = ControllerMenu.quit_current_page()
+
+            # The user returns to welcome page
 
             if return_choice in "yY":
                 ControllerMenu.print_welcome_page()
                 continue
+
+            # The user quits the program
+
             elif return_choice in "nN":
                 ControllerMenu.quit_program()
                 break
-            print("PENDING")
-
-        # Option 3: See the results of a previous tournament
-
-        ModelTournament.get_tournament()
-
-        return_choice = ControllerMenu.quit_current_page()
-
-        if return_choice in "yY":
-            ControllerMenu.print_welcome_page()
-            continue
-        elif return_choice in "nN":
-            ControllerMenu.quit_program()
-            break
 
     elif option_choice == "4":
 
