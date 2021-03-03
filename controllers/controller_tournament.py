@@ -194,7 +194,9 @@ class ControllerTournament:
         tournament_players_names = []
         for player in ModelPlayer.tournament_players:
             player_name = player["last_name"]
-            tournament_players_names.append(player_name)
+            player_ranking = player["ranking"]
+            player_id_number = player["id_number"]
+            tournament_players_names.append((player_name, player_id_number, player_ranking))
 
         ControllerTournament.print_ending_message()
 
@@ -206,12 +208,6 @@ class ControllerTournament:
 
         tournament = ModelTournament(t_i[0], t_i[1], start_date, end_date,
                                      t_i[2], t_i[3], tournament_players_names)
-
-        ModelPlayer.tournament_players.insert({"tournament_name": t_i[0]})
-        ModelPlayer.tournament_players.insert({"tournament_location": t_i[1]})
-        start_date_string = start_date.strftime("%Y.%m.%d (%H:%M:%S)")
-        s_d_s = start_date_string
-        ModelPlayer.tournament_players.insert({"tournament_year": s_d_s[:4]})
 
         tournament.rounds = ModelTournament.rounds_list
 

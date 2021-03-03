@@ -26,7 +26,8 @@ class ModelTournament:
       Rapid (game between 10 and 100 minutes),
       Blitz (game under 10 minutes),
       Bullet (game under 3 minutes) ;
-    - List of players."""
+    - List of players. Each player is added with its ID number and its score :
+      List of players = [(player 1, ID, ranking), (player 2, ID, ranking), ...]"""
     
     tournaments_database = TinyDB("tournaments_database.json")
     number_of_rounds = 0
@@ -483,6 +484,9 @@ class ModelTournament:
                     print(sorted_result)
 
 
+    def take_third(elem):
+        return elem[2]
+
     def print_matching_results(results):
 
         i = 1
@@ -505,9 +509,20 @@ class ModelTournament:
                                + "By last name [B]\n")
         print("\n")
 
-        if players_sorted in "bB":
+        if players_sorted in "aA":
+            players_to_sort = search_result["players_list"]
+            players_sorted_by_ranking = sorted(players_to_sort, key=ModelTournament.take_third, reverse=True)
+            print(players_sorted_by_ranking)
+            print("Tournament players sorted by ranking\n")
+            for player in players_sorted_by_ranking:
+                print(f"Player {player[1]} : "
+                      + f"{player[0]}"
+                      + f" - Ranking: {player[2]}")
+
+
+        elif players_sorted in "bB":
             players_sorted_by_last_name = sorted(search_result["players_list"])
-            print("Tournament players sorted by last name")
+            print("Tournament players sorted by last name\n")
             for player in players_sorted_by_last_name:
                 print(player)
 
