@@ -40,11 +40,11 @@ class ModelPlayer:
 
     def __str__(self):
         return(f"\nPlayer {self.id_number}: "
-               + f"{self.first_name} {self.last_name}"
-               + f", Gender: {self.gender}"
-               + f", Date of birth (YYYY.MM.DD): {self.birth_date}"
-               + f",Current ranking: {self.ranking}"
-               + f", Score: {self.score}")
+               + f"{self.first_name} {self.last_name}\n"
+               + f"Gender: {self.gender}\n"
+               + f"Date of birth (YYYY.MM.DD): {self.birth_date}\n"
+               + f"Current ranking: {self.ranking}\n"
+               + f"Score: {self.score}")
 
     @property
     def last_name(self):
@@ -174,7 +174,7 @@ class ModelPlayer:
         """A function to search a player in a database
         according to a defined criteria"""
 
-        Player = Query()
+
         results = database.search(Player.criteria == criteria)
         number_of_results = 0
         if len(results) == 0:
@@ -183,8 +183,7 @@ class ModelPlayer:
             for result in results:
                 number_of_results += 1
             print(f"Number of results: {number_of_results}")
-            for result in results:
-                print(result)
+
 
     def get_player():
 
@@ -192,6 +191,7 @@ class ModelPlayer:
         to players_database.json database.
         The player can be found with his/her last name or ID number."""
 
+        Player = Query()
         p_d = ModelPlayer.players_database
         choice = input("\nSearch player (Enter option number): \n\n"
                        + "By last name [1]\n"
@@ -206,14 +206,53 @@ class ModelPlayer:
 
         if choice == "1":
             last_name = input("Enter player last name: ")
-            ModelPlayer.search_player_according_to_criteria(p_d, last_name)
+            results = p_d.search(Player.last_name == last_name)
+            number_of_results = 0
+            if len(results) == 0:
+                print("No player found\n")
+            elif len(results) > 0:
+                i = 1
+                for result in results:
+                    number_of_results += 1
+                print(f"Number of results: {number_of_results}")
+                for result in results:
+                    print(f"\n[{i}] Player {result['id_number']} : {result['first_name']} {result['last_name']}\n")
+                    i +=1
+                    player_choice = input("Choose number to select a player\n")
+                    while not (isinstance(player_choice, int) and player_choice in range(1, len(results))):
+                        try: 
+                            player_choice = int(player_choice)
+                            break                 
+                        except Exception:
+                            player_choice = input("Choose number to select a tournament\n") 
+                    search_result = results[player_choice-1]
+                    deserialized_result = ModelPlayer.deserialize_player(search_result)
+                    print(deserialized_result)
+                    player_searched = p_d.search(Player.id_number == search_result["id_number"])
+                    return player_searched
 
         elif choice == "2":
             id_number = input("Enter player ID number: ")
             while not isinstance(id_number, int):
-                id_number = input("Enter player ID (positive number): ")
-                continue
-            ModelPlayer.search_player_according_to_criteria(p_d, id_number)
+                try:
+                    id_number = int(id_number)
+                    break
+                except Exception:
+                    id_number = input("Enter player ID (positive number): ")
+                    continue
+            results = p_d.search(Player.id_number == id_number)
+            number_of_results = 0
+            if len(results) == 0:
+                print("No player found\n")
+            elif len(results) > 0:
+                for result in results:
+                    number_of_results += 1
+                print(f"Number of results: {number_of_results}")
+                for result in results:
+                    deserialized_result = ModelPlayer.deserialize_player(result)
+                    print(deserialized_result)
+                    player_searched = p_d.search(Player.id_number == search_result["id_number"])
+                    return player_searched
 
     def get_tournament_players():
 

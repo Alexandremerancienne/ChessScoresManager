@@ -95,14 +95,16 @@ class ControllerPlayer:
 
         """A function to change the ranking of a player."""
 
-        player_name = ViewPlayer.change_player_ranking()
-        p_n = player_name
-        for i in range(0, 8):
-            if p_n in ModelPlayer.tournament_players[i].last_name:
-                new_ranking = ViewPlayer.enter_new_ranking()
-                ModelPlayer.tournament_players[i].ranking = new_ranking
-                ViewPlayer.print_player_new_ranking(p_n, new_ranking)
+        player = ModelPlayer.get_player()[0]
+        new_ranking = ViewPlayer.change_player_ranking()
+        id_number = player["id_number"]
+        Player = Query()
+        p_d = ModelPlayer.players_database
+        result = p_d.search(Player.id_number == id_number)
+        p_d.update({'ranking': new_ranking}, Player.id_number == id_number)
+        ViewPlayer.confirm_ranking_change()
 
+        
     def sort_players_by_ranking(database):
 
         """A function to sort the players of a tournament by ranking."""
@@ -114,9 +116,9 @@ class ControllerPlayer:
         sorted_players = sorted(deserialized_players,
                                 key=attrgetter("ranking"), reverse=True)
         for sorted_player in sorted_players:
-            print(f"Player {sorted_player.id_number} :"
+            print(f"Player {sorted_player.id_number} : "
                   + f"{sorted_player.first_name} {sorted_player.last_name}"
-                  + f"- Ranking: {sorted_player.ranking}")
+                  + f" - Ranking: {sorted_player.ranking}")
 
     def sort_players_by_last_name(database):
 

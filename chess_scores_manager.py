@@ -1,14 +1,8 @@
-import os
-import sys
-
-current_dir = os.path.dirname(os.path.abspath(__file__))
-root_dir = os.path.abspath(os.path.dirname(current_dir))
-sys.path.append(root_dir)
-
 from controllers.controller_tournament import ControllerTournament
+from controllers.controller_player import ControllerPlayer
 from views.view_menu import ViewMenu
-from models.model_player import ModelPlayer
 from models.model_tournament import ModelTournament
+from models.model_player import ModelPlayer
 
 """Chess Scores Manager Program.
 
@@ -67,6 +61,7 @@ while stay is True:
     if option_choice == "1":
 
         # Option 1: Start a new tournament
+
         ViewMenu.print_first_option()
 
         ControllerTournament.generate_new_tournament()
@@ -83,7 +78,87 @@ while stay is True:
 
         # Option 2: See the ranking of a player
 
-        ModelPlayer.get_player()
+        player_search_option = ViewMenu.print_player_search_options()
+
+        if player_search_option == "1":
+
+            ranking_or_name = ViewMenu.choose_ranking_or_name()
+
+            if ranking_or_name in "aA":
+
+                ControllerPlayer.sort_all_players_by_ranking()
+
+                return_choice = ControllerMenu.quit_current_page()
+
+                if return_choice in "yY":
+                    ControllerMenu.print_welcome_page()
+                    continue
+
+                elif return_choice in "nN":
+                    ControllerMenu.quit_program()
+                    break
+
+            elif ranking_or_name in "bB":
+
+                ControllerPlayer.sort_all_players_by_last_name()
+
+                return_choice = ControllerMenu.quit_current_page()
+
+                if return_choice in "yY":
+                    ControllerMenu.print_welcome_page()
+                    continue
+
+                elif return_choice in "nN":
+                    ControllerMenu.quit_program()
+                    break
+
+        elif player_search_option == "2":
+            player = ControllerPlayer.change_ranking()
+     
+        elif player_search_option == "3":
+            tournament_search_option = ViewMenu.search_tournament()
+
+            if tournament_search_option in "aA":
+
+                ModelTournament.search_tournament_with_name()
+
+                return_choice = ControllerMenu.quit_current_page()
+
+                if return_choice in "yY":
+                    ControllerMenu.print_welcome_page()
+                    continue
+
+                elif return_choice in "nN":
+                    ControllerMenu.quit_program()
+                    break
+
+            elif tournament_search_option in "bB":
+
+                ModelTournament.search_tournament_with_location()
+
+                return_choice = ControllerMenu.quit_current_page()
+
+                if return_choice in "yY":
+                    ControllerMenu.print_welcome_page()
+                    continue
+
+                elif return_choice in "nN":
+                    ControllerMenu.quit_program()
+                    break
+
+            elif tournament_search_option in "cC":
+
+                ModelTournament.search_tournament_with_year()
+
+                return_choice = ControllerMenu.quit_current_page()
+
+                if return_choice in "yY":
+                    ControllerMenu.print_welcome_page()
+                    continue
+
+                elif return_choice in "nN":
+                    ControllerMenu.quit_program()
+                    break
 
         return_choice = ControllerMenu.quit_current_page()
 
@@ -95,6 +170,35 @@ while stay is True:
             break
 
     elif option_choice == "3":
+
+        tournament_search_option = ViewMenu.print_tournament_search_options()
+
+        if tournament_search_option == "1":
+
+            ModelTournament.get_all_tournaments()
+
+            return_choice = ControllerMenu.quit_current_page()
+
+            if return_choice in "yY":
+                ControllerMenu.print_welcome_page()
+                continue
+            elif return_choice in "nN":
+                ControllerMenu.quit_program()
+                break
+
+        elif tournament_search_option == "2":
+
+            ModelTournament.get_tournament()
+
+            return_choice = ControllerMenu.quit_current_page()
+
+            if return_choice in "yY":
+                ControllerMenu.print_welcome_page()
+                continue
+            elif return_choice in "nN":
+                ControllerMenu.quit_program()
+                break
+            print("PENDING")
 
         # Option 3: See the results of a previous tournament
 
