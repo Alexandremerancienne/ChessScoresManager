@@ -16,16 +16,17 @@ class ModelTournament:
 
     - Name of the tournament;
     - Location;
+    - ID Number (10-digit unique identification number).    
     - Start date (YYYY.MM.DD HH:MM:SS);
     - End date (YYYY.MM.DD HH:MM:SS);
+    - Description of the tournament ;
     - Number of rounds (default value 4);
     - List of rounds (tournament starts with an empty list);
-    - List of players;
     - Time control:
       Rapid (game between 10 and 100 minutes),
       Blitz (game under 10 minutes),
-      Bullet (game under 3 minutes)
-    - Description of the tournament."""
+      Bullet (game under 3 minutes) ;
+    - List of players."""
     
     tournaments_database = TinyDB("tournaments_database.json")
     number_of_rounds = 0
@@ -48,9 +49,18 @@ class ModelTournament:
                + f"Location: {self.location} \n\n"
                + f"Dates: from {self.start_date} to {self.end_date} \n\n"
                + f"Description: {self.description}\n\n"
-               + f"Time control: {self.time_control} \n\n"
-               + f"Participants: {self.players_list} \n\n"
-               + f"Results: \n\n{self.rounds}")
+               + f"Time control: {self.time_control}\n\n"
+               + f"Participants: {self.players_list[0]}, "
+               + f"{self.players_list[1]}, {self.players_list[2]}"
+               + f"{self.players_list[3]}, {self.players_list[4]}"
+               + f"{self.players_list[5]}, {self.players_list[6]}"
+               + f"{self.players_list[7]}\n\n"
+               + "Results:"
+               + f"{self.rounds[0]}\n"
+               + f"{self.rounds[1]}\n"
+               + f"{self.rounds[2]}\n"
+               + f"{self.rounds[3]}\n")
+
 
     @property
     def name(self):
@@ -306,25 +316,223 @@ class ModelTournament:
     def save_tournament_to_tournaments_database(self):
         ModelTournament.tournaments_database.insert(self)
 
+    def search_tournament_with_name():
+        Tournament = Query()
+        t_d = ModelTournament.tournaments_database
+        tournament_name = input("\nEnter tournament name: ")
+        tournament_name = tournament_name.title()
+        results = t_d.search(Tournament.name == tournament_name)            
+        number_of_results = 0
+        if len(results) == 0:
+            print("\nNo tournament found")
+        elif len(results) == 1:
+            print(f"\nNumber of results: 1")
+            for result in results:
+                print(result)
+                return result
+        elif len(results) > 1:
+            serialized_tournaments = []
+            for result in results:
+                number_of_results +=1
+            print(f"\nNumber of results: {number_of_results}\n")
+            i = 1
+            for result in results:
+                print(f"[{i}] {result['name']} of {result['location']}")
+                print(f"Start : {result['start_date']}")
+                print(f"End : {result['end_date']}\n")
+                i +=1
+            tournament_choice = input("Choose number to select a tournament\n")
+            while not (isinstance(tournament_choice, int) and tournament_choice in range(1, len(results))):
+                try: 
+                    tournament_choice = int(tournament_choice)
+                    break                 
+                except Exception:
+                    tournament_choice = input("Choose number to select a tournament\n") 
+            search_result = results[tournament_choice-1]
+            tournament
+
+
+
+            return serialized_tournaments
+
+
+
+            if sort_players in "aA":
+                Tournament = Query()
+                t_p = ModelPlayer.tournament_players
+                results = t_d.search(Tournament.name == tournament_name)            
+
+
+
+                deserialized_tournaments = []
+                for serialized_tournament in serialized_tournaments:
+                    d_r = ModelTournament.deserialize_tournament(serialized_tournament)
+                    deserialized_tournaments.append(d_r)
+                for deserialized_tournament in deserialized_tournaments:
+                    print(f"Tournament: {deserialized_tournament.name} of {deserialized_tournament.location}")
+                    print(f"Date: from {deserialized_tournament.start_date} to {deserialized_tournament.end_date}")
+                    tournament_players_list = deserialized_tournament.players_list
+
+                    rankings_to_sort = []
+                    for player in tournament_players_list:
+                        print(player)
+                        player_and_ranking = (player, player.ranking)
+                        rankings_to_sort.append(player_and_ranking)           
+                    sorted_tournament_players = sorted((rankings_to_sort), key=lambda k:k[1])
+                    print("Players sorted by ranking :\n")
+                    for sorted_player in sorted_tournament_players:
+                        print(f"Player: {sorted_player[0]} - Ranking : {sorted_player[1]}")
+
+            
+            elif sort_players in "bB":    
+                deserialized_tournaments = []
+                for serialized_tournament in serialized_tournaments:
+                    d_r = ModelTournament.deserialize_tournament(serialized_tournament)
+                    deserialized_tournaments.append(d_r)
+                for deserialized_tournament in deserialized_tournaments:
+                    print(f"Tournament: {deserialized_tournament.name} of {deserialized_tournament.location}")
+                    print(f"Date: from {deserialized_tournament.start_date} to {deserialized_tournament.end_date}")
+                    print("Players sorted by last name :\n")
+                    sorted_players = sorted((deserialized_tournament.players_list))
+                    for sorted_player in sorted_players:
+                        print(sorted_player)
+
+    def search_tournament_players_by_location():
+
+        Tournament = Query()
+        t_d = ModelTournament.tournaments_database
+        location = input("\nEnter tournament location: ")
+        location = location.capitalize()
+        results = t_d.search(Tournament.location == location)            
+        number_of_results = 0
+        if len(results) == 0:
+            print("No tournament found")
+        elif len(results) > 0:
+            deserialized_results = []
+            for result in results:
+                number_of_results += 1
+            print(f"Number of results: {number_of_results}")
+            sort_players = input("Sort players: \n" 
+                                  + "[A] By ranking\n" 
+                                  + "[B] By last name")
+            while sort_players not in "aAbB":
+                sort_players = input("Sort players: \n" 
+                                     + "[A] By ranking\n" 
+                                     + "[B] By last name")
+                continue
+            if sort_players in "aA":
+                deserialized_result = ModelTournament.deserialize_tournament(deserialized_result)
+                d_r = deserialized_result
+                deserialized_results.append(d_r)
+                for d_r in deserialized_results:
+                    sorted_result = sorted(d_r["players_list"], key=attrgetter("ranking"), reverse=True)
+                    print(f"Tournament : {sorted_result.name}")
+                    print("\nPlayers sorted by ranking :\n")
+                    print(sorted_result)         
+            
+            elif sort_players in "bB":    
+                deserialized_result = ModelTournament.deserialize_tournament(deserialized_result)
+                d_r = deserialized_result
+                deserialized_results.append(d_r)
+                for d_r in deserialized_results:
+                    sorted_result = sorted(d_r["players_list"], key=attrgetter("last_name"))
+                    print(f"Tournament : {sorted_result.name}")
+                    print("\nPlayers sorted by last name :\n")
+                    print(sorted_result)   
+
+    def search_tournament_players_by_year():
+
+        Tournament = Query()
+        t_d = ModelTournament.tournaments_database
+        year = input("\nEnter tournament year: ")
+        results = t_d.search(Tournament.start_date == year)            
+        number_of_results = 0
+        if len(results) == 0:
+            print("No tournament found")
+        elif len(results) > 0:
+            deserialized_results = []
+            for result in results:
+                number_of_results += 1
+            print(f"Number of results: {number_of_results}")
+            sort_players = input("Sort players: \n" 
+                                  + "[A] By ranking\n" 
+                                  + "[B] By last name")
+            while sort_players not in "aAbB":
+                sort_players = input("Sort players: \n" 
+                                     + "[A] By ranking\n" 
+                                     + "[B] By last name")
+                continue
+            if sort_players in "aA":
+                deserialized_result = ModelTournament.deserialize_tournament(deserialized_result)
+                d_r = deserialized_result
+                deserialized_results.append(d_r)
+                for d_r in deserialized_results:
+                    sorted_result = sorted(d_r["players_list"], key=attrgetter("ranking"), reverse=True)
+                    print(f"Tournament : {sorted_result.name}")
+                    print("\nPlayers sorted by ranking :\n")
+                    print(sorted_result)         
+            
+            elif sort_players in "bB":    
+                deserialized_result = ModelTournament.deserialize_tournament(deserialized_result)
+                d_r = deserialized_result
+                deserialized_results.append(d_r)
+                for d_r in deserialized_results:
+                    sorted_result = sorted(d_r["players_list"], key=attrgetter("last_name"))
+                    print(f"Tournament : {sorted_result.name}")
+                    print("\nPlayers sorted by last name :\n")
+                    print(sorted_result)
+
+
+    def print_matching_results(results):
+
+        i = 1
+        for result in results:
+            print(f"[{i}] {result['name']} of {result['location']}")
+            print(f"Start : {result['start_date']}")
+            print(f"End : {result['end_date']}\n")
+            i +=1
+        tournament_choice = input("Choose number to select a tournament\n")
+        while not (isinstance(tournament_choice, int) and tournament_choice in range(1, len(results))):
+            try: 
+                tournament_choice = int(tournament_choice)
+                break                 
+            except Exception:
+                tournament_choice = input("Choose number to select a tournament\n") 
+        search_result = results[tournament_choice-1]
+        print("\n")
+        players_sorted = input("Order tournament players:\n\n" 
+                               + "By ranking [A]\n"
+                               + "By last name [B]\n")
+        print("\n")
+
+        if players_sorted in "bB":
+            players_sorted_by_last_name = sorted(search_result["players_list"])
+            print("Tournament players sorted by last name")
+            for player in players_sorted_by_last_name:
+                print(player)
+
+
+
     def get_tournament():
+
         Tournament = Query()
         t_d = ModelTournament.tournaments_database
         choice = input("\nSearch tournament (Enter option number): \n\n"
-                        + "By name [1]\n" 
-                        + "By location [2]\n"
-                        + "By year [3]\n\n")
+                        + "By name [A]\n" 
+                        + "By location [B]\n"
+                        + "By year [C]\n\n")
 
-        while choice not in "123":
+        while choice not in "aAbBcC":
             print("Choose a correct number.")
             choice = input("\nSearch tournament (Enter option number): \n\n"
-                        + "By name [1]\n" 
-                        + "By location [2]\n"
-                        + "By year [3]\n\n")
+                        + "By name [A]\n" 
+                        + "By location [B]\n"
+                        + "By year [C]\n\n")
             continue
 
-        if choice == "1":
-            name = input("Enter tournament name: ")
-            name = name.capitalize()
+        if choice in "aA":
+            name = input("\nEnter tournament name: ")
+            name = name.title()
             results = t_d.search(Tournament.name == name)            
             number_of_results = 0
             if len(results) == 0:
@@ -332,13 +540,11 @@ class ModelTournament:
             elif len(results) > 0:
                 for result in results:
                     number_of_results +=1
-                print(f"Number of results: {number_of_results}")
-                for result in results:
-                    result = ModelTournament.deserialize_tournament(result)
-                    print(result)
+                print(f"\nNumber of results: {number_of_results}\n")
+            ModelTournament.print_matching_results(results)
 
-        elif choice == "2":
-            location = input("Enter tournament location: ")
+        elif choice in "bB":
+            location = input("\nEnter tournament location: ")
             location = location.capitalize()
             results = t_d.search(Tournament.location == location)
             number_of_results = 0
@@ -347,23 +553,56 @@ class ModelTournament:
             elif len(results) > 0:
                 for result in results:
                     number_of_results +=1
-                print(f"Number of results: {number_of_results}\n")           
-                for result in results:
-                    result = ModelTournament.deserialize_tournament(result)
-                    print(result)
+                print(f"Number of results: {number_of_results}\n")
+            ModelTournament.print_matching_results(results)
 
-        elif choice == "3":
-            year = input("Enter tournament year: ")
-            matching_tournaments = []
+        elif choice in "cC":
+            year = input("\nEnter tournament year: ")
+            results = []
             number_of_results = 0
             for tournament in t_d:
                 if re.match(year, tournament["start_date"]):
                     number_of_results += 1
-                    matching_tournaments.append(tournament)
+                    results.append(tournament)
             if number_of_results == 0:
                 print("No tournament found\n")
             elif number_of_results > 0:
-                print(f"Number of results: {number_of_results}\n")           
-                for matching_tournament in matching_tournaments:
-                    matching_tournament = ModelTournament.deserialize_tournament(matching_tournament)
-                    print(matching_tournament)
+                print(f"Number of results: {number_of_results}\n") 
+            ModelTournament.print_matching_results(results)
+
+
+    def get_all_tournaments():
+        print("\nDatabase of all tournaments\n")
+        all_tournaments = ModelTournament.tournaments_database.all()
+        i = 1
+        for tournament in all_tournaments:
+            print(f"[{i}] {tournament['name']} of {tournament['location']}")
+            print(f"Start : {tournament['start_date']}")
+            print(f"End : {tournament['end_date']}\n")
+            i +=1
+        tournament_choice = input("Choose a number to see tournament details\n")
+        while not (isinstance(tournament_choice, int) and tournament_choice in range(1, len(all_tournaments))):
+            try: 
+                tournament_choice = int(tournament_choice)
+                break                 
+            except Exception:
+                tournament_choice = input("Choose a number to see tournament details\n") 
+        searched_tournament = all_tournaments[tournament_choice-1]
+
+        ModelRound.number_of_rounds = 0
+        tournament_rounds = searched_tournament['rounds']
+        tournament_deserialized_rounds = []
+        for round in tournament_rounds:
+            round_matches = round['matches']
+            round_deserialized_matches = []
+            for match in round_matches:
+                deserialized_match = ModelMatch.deserialize_match(match)
+                round_deserialized_matches.append(deserialized_match)
+            round['matches'] = round_deserialized_matches
+            deserialized_round = ModelRound.deserialize_round(round)
+            tournament_deserialized_rounds.append(deserialized_round)
+        searched_tournament['rounds'] = tournament_deserialized_rounds
+        print(f"{searched_tournament['name']} of {searched_tournament['location']}")
+        print("\n")
+        deserialized_tournament = ModelTournament.deserialize_tournament(searched_tournament)
+        print(deserialized_tournament)

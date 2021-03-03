@@ -24,12 +24,12 @@ class ModelRound:
         self._end_date = end_date
 
     def __repr__(self):
-        return(f"{self.round_name} - From {self.start_date}"
-               + f" to {self.end_date}- Matches: {self.matches}")
+        return(f"{self.round_name} \n- From {self.start_date}"
+               + f" to {self.end_date}\n- Matches: {self.matches}")
 
     def __str__(self):
-        return(f"{self.round_name}: \nDates: from {self.start_date}, to {self.end_date}\
-            \nMatches: {self.matches}")
+        return(f"\n\n{self.round_name}: from {self.start_date} to {self.end_date}\
+            \nMatches: {self.matches[0]}, {self.matches[1]}, {self.matches[2]}, {self.matches[3]}")
 
     @property
     def matches(self):

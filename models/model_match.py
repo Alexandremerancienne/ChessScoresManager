@@ -28,7 +28,7 @@ class ModelMatch:
                + f"({self.second_player}, {self.second_score})]")
 
     def __str__(self):
-        return(f"Result: [({self.first_player}, {self.first_score}),"
+        return(f"[({self.first_player}, {self.first_score}),"
                + f"({self.second_player}, {self.second_score})]")
 
     @property
