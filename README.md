@@ -7,8 +7,8 @@ To run chess_scores_manager program:
 
 1. Download chess_manager_program in target folder;
 2. Open your terminal and head to target folder; 
-3. Create a virtual environment to install required packages. 
-Required packages are listed in requirements.txt file.
+3. Create a virtual environment to install required packages.  
+Required packages are listed in requirements.txt file.  
 To create and activate a virtual environment, you can check the explanations provided in the following [README](https://github.com/Alexandremerancienne/scraping_program)
 4. Once required packages have been installed, run command (Windows OS) : `python chess_scores_manager.py`
  
@@ -30,7 +30,7 @@ The following actions are possible :
 
 1. "See all players" : See all database players and sort them by ranking or by last name ;
 2. "Change player ranking": Change the ranking of a player;
-3. "Add new player" : Add a player to the database of players.
+3. "Add new player" : Add a player to the database of players.  
 
 Options 2 and 3 allow to change the database of players without generating a new tournament.
    
