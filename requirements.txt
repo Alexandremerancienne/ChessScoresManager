@@ -1,0 +1,14 @@
+flake8==3.8.4                     
+flake8-html==0.4.1                   
+importlib-metadata==3.4.0            
+Jinja2==2.11.3                       
+MarkupSafe==1.1.1                    
+mccabe==0.6.1                        
+path==15.1.0                         
+path.py==12.5.0                      
+pycodestyle==2.6.0                   
+pyfiglet==0.8.post1                  
+pyflakes==2.2.0                      
+Pygments==2.7.4                      
+tinydb==4.4.0                        
+zipp==3.4.0     
