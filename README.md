@@ -10,7 +10,7 @@ To run chess_scores_manager program:
 3. Create a virtual environment to install required packages.  
     
 Required packages are listed in requirements.txt file.  
-To create and activate a virtual environment, you can check the explanations provided in the following [README](https://github.com/Alexandremerancienne/scraping_program)
+To create and activate a virtual environment, you can check the explanations provided in the following [README](https://github.com/Alexandremerancienne/scraping_program)  
 4. Once required packages have been installed, run command (Windows OS) : `python chess_scores_manager.py`
  
 # Functions
@@ -55,9 +55,9 @@ flake8-html is a flake8 plugin to generate HTML reports of flake8 violations.
 To generate flake8-html report:
 
 1. Install flake8-html plugin in your virtual environment (plugin available on [Pypi.org](https://pypi.org/project/flake8-html/) website);
-2. Run flake8 from the top_level folder of chess_scores_manager program as follows: 
-`flake8 --format=html --htmldir=<report_location>`
-For instance, if you want to store your report in a folder named "flake_report", run:
-`flake8 --format=html --htmldir=flake_report`
-If you want to ignore the presence of a file or a folder when running flake8-html, add `--exclude` option to the command:
+2. Run flake8 from the top_level folder of chess_scores_manager program as follows:  
+`flake8 --format=html --htmldir=<report_location>`  
+For instance, if you want to store your report in a folder named "flake_report", run:  
+`flake8 --format=html --htmldir=flake_report`  
+If you want to ignore the presence of a file or a folder when running flake8-html, add `--exclude` option to the command:  
 `flake8 --exclude=<file or folder to exclude> --format=html --htmldir=<name_of_the_folder_hosting>`  
