@@ -140,9 +140,38 @@ class ControllerPlayer:
                 p_r = player_ranking
                 return ViewPlayer.print_player_ranking(p_n, p_r)
 
+    def announce_new_rankings():
+
+        """A function to announce ranking change for each player
+        at the end of a tournament."""
+
+        ViewPlayer.set_new_rankings()
+
+    def recap_ranking(last_name, id_number, ranking):
+
+        """A function to recap the ranking of a player 
+        before changing it."""
+
+        ViewPlayer.print_player_new_ranking(last_name, id_number, ranking)
+
+    def set_new_rankings(player):
+
+        """A function to change the ranking of a player 
+        at the end of a tournament. """
+
+        new_ranking = ViewPlayer.change_player_ranking()
+        id_number = player["id_number"]
+        Player = Query()
+        p_d = ModelPlayer.players_database
+        p_d.update({'ranking': new_ranking}, Player.id_number == id_number)
+        ViewPlayer.confirm_ranking_change()
+        return new_ranking
+
     def change_ranking():
 
-        """A function to change the ranking of a player."""
+        """A function to change the ranking of a player at any moment.
+        To change the ranking of a player at the end of a tournament,
+        See set_new_rankings() function above."""
 
         player = ModelPlayer.get_player()
         if player is not None:

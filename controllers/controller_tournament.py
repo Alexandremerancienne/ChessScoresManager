@@ -111,7 +111,6 @@ class ControllerTournament:
         deserialized_players = []
 
         for player in ModelPlayer.tournament_players:
-            print(player)
             deserialized_player = ModelPlayer.deserialize_player(player)
             deserialized_players.append(deserialized_player)
 
@@ -192,14 +191,20 @@ class ControllerTournament:
 
         end_date = ControllerTournament.end_tournament()
         tournament_players_names = []
-        for player in ModelPlayer.tournament_players:
-            player_name = player["last_name"]
-            player_ranking = player["ranking"]
-            player_id_number = player["id_number"]
-            tournament_players_names.append((player_name, player_id_number,
-                                             player_ranking))
 
         ControllerTournament.print_ending_message()
+
+        ControllerPlayer.announce_new_rankings()
+
+        for player in ModelPlayer.tournament_players:
+            ControllerPlayer.recap_ranking(player["last_name"],
+                                           player["id_number"],
+                                           player["ranking"])
+            new_ranking = ControllerPlayer.set_new_rankings(player)
+            player_name = player["last_name"]
+            player_id_number = player["id_number"]
+            tournament_players_names.append((player_name, player_id_number,
+                                             new_ranking))
 
         ControllerTournament.print_tournament_results(t_i[0], t_i[1],
                                                       start_date, end_date,

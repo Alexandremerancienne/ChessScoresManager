@@ -67,10 +67,10 @@ class ViewTournament():
     def print_ending_message():
 
         """A static method to announce the end of a tournament."""
-
-        print("END OF THE T0URNAMENT !")
-        print(ViewTournament.line)
-        print("TOURNAMENT RECAP\n")
+        print("\n")
+        end = ("  END OF THE T0URNAMENT !  ").center(100,"*")
+        print(end)
+        print("\n")
 
     @staticmethod
     def print_tournament_results(name, location, start_date, end_date,
@@ -79,6 +79,8 @@ class ViewTournament():
 
         """A static method to print the results of a tournament."""
 
+        print(ViewTournament.line)
+        print("TOURNAMENT RECAP\n\n")
         print(f"Tournament name: {name}\n")
         print(f"Location: {location}\n")
         print(f"Dates: from {start_date} to {end_date}\n")

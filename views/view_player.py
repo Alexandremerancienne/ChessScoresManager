@@ -109,6 +109,15 @@ class ViewPlayer():
         print("Player added to tournament")
 
     @staticmethod
+    def set_new_rankings():
+
+        """A static method to set the new rankings of all players
+        at the end of a tournament."""
+
+        print("NEW RANKINGS\n")
+        print("Set new ranking for each player")
+
+    @staticmethod
     def change_player_ranking():
 
         """A static method to enter the ranking of a player."""
@@ -131,14 +140,13 @@ class ViewPlayer():
 
         print("\nRanking successfully changed !")
 
-
     @staticmethod
-    def print_player_new_ranking(last_name, new_ranking):
+    def print_player_new_ranking(last_name, id_number, new_ranking):
 
         """A static method to print the new ranking of a player."""
 
         print(ViewPlayer.line)
-        print(f"- Player name : {last_name}")
+        print(f"- Player {id_number} : {last_name}")
         print(f"- Ranking : {new_ranking}")
         print(ViewPlayer.line)
 
