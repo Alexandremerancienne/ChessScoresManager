@@ -1,5 +1,5 @@
-from model_match import ModelMatch
-from model_round import ModelRound
+from models.model_match import ModelMatch
+from models.model_round import ModelRound
 from datetime import datetime
 from operator import attrgetter
 from operator import itemgetter
@@ -30,7 +30,7 @@ class ModelTournament:
       Each player is added with his/her ID number and his/her score :
       List of players = [(player1, ID, ranking), (player2, ID, ranking)...]"""
 
-    tournaments_database = TinyDB("models/tournaments_database.json")
+    tournaments_database = TinyDB("MVC/models/tournaments_database.json")
     number_of_rounds = 0
     rounds_list = []
 

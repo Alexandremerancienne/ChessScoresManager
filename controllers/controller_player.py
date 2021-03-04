@@ -1,8 +1,9 @@
 from models.model_player import ModelPlayer
 from views.view_player import ViewPlayer
+from id_database.id_numbers_database import players_id_database
 from operator import attrgetter
 from tinydb import Query
-from id_database.id_numbers_database import players_id_database
+
 
 
 class ControllerPlayer:
