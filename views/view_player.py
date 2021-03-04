@@ -91,56 +91,46 @@ class ViewPlayer():
         print(f"- Date of birth (YYYY.MM.DD) : {player.birth_date}")
         print(f"- Current ranking : {player.ranking}")
         print(f"- Score : {player.score}\n")
+
+    @staticmethod
+    def confirm_player_addition_to_all_players_database():
+
+        """A static method to confirm 
+        a player has been added to the players_database.json database."""
+
+        print("Player added to players database")
+
+    @staticmethod
+    def confirm_player_addition_to_tournament():
+
+        """A static method to confirm 
+        a player has been added to a tournament."""
+
         print("Player added to tournament")
-
-    @staticmethod
-    def get_player_ranking():
-
-        """A static method to announce the ranking of a player."""
-
-        print("Player's ranking")
-
-    @staticmethod
-    def get_player_name():
-
-        """A static method to get the name of a player."""
-
-        player_name = input("Enter player's last name: ")
-        return player_name
-
-    @staticmethod
-    def print_player_ranking(player_name, ranking):
-
-        """A static method to print the ranking of a player."""
-
-        print(ViewPlayer.line)
-        print(f"- Player name : {player_name}")
-        print(f"- Ranking : {ranking}")
-        print(ViewPlayer.line)
 
     @staticmethod
     def change_player_ranking():
 
-        """A static method to announce a change of ranking for a player."""
-
-        print("Change player's ranking")
-        player_name = input("Enter player's last name: ")
-        return player_name
-
-    @staticmethod
-    def enter_new_ranking():
-
         """A static method to enter the ranking of a player."""
 
-        new_ranking = input("Enter new ranking: ")
+        new_ranking = input("\nEnter new ranking: ")
         while isinstance(new_ranking, float) is False:
             try:
                 new_ranking = float(new_ranking)
             except Exception:
                 print("Please enter a valid ranking (positive float).")
-                new_ranking = input("Enter new ranking: ")
+                new_ranking = input("\nEnter new ranking: ")
                 continue
         return new_ranking
+
+    @staticmethod
+    def confirm_ranking_change():
+
+        """A static method to confirm the ranking of a player
+        has been changed."""
+
+        print("\nRanking successfully changed !")
+
 
     @staticmethod
     def print_player_new_ranking(last_name, new_ranking):

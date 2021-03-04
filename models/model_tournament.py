@@ -397,7 +397,7 @@ class ModelTournament:
 
         # The user selects a tournament among the matching tournaments
 
-        tournament_choice = input("Enter tournament number to see details\n")
+        tournament_choice = input("Enter tournament number to see players\n")
         while not (isinstance(tournament_choice, int) and
                    tournament_choice in range(1, len(results))):
             try:
@@ -405,14 +405,14 @@ class ModelTournament:
                 break
             except Exception:
                 tournament_choice = input("Enter tournament number to see"
-                                          + " details\n")
+                                          + " players\n")
         search_result = results[tournament_choice-1]
         print("\n")
 
         # The user can print the player of the tournament selected.
         # The players can be ordered by ranking or by last name.
 
-        players_sorted = input("Order tournament players:\n\n"
+        players_sorted = input("Sort tournament players:\n\n"
                                + "By ranking [A]\n"
                                + "By last name [B]\n\n")
 
@@ -535,7 +535,8 @@ class ModelTournament:
             print(f"End : {tournament['end_date']}\n")
             i += 1
 
-        tournament_choice = input("Choose a number to see tournament details")
+        tournament_choice = input("Choose a number to see tournament" 
+                                  + " details\n\n")
         print("\n")
         while not (isinstance(tournament_choice, int) and
                    tournament_choice in range(1, len(all_tournaments))):
@@ -544,7 +545,7 @@ class ModelTournament:
                 break
             except Exception:
                 tournament_choice = input("Choose a number to see"
-                                          + " tournament details\n")
+                                          + " tournament details\n\n")
 
         searched_tournament = all_tournaments[tournament_choice-1]
 

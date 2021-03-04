@@ -1,3 +1,4 @@
+from models.model_player import ModelPlayer
 from controllers.controller_tournament import ControllerTournament
 from controllers.controller_player import ControllerPlayer
 from views.view_menu import ViewMenu
@@ -160,19 +161,46 @@ while stay is True:
             # Once the change is made,
             # the user can return to welcome page or leave the program
 
-        return_choice = ControllerMenu.quit_current_page()
+            return_choice = ControllerMenu.quit_current_page()
 
-        # The user returns to welcome page
+            # The user returns to welcome page
 
-        if return_choice in "yY":
-            ControllerMenu.print_welcome_page()
-            continue
+            if return_choice in "yY":
+                ControllerMenu.print_welcome_page()
+                continue
 
-        # The user quits the program
+            # The user quits the program
 
-        elif return_choice in "nN":
-            ControllerMenu.quit_program()
-            break
+            elif return_choice in "nN":
+                ControllerMenu.quit_program()
+                break
+
+        elif player_search_option == "3":
+
+            # Option 2.2 : Add a new player to players database
+
+            new_player = ControllerPlayer.add_player_to_all_players_database()
+
+            serialized_player = ModelPlayer.serialize_player(new_player)
+
+            ModelPlayer.save_player_to_database(serialized_player)
+
+            # Once the new player is added,
+            # the user can return to welcome page or leave the program
+
+            return_choice = ControllerMenu.quit_current_page()
+
+            # The user returns to welcome page
+
+            if return_choice in "yY":
+                ControllerMenu.print_welcome_page()
+                continue
+
+            # The user quits the program
+
+            elif return_choice in "nN":
+                ControllerMenu.quit_program()
+                break
 
     elif option_choice == "3":
 

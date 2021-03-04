@@ -5,7 +5,6 @@ from operator import attrgetter
 from tinydb import Query
 
 
-
 class ControllerPlayer:
 
     """A Controller for Player Class.
@@ -94,9 +93,10 @@ class ControllerPlayer:
                 ModelPlayer.save_player_to_database(serialized_player)
                 return serialized_player
 
-    def add_player_to_tournament():
+    def add_player_to_database():
 
-        """A function to add a player to a tournament."""
+        """A function to add a new player 
+        to a JSON database."""
 
         p_d = ModelPlayer.players_database
         player_features = ViewPlayer.get_player_inputs(p_d)
@@ -106,6 +106,24 @@ class ControllerPlayer:
         player = ModelPlayer(p_f[0], p_f[1], id_number, p_f[2], p_f[3],
                              p_f[4])
         ViewPlayer.print_player(player)
+        return player
+
+    def add_player_to_all_players_database():
+
+        """A function to add a new player 
+        to models/players_database.json"""
+
+        player = ControllerPlayer.add_player_to_database()
+        ViewPlayer.confirm_player_addition_to_all_players_database()
+        print(ViewPlayer.line)
+        return player
+
+    def add_player_to_tournament():
+
+        """A function to add a player to a tournament."""
+
+        player = ControllerPlayer.add_player_to_database()
+        ViewPlayer.confirm_player_addition_to_tournament()
         print(ViewPlayer.line)
         return player
 
@@ -136,6 +154,12 @@ class ControllerPlayer:
             p_d.update({'ranking': new_ranking}, Player.id_number == id_number)
             ViewPlayer.confirm_ranking_change()
 
+    def take_fourth(elem):
+
+        """A function to return the third element of a list."""
+
+        return elem[3]
+
     def sort_players_by_ranking(database):
 
         """A function to sort the players of a tournament by ranking."""
@@ -144,12 +168,19 @@ class ControllerPlayer:
         for player in database:
             deserialized_player = ModelPlayer.deserialize_player(player)
             deserialized_players.append(deserialized_player)
-        sorted_players = sorted(deserialized_players,
+        sorted_players = sorted(deserialized_players, 
                                 key=attrgetter("ranking"), reverse=True)
         for sorted_player in sorted_players:
             print(f"Player {sorted_player.id_number} : "
                   + f"{sorted_player.first_name} {sorted_player.last_name}"
                   + f" - Ranking: {sorted_player.ranking}")
+
+    def sort_all_players_by_ranking():
+
+        """A function to sort all the players by ranking."""
+
+        ViewPlayer.print_all_players_by_ranking()
+        ControllerPlayer.sort_players_by_ranking(ModelPlayer.players_database)
 
     def sort_players_by_last_name(database):
 
@@ -164,13 +195,6 @@ class ControllerPlayer:
         for sorted_player in sorted_players:
             print(f"Player {sorted_player.id_number} : "
                   + f"{sorted_player.first_name} {sorted_player.last_name}")
-
-    def sort_all_players_by_ranking():
-
-        """A function to sort all the players by ranking."""
-
-        ViewPlayer.print_all_players_by_ranking()
-        ControllerPlayer.sort_players_by_ranking(ModelPlayer.players_database)
 
     def sort_all_players_by_last_name():
 

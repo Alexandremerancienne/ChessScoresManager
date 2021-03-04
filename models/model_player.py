@@ -232,7 +232,6 @@ class ModelPlayer:
 
         elif len(players) > 0:
             serialized_player = ModelPlayer.return_search_results(players)
-            print(serialized_player)
             return serialized_player
 
     def search_player_with_id_number():

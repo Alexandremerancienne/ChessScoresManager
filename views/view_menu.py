@@ -49,15 +49,16 @@ class ViewMenu:
 
         """A static method to print the search options for a player."""
 
-        print("\nSearch player:\n")
-        option_choice = input("All players [1]"
-                              + "    By tournament [2]    "
-                              + "    Change player ranking [3]\n\n")
+        print("\nPlayers Database\n")
+        option_choice = input("See all players [1]"
+                              + "    Change player ranking [2]"
+                              + "    Add new player [3]\n\n")
         while str(option_choice) not in "123":
             print("Choose a number between 1 and 3")
-            option_choice = input("All players [1]"
-                                  + "    By tournament [2]    "
-                                  + "    Change Player Ranking [3]\n\n")
+            option_choice = input("See all players [1]"
+                                  + "    Change Player Ranking [2]"
+                                  + "    Add new player [3]\n\n")
+
             continue
         return option_choice
 
@@ -66,13 +67,13 @@ class ViewMenu:
 
         """A static method to print the search options for a tournament."""
 
-        print("\nSee tournament:\n")
-        option_choice = input("All Tournaments [1]    "
-                              + "See Tournament Details [2]\n\n")
-        while str(option_choice) not in "123":
+        print("\nTournaments database\n")
+        option_choice = input("See all tournaments [1]    "
+                              + "See tournament players [2]\n\n")
+        while str(option_choice) not in "12":
             print("Choose a number between 1 and 2")
-            option_choice = input("All Tournaments [1]     See Tournament"
-                                  + " Details [2]\n\n")
+            option_choice = input("See all tournaments [1]     See tournament"
+                                  + " players [2]\n\n")
             continue
         return option_choice
 
