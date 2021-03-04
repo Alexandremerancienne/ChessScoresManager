@@ -17,8 +17,8 @@ class ModelPlayer:
     - Ranking (positive float);
     - Score (initial value 0)."""
 
-    players_database = TinyDB("MVC/models/players_database.json")
-    tournament_players = TinyDB("MVC/models/tournament_players.json")
+    players_database = TinyDB("models/players_database.json")
+    tournament_players = TinyDB("models/tournament_players.json")
 
     def __init__(self, last_name, first_name, id_number, birth_date,
                  gender, ranking):

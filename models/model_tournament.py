@@ -30,7 +30,7 @@ class ModelTournament:
       Each player is added with his/her ID number and his/her score :
       List of players = [(player1, ID, ranking), (player2, ID, ranking)...]"""
 
-    tournaments_database = TinyDB("MVC/models/tournaments_database.json")
+    tournaments_database = TinyDB("models/tournaments_database.json")
     number_of_rounds = 0
     rounds_list = []
 
