@@ -57,8 +57,11 @@ class ControllerTournament:
         i = 1
         while i < 5:
             first_player = round_pairs[i-1][0].last_name
+            first_id = round_pairs[i-1][0].id_number
             second_player = round_pairs[i-1][1].last_name
-            ViewTournament.print_pairs(i, (first_player, second_player))
+            second_id = round_pairs[i-1][1].id_number
+            ViewTournament.print_pairs(i, ((first_player, first_id),
+                                       (second_player, second_id)))
             i += 1
 
     def end_tournament():
@@ -74,16 +77,6 @@ class ControllerTournament:
 
         return ViewTournament.print_ending_message()
 
-    def print_tournament_results(name, location, start_date, end_date,
-                                 description, time_control, players_list,
-                                 rounds):
-
-        """A function to print the results of a tournament."""
-
-        ViewTournament.print_tournament_results(name, location, start_date,
-                                                end_date, description,
-                                                time_control, players_list,
-                                                rounds)
 
     def generate_new_tournament():
 
@@ -206,7 +199,7 @@ class ControllerTournament:
             tournament_players_names.append((player_name, player_id_number,
                                              new_ranking))
 
-        ControllerTournament.print_tournament_results(t_i[0], t_i[1],
+        ViewTournament.print_tournament_results(t_i[0], t_i[1],
                                                       start_date, end_date,
                                                       t_i[2], t_i[3],
                                                       tournament_players_names,

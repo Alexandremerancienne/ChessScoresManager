@@ -61,14 +61,15 @@ class ViewTournament():
 
         """A static method to print the pairs of a match."""
 
-        print(f"Match {i}: {pair[0]} vs {pair[1]}")
+        print(f"Match {i}: {pair[0][0]} ({pair[0][1]})"
+              + f" vs {pair[1][0]} ({pair[1][1]})")
 
     @staticmethod
     def print_ending_message():
 
         """A static method to announce the end of a tournament."""
         print("\n")
-        end = ("  END OF THE T0URNAMENT !  ").center(100,"*")
+        end = ("  END OF THE T0URNAMENT !  ").center(100, "*")
         print(end)
         print("\n")
 
@@ -80,17 +81,15 @@ class ViewTournament():
         """A static method to print the results of a tournament."""
 
         print(ViewTournament.line)
-        print("TOURNAMENT RECAP\n\n")
-        print(f"Tournament name: {name}\n")
-        print(f"Location: {location}\n")
-        print(f"Dates: from {start_date} to {end_date}\n")
-        print(f"Description: {description}\n")
-        print(f"Time control: {time_control.capitalize()}\n")
-        print("Participants:\n")
+        print("TOURNAMENT RECAP\n")
+        print(f"Tournament name: {name}")
+        print(f"Location: {location}")
+        print(f"Dates: from {start_date} to {end_date}")
+        print(f"Description: {description}")
+        print(f"Time control: {time_control.capitalize()}")
+        print("Participants:")
         for player in players_list:
-            print(player)
-        print("Rounds results:")
-        print("\n")
+            print(f"{player[0]} ({player[1]})")
+        print("\nRounds results:")
         for round_results in rounds:
             print(round_results)
-            print("\n")

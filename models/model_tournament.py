@@ -255,22 +255,24 @@ class ModelTournament:
             pair_index = r_p.index(pair)
             n = pair_index
             if (pair or inverted_pair) in pairs_list:
-                print("\nRedundant pair: ")
-                for elt in pair:
-                    print(elt)
-
+                print("Redundant pair: ")
+                print(f"{pair[0].last_name} ({pair[0].id_number})"
+                      + f" vs {pair[1].last_name} ({pair[1].id_number})\n")
                 if n in range(0, 2):
                     ModelTournament.swiss_pair(r_p, n, pbs, 1, 2, 3)
                     inverted_pair = ModelTournament.invert_pair(r_p[n])
                     if (r_p[n] or inverted_pair) in pairs_list:
-                        print("\nRedundant pair: ")
-                        for elt in r_p[n]:
-                            print(elt)
+                        print("Redundant pair: ")
+                        print(f"{r_p[n][0].last_name} ({r_p[n][0].id_number})"
+                              + f" vs {r_p[n][1].last_name}"
+                              + f" ({r_p[n][1].id_number})\n")
                         ModelTournament.swiss_pair(r_p, n, pbs, 1, 3, 2)
                         if (r_p[n] or inverted_pair) in pairs_list:
-                            print("\nRedundant pair: ")
-                            for elt in r_p[n]:
-                                print(elt)
+                            print("Redundant pair:")
+                            print(f"{r_p[n][0].last_name}"
+                                  + f" ({r_p[n][0].id_number})"
+                                  + f" vs {r_p[n][1].last_name}"
+                                  + f" ({r_p[n][1].id_number})\n")
                             if n in range(0, 2):
                                 ModelTournament.swiss_pair(r_p, n, pbs,
                                                            2, 4, 5)
@@ -284,10 +286,10 @@ class ModelTournament:
                     ModelTournament.swiss_pair(r_p, n, pbs, -1, -1, -2)
                     inverted_pair = ModelTournament.invert_pair(r_p[n])
                     if (r_p[n] or inverted_pair) in pairs_list:
-                        print(f"Redundant pair: {r_p[n]}")
+                        print(f"Redundant pair: {r_p[n]}\n")
                         ModelTournament.swiss_pair(r_p, n, pbs, -1, -2, -1)
                         if (r_p[n] or inverted_pair) in pairs_list:
-                            print(f"Redundant pair: {r_p[n]}")
+                            print(f"Redundant pair: {r_p[n]}\n")
                             ModelTournament.swiss_pair(r_p, n, pbs, -2, -3, -4)
                             r_p[n-1] = (pbs[4], pbs[5])
 
@@ -535,7 +537,7 @@ class ModelTournament:
             print(f"End : {tournament['end_date']}\n")
             i += 1
 
-        tournament_choice = input("Choose a number to see tournament" 
+        tournament_choice = input("Choose a number to see tournament"
                                   + " details\n\n")
         print("\n")
         while not (isinstance(tournament_choice, int) and
