@@ -32,34 +32,28 @@ class ControllerMenu:
     def __init__(self, view):
         self.view = ViewMenu
 
-    def choose_option_on_welcome_page():
-
-        """A function to choose an option on the welcome page."""
-
-        return ViewMenu.return_first_choice_welcome_page()
-
     def quit_current_page():
 
-        """A function to quit the current page."""
+        """A function to quit the program or return to welcome page."""
 
-        return ViewMenu.quit_current_page()
+        return_choice = ViewMenu.quit_current_page()
 
-    def print_welcome_page():
+        # The user returns to welcome page
 
-        """A function to print the welcome page."""
+        if return_choice in "yY":
+            ViewMenu.print_welcome_page()
+            stay is True
 
-        return ViewMenu.print_welcome_page()
+        # The user quits the program
 
-    def quit_program():
-
-        """A function to quit the program."""
-
-        return ViewMenu.quit_program()
+        elif return_choice in "nN":
+            ViewMenu.quit_program()
+            stay is False
 
 # Welcome page
 
 
-ControllerMenu.print_welcome_page()
+ViewMenu.print_welcome_page()
 
 stay = True
 
@@ -67,7 +61,7 @@ stay = True
 
 while stay is True:
 
-    option_choice = ControllerMenu.choose_option_on_welcome_page()
+    option_choice = ViewMenu.return_first_choice_welcome_page()
 
     if option_choice == "1":
 
@@ -80,19 +74,7 @@ while stay is True:
         # Once the tournament is played, the user can return to welcome page
         # or leave the program
 
-        return_choice = ControllerMenu.quit_current_page()
-
-        # The user returns to welcome page
-
-        if return_choice in "yY":
-            ControllerMenu.print_welcome_page()
-            continue
-
-        # The user quits the program
-
-        elif return_choice in "nN":
-            ControllerMenu.quit_program()
-            break
+        ControllerMenu.quit_current_page()
 
     elif option_choice == "2":
 
@@ -112,45 +94,16 @@ while stay is True:
 
                 ControllerPlayer.sort_all_players_by_ranking()
 
-                # Once the players are sorted,
-                # the user can return to welcome page or leave the program
-
-                return_choice = ControllerMenu.quit_current_page()
-
-                # The user returns to welcome page
-
-                if return_choice in "yY":
-                    ControllerMenu.print_welcome_page()
-                    continue
-
-                # The user quits the program
-
-                elif return_choice in "nN":
-                    ControllerMenu.quit_program()
-                    break
-
             elif ranking_or_name in "bB":
 
                 # Option 2.1.B : Sort all players by last name
 
                 ControllerPlayer.sort_all_players_by_last_name()
 
-                # Once the players are sorted,
-                # the user can return to welcome page or leave the program
+            # Once the players are sorted,
+            # the user can return to welcome page or leave the program
 
-                return_choice = ControllerMenu.quit_current_page()
-
-                # The user returns to welcome page
-
-                if return_choice in "yY":
-                    ControllerMenu.print_welcome_page()
-                    continue
-
-                # The user quits the program
-
-                elif return_choice in "nN":
-                    ControllerMenu.quit_program()
-                    break
+            ControllerMenu.quit_current_page()
 
         elif player_search_option == "2":
 
@@ -161,19 +114,7 @@ while stay is True:
             # Once the change is made,
             # the user can return to welcome page or leave the program
 
-            return_choice = ControllerMenu.quit_current_page()
-
-            # The user returns to welcome page
-
-            if return_choice in "yY":
-                ControllerMenu.print_welcome_page()
-                continue
-
-            # The user quits the program
-
-            elif return_choice in "nN":
-                ControllerMenu.quit_program()
-                break
+            ControllerMenu.quit_current_page()
 
         elif player_search_option == "3":
 
@@ -188,19 +129,7 @@ while stay is True:
             # Once the new player is added,
             # the user can return to welcome page or leave the program
 
-            return_choice = ControllerMenu.quit_current_page()
-
-            # The user returns to welcome page
-
-            if return_choice in "yY":
-                ControllerMenu.print_welcome_page()
-                continue
-
-            # The user quits the program
-
-            elif return_choice in "nN":
-                ControllerMenu.quit_program()
-                break
+            ControllerMenu.quit_current_page()
 
     elif option_choice == "3":
 
@@ -214,49 +143,20 @@ while stay is True:
 
             ModelTournament.get_all_tournaments()
 
-            # Once all tournaments have been displayed,
-            # the user can return to welcome page or leave the program
-
-            return_choice = ControllerMenu.quit_current_page()
-
-            # The user returns to welcome page
-
-            if return_choice in "yY":
-                ControllerMenu.print_welcome_page()
-                continue
-
-            # The user quits the program
-
-            elif return_choice in "nN":
-                ControllerMenu.quit_program()
-                break
-
         elif tournament_search_option == "2":
 
             # Option 3.2: See details of a tournament
 
             ModelTournament.get_tournament()
 
-            # Once the tournament has been displayed,
-            # the user can return to welcome page or leave the program
+        # Once the tournament has been displayed,
+        # the user can return to welcome page or leave the program
 
-            return_choice = ControllerMenu.quit_current_page()
-
-            # The user returns to welcome page
-
-            if return_choice in "yY":
-                ControllerMenu.print_welcome_page()
-                continue
-
-            # The user quits the program
-
-            elif return_choice in "nN":
-                ControllerMenu.quit_program()
-                break
+        ControllerMenu.quit_current_page()
 
     elif option_choice == "4":
 
         # Option 4: Quit program
 
-        ControllerMenu.quit_program()
+        ViewMenu.quit_program()
         break
