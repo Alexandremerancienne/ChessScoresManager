@@ -5,8 +5,12 @@ Program monitoring scores for a chess tournament, using Swiss pairing algorithm.
 
 To run chess_scores_manager program:
 
-1. Download chess_manager_program in target folder;
-2. Open your terminal and head to target folder; 
+1. Download chess_manager_program in target folder.    
+
+   Click on the green "Code" download button on the right of the top-level Github page of the project.  
+   Choose the "Download ZIP" option from the Code pull-down menu.  
+   
+2. Open your terminal and head to target folder.  
 3. Create a virtual environment to install required packages.  
     
    Required packages are listed in requirements.txt file.  
@@ -20,8 +24,8 @@ Once the program launched, the welcome page presents the following options:
 
 ## Generate new tournament 
 
-This option allows the creation of a new tournament of 8 players.
-* Each tournament includes 4 rounds of 2 matches.
+This option allows the creation of a new tournament of 8 players:
+* Each tournament includes 4 rounds of 2 matches;
 * The matches are generated according to a Swiss-pairing algorithm.
 
 ## Players Database
