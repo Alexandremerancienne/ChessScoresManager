@@ -95,7 +95,7 @@ class ControllerPlayer:
 
     def add_player_to_database():
 
-        """A function to add a new player 
+        """A function to add a new player
         to a JSON database."""
 
         p_d = ModelPlayer.players_database
@@ -110,7 +110,7 @@ class ControllerPlayer:
 
     def add_player_to_all_players_database():
 
-        """A function to add a new player 
+        """A function to add a new player
         to models/players_database.json"""
 
         player = ControllerPlayer.add_player_to_database()
@@ -149,14 +149,14 @@ class ControllerPlayer:
 
     def recap_ranking(last_name, id_number, ranking):
 
-        """A function to recap the ranking of a player 
+        """A function to recap the ranking of a player
         before changing it."""
 
         ViewPlayer.print_player_new_ranking(last_name, id_number, ranking)
 
     def set_new_rankings(player):
 
-        """A function to change the ranking of a player 
+        """A function to change the ranking of a player
         at the end of a tournament. """
 
         new_ranking = ViewPlayer.change_player_ranking()
@@ -197,7 +197,7 @@ class ControllerPlayer:
         for player in database:
             deserialized_player = ModelPlayer.deserialize_player(player)
             deserialized_players.append(deserialized_player)
-        sorted_players = sorted(deserialized_players, 
+        sorted_players = sorted(deserialized_players,
                                 key=attrgetter("ranking"), reverse=True)
         for sorted_player in sorted_players:
             print(f"Player {sorted_player.id_number} : "

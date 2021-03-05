@@ -42,8 +42,20 @@ class ViewPlayer():
             continue
 
         year_of_birth = input("Enter player's year of birth (YYYY): ")
+        current_year = datetime.now().year
+        if year_of_birth.isdigit() is True:
+            while (100 > current_year - int(year_of_birth) > 18) is False:
+                print("Enter a valid date of birth")
+                year_of_birth = input("Enter player's year of birth (YYYY): ")
+                if year_of_birth.isdigit() is True: continue
+                else: break
+        year_of_birth = str(year_of_birth)
         month_of_birth = input("Enter player's month of birth (MM): ")
+        if len(month_of_birth) == 1:
+            month_of_birth = "0" + month_of_birth
         day_of_birth = input("Enter player's day of birth (DD): ")
+        if len(day_of_birth) == 1:
+            day_of_birth = "0" + day_of_birth
         birth_date = (f"{year_of_birth}-{month_of_birth}-{day_of_birth}")
         while True:
             try:
@@ -95,7 +107,7 @@ class ViewPlayer():
     @staticmethod
     def confirm_player_addition_to_all_players_database():
 
-        """A static method to confirm 
+        """A static method to confirm
         a player has been added to the players_database.json database."""
 
         print("Player added to players database")
@@ -103,7 +115,7 @@ class ViewPlayer():
     @staticmethod
     def confirm_player_addition_to_tournament():
 
-        """A static method to confirm 
+        """A static method to confirm
         a player has been added to a tournament."""
 
         print("Player added to tournament")
