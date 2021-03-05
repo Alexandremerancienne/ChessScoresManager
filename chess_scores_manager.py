@@ -71,8 +71,8 @@ while stay is True:
 
         ControllerTournament.generate_new_tournament()
 
-        # Once the tournament is played, the user can return to welcome page
-        # or leave the program
+        # Once the tournament is played, 
+        # return to welcome page or leave the program
 
         ControllerMenu.quit_current_page()
 
@@ -101,7 +101,7 @@ while stay is True:
                 ControllerPlayer.sort_all_players_by_last_name()
 
             # Once the players are sorted,
-            # the user can return to welcome page or leave the program
+            # return to welcome page or leave the program
 
             ControllerMenu.quit_current_page()
 
@@ -112,7 +112,7 @@ while stay is True:
             player = ControllerPlayer.change_ranking()
 
             # Once the change is made,
-            # the user can return to welcome page or leave the program
+            # return to welcome page or leave the program
 
             ControllerMenu.quit_current_page()
 
@@ -127,7 +127,7 @@ while stay is True:
             ModelPlayer.save_player_to_database(serialized_player)
 
             # Once the new player is added,
-            # the user can return to welcome page or leave the program
+            # return to welcome page or leave the program
 
             ControllerMenu.quit_current_page()
 
@@ -149,8 +149,8 @@ while stay is True:
 
             ModelTournament.get_tournament()
 
-        # Once the tournament has been displayed,
-        # the user can return to welcome page or leave the program
+        # Once the tournaments have been displayed,
+        # return to welcome page or leave the program
 
         ControllerMenu.quit_current_page()
 
