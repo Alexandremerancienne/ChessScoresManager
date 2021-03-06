@@ -193,24 +193,26 @@ class ModelPlayer:
             print(f"\n[{i}] Player {player['id_number']} :"
                   + f" {player['first_name']} {player['last_name']}\n")
             i += 1
-            player_chosen = input("Choose number to select a player\n")
-            while not (isinstance(player_chosen, int) and
-                       player_chosen in range(1, len(players))):
-                try:
-                    player_chosen = int(player_chosen)
-                    break
-                except Exception:
-                    player_chosen = input("Choose number to select a"
-                                          + " player\n")
-            searched_player = players[player_chosen - 1]
-            s_player = searched_player
-            serialized_player = p_d.search(Player.id_number ==
-                                           s_player["id_number"])
+        player_chosen = input("Choose number to select a player\n")
+        while not (isinstance(player_chosen, int)):
+            try:
+                player_chosen = int(player_chosen)
+                while int(player_chosen) not in range(1, len(players) +1):
+                    player_chosen = input("Choose number to select a player\n")
+                    continue
+                break
+            except Exception:
+                player_chosen = input("Choose number to select a"
+                                      + " player\n")
+        searched_player = players[int(player_chosen) - 1]
+        s_player = searched_player
+        serialized_player = p_d.search(Player.id_number ==
+                                       s_player["id_number"])
 
-            deserialized_player = ModelPlayer.deserialize_player(s_player)
-            print(deserialized_player)
+        deserialized_player = ModelPlayer.deserialize_player(s_player)
+        print(deserialized_player)
 
-            return serialized_player
+        return serialized_player
 
     def search_player_with_last_name():
 

@@ -400,10 +400,13 @@ class ModelTournament:
         # The user selects a tournament among the matching tournaments
 
         tournament_choice = input("Enter tournament number to see players\n")
-        while not (isinstance(tournament_choice, int) and
-                   tournament_choice in range(1, len(results))):
+        while not (isinstance(tournament_choice, int)):
             try:
                 tournament_choice = int(tournament_choice)
+                while int(tournament_choice) not in range(1, len(results) +1):
+                    tournament_choice = input("Choose number to select" 
+                                              + " a tournament\n")
+                    continue
                 break
             except Exception:
                 tournament_choice = input("Enter tournament number to see"
@@ -536,20 +539,22 @@ class ModelTournament:
             print(f"Start : {tournament['start_date']}")
             print(f"End : {tournament['end_date']}\n")
             i += 1
-
         tournament_choice = input("Choose a number to see tournament"
-                                  + " details\n\n")
-        print("\n")
-        while not (isinstance(tournament_choice, int) and
-                   tournament_choice in range(1, len(all_tournaments))):
+                                  + " details\n")
+        while not (isinstance(tournament_choice, int)):
             try:
                 tournament_choice = int(tournament_choice)
+                x = len(all_tournaments)
+                while int(tournament_choice) not in range(1, x+1):
+                    tournament_choice = input("Choose a number to see"
+                                              + " tournament details\n")
+                    continue
                 break
             except Exception:
                 tournament_choice = input("Choose a number to see"
-                                          + " tournament details\n\n")
+                                          + " tournament details\n")
 
-        searched_tournament = all_tournaments[tournament_choice-1]
+        searched_tournament = all_tournaments[int(tournament_choice)-1]
 
         ModelTournament.deserialize_matches_and_rounds(searched_tournament)
 
