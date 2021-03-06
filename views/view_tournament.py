@@ -221,18 +221,31 @@ class ViewTournament():
         return choice
 
     @staticmethod
-    def print_tournaments_database(all_tournaments):
+    def print_all_tournaments():
 
         """A static method to print the database of all tournaments."""
 
         print("\nDatabase of all tournaments\n")
 
-        i = 1
-        for tournament in all_tournaments:
-            print(f"[{i}] {tournament['name']} of {tournament['location']}")
-            print(f"Start : {tournament['start_date']}")
-            print(f"End : {tournament['end_date']}\n")
-            i += 1
+    @staticmethod
+    def print_chunk_tournaments(chunk, i):
+
+        """A static method to print tournaments sliced into chunks."""
+
+        print(f"[{i}] {chunk['name']} of {chunk['location']}")
+        print(f"Start : {chunk['start_date']}")
+        print(f"End : {chunk['end_date']}\n")
+
+    @staticmethod
+    def see_more_results():
+
+        """A function to see the next results of a research."""
+
+        see_more = input("\nSee next results ? (Y/N)\n")
+        while see_more not in "yYnN":
+            see_more = input("\nSee next results ? (Y/N)\n")
+            continue
+        return see_more
 
     @staticmethod
     def see_tournament_details(all_tournaments):

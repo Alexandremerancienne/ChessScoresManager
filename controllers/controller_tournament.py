@@ -357,14 +357,48 @@ class ControllerTournament:
         elif choice in "cC":
             ControllerTournament.search_tournament_by_year()
 
+    def slice_results(list_to_slice):
+
+        """A function to split a list into 40 chunks."""
+
+        lts = list_to_slice
+        return [lts[i:i + 9] for i in range(0, len(lts), 9)]
+
+    def see_chunks_items(chunked_list):
+
+        """A function to see the items of a list sliced into chunks."""
+
+        if len(chunked_list) <= 9:
+            i = 1
+            for chunk in chunked_list:
+                ViewTournament.print_chunk_tournaments(chunk, i)
+                i += 1
+        elif len(chunked_list) > 9:
+            i = 1
+            chunks = ControllerTournament.slice_results(chunked_list)
+            for elt in chunks[0]:
+                ViewTournament.print_chunk_tournaments(elt, i)
+                i += 1
+            j = 1
+            while j < len(chunks):
+                see_more = ViewTournament.see_more_results()
+                if see_more in "yY":
+                    for elt in (chunks[j]):
+                        ViewTournament.print_chunk_tournaments(elt, i+j)
+                        j += 1
+                elif see_more in "nN":
+                    break
+
     def get_all_tournaments():
 
         """A function to retrieve all the tournaments
         available in models/tournaments_database.json database."""
 
+        ViewTournament.print_all_tournaments()
+
         all_tournaments = ModelTournament.tournaments_database.all()
 
-        ViewTournament.print_tournaments_database(all_tournaments)
+        ControllerTournament.see_chunks_items(all_tournaments)
 
         see_tournament_details = ViewTournament.see_tournament_details
 
