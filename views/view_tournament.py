@@ -93,3 +93,164 @@ class ViewTournament():
         print("\nRounds results:")
         for round_results in rounds:
             print(round_results)
+
+    @staticmethod
+    def order_players_by_ranking(players):
+
+        """A static method to present players sorted by ranking."""
+
+        print("Tournament players sorted by ranking\n")
+
+        for player in players:
+
+            print(f"Player {player[1]} : "
+                  + f"{player[0]}"
+                  + f" - Ranking: {player[2]}")
+
+    @staticmethod
+    def order_players_by_last_name(players):
+
+        """A static method to present players sorted by last name."""
+
+        print("Tournament players sorted by last name\n")
+        for player in players:
+            print(f"Player {player[1]} : "
+                  + f"{player[0]}")
+
+    @staticmethod
+    def choose_tournament(results):
+
+        """A static method to choose a tournament and see details."""
+
+        tournament_choice = input("Enter tournament number to see players\n")
+        while not (isinstance(tournament_choice, int)):
+            try:
+                tournament_choice = int(tournament_choice)
+                while int(tournament_choice) not in range(1, len(results) +1):
+                    tournament_choice = input("Choose number to select" 
+                                              + " a tournament\n")
+                    continue
+                break
+            except Exception:
+                tournament_choice = input("Enter tournament number to see"
+                                          + " players\n")
+        return tournament_choice
+
+    @staticmethod
+    def print_matching_tournaments(results):
+
+        """A static method to print the tournaments matching a research."""
+
+        i = 1
+        for result in results:
+            print(f"[{i}] {result['name']} of {result['location']}")
+            print(f"Start : {result['start_date']}")
+            print(f"End : {result['end_date']}\n")
+            i += 1
+
+    @staticmethod
+    def define_sorting_option():
+
+        """A static method to define a sorting option."""
+
+        players_sorted = input("Sort tournament players:\n\n"
+                               + "By ranking [A]\n"
+                               + "By last name [B]\n\n")
+        while players_sorted not in "aAbB":
+            players_sorted = input("Sort tournament players:\n\n"
+                                   + "By ranking [A]\n"
+                                   + "By last name [B]\n\n")
+            continue
+        return players_sorted
+
+    @staticmethod
+    def return_no_tournament():
+
+        """A static method to indicate no tournament has been found."""
+
+        print("No tournament found\n")
+
+    @staticmethod
+    def print_number_of_results(number_of_results):
+
+        """A static method to print the number of results."""
+
+        print(f"Number of results: {number_of_results}\n")
+
+    @staticmethod
+    def enter_tournament_name():
+
+        """A static method to enter the name of a tournament."""
+
+        name = input("\nEnter tournament name: ")
+        return name
+
+    @staticmethod
+    def enter_tournament_location():
+
+        """A static method to enter the location of a tournament."""
+
+        location = input("\nEnter tournament location: ")
+        return location
+
+    @staticmethod
+    def enter_tournament_year():
+
+        """A static method to enter the year of a tournament."""
+
+        year = input("\nEnter tournament year: ")
+        return year
+
+    @staticmethod
+    def define_search_criteria():
+
+        """A static method to define search criteria for a tournament."""
+
+        choice = input("\nSearch tournament (Enter option number): \n\n"
+                       + "By name [A]\n"
+                       + "By location [B]\n"
+                       + "By year [C]\n\n")
+
+        while choice not in "aAbBcC":
+            print("Choose a correct number.")
+            choice = input("\nSearch tournament (Enter option number): \n\n"
+                           + "By name [A]\n"
+                           + "By location [B]\n"
+                           + "By year [C]\n\n")
+            continue
+        return choice
+
+    @staticmethod
+    def print_tournaments_database(all_tournaments):
+
+        """A static method to print the database of all tournaments."""
+
+        print("\nDatabase of all tournaments\n")
+
+        i = 1
+        for tournament in all_tournaments:
+            print(f"[{i}] {tournament['name']} of {tournament['location']}")
+            print(f"Start : {tournament['start_date']}")
+            print(f"End : {tournament['end_date']}\n")
+            i += 1
+
+    @staticmethod
+    def see_tournament_details(all_tournaments):
+
+        """A static method to see tournament details."""
+
+        tournament_choice = input("Choose a number to see tournament"
+                                  + " details\n")
+        while not (isinstance(tournament_choice, int)):
+            try:
+                tournament_choice = int(tournament_choice)
+                x = len(all_tournaments)
+                while int(tournament_choice) not in range(1, x+1):
+                    tournament_choice = input("Choose a number to see"
+                                              + " tournament details\n")
+                    continue
+                break
+            except Exception:
+                tournament_choice = input("Choose a number to see"
+                                          + " tournament details\n")
+        return tournament_choice

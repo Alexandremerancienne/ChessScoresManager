@@ -144,13 +144,13 @@ while stay is True:
 
             # Option 3.1: See all tournaments
 
-            ModelTournament.get_all_tournaments()
+            ControllerTournament.get_all_tournaments()
 
         elif tournament_search_option == "2":
 
             # Option 3.2: See details of a tournament
 
-            ModelTournament.get_tournament()
+            ControllerTournament.get_tournament()
 
         # Once the tournaments have been displayed,
         # return to welcome page or leave the program

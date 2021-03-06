@@ -1,3 +1,5 @@
+import re
+
 from models.model_match import ModelMatch
 from models.model_player import ModelPlayer
 from models.model_round import ModelRound
@@ -7,6 +9,7 @@ from controllers.controller_player import ControllerPlayer
 from controllers.controller_match import ControllerMatch
 from controllers.controller_round import ControllerRound
 from datetime import datetime
+from tinydb import TinyDB, Query
 
 
 class ControllerTournament:
@@ -215,3 +218,158 @@ class ControllerTournament:
         s_t = serialized_tournment
 
         ModelTournament.save_tournament_to_tournaments_database(s_t)
+
+
+    def take_third(elem):
+
+        """A function to return the third element of a list."""
+
+        return elem[2]
+
+    def order_players_by_ranking(database):
+
+        """A function to order the players of a tournament database
+        by ranking."""
+
+        players_to_sort = database["players_list"]
+        players_sorted_by_ranking = sorted(players_to_sort,
+                                           key=ControllerTournament.take_third,
+                                           reverse=True)
+        ViewTournament.order_players_by_ranking(players_sorted_by_ranking)
+
+    def order_players_by_last_name(database):
+
+        """A function to order the players of a tournament database
+        by last name."""
+
+        players_sorted_by_last_name = sorted(database["players_list"])
+        ViewTournament.order_players_by_last_name(players_sorted_by_last_name)
+
+    def print_matching_results(results):
+
+        """A function to print the results of a research in a database
+        depending on the option chosen by the user."""
+
+        # All matching tournaments are printed
+
+        ViewTournament.print_matching_tournaments(results)
+
+        # The user selects a tournament among the matching tournaments
+
+        tournament_choice = ViewTournament.choose_tournament(results)
+        search_result = results[tournament_choice-1]
+        print("\n")
+
+        # The user can print the player of the tournament selected.
+        # The players can be ordered by ranking or by last name.
+
+        players_sorted = ViewTournament.define_sorting_option()
+
+        # The players are ordered by ranking
+
+        if players_sorted in "aA":
+            ControllerTournament.order_players_by_ranking(search_result)
+
+        # The players are ordered by last name
+
+        elif players_sorted in "bB":
+            ControllerTournament.order_players_by_last_name(search_result)
+
+    def print_number_of_results(results):
+
+        """A function to print the results of a research
+        in models/tournaments_database.json database,
+        depending on the content of the results.
+
+        "results" is the output of the research."""
+
+        number_of_results = 0
+        if len(results) == 0:
+            ViewTournament.return_no_tournament()
+        elif len(results) > 0:
+            for result in results:
+                number_of_results += 1
+            ViewTournament.print_number_of_results(number_of_results)
+            ControllerTournament.print_matching_results(results)
+
+    def search_tournament_by_name():
+
+        """A function to search a tournament
+        in models/tournaments_database.json database
+        based on its name."""
+
+        Tournament = Query()
+        t_d = ModelTournament.tournaments_database
+        name = ViewTournament.enter_tournament_name()
+        name = name.title()
+        results = t_d.search(Tournament.name == name)
+        ControllerTournament.print_number_of_results(results)
+
+    def search_tournament_by_location():
+
+        """A function to search a tournament
+        in models/tournaments_database.json database
+        based on its location."""
+
+        Tournament = Query()
+        t_d = ModelTournament.tournaments_database
+        location = ViewTournament.enter_tournament_location()
+        location = location.capitalize()
+        results = t_d.search(Tournament.location == location)
+        ControllerTournament.print_number_of_results(results)
+
+    def search_tournament_by_year():
+
+        """A function to search a tournament
+        in models/tournaments_database.json database
+        based on its year."""
+
+        t_d = ModelTournament.tournaments_database
+        year = ViewTournament.enter_tournament_year()
+        results = []
+        number_of_results = 0
+        for tournament in t_d:
+            if re.match(year, tournament["start_date"]):
+                number_of_results += 1
+                results.append(tournament)
+        if number_of_results == 0:
+            ViewTournament.return_no_tournament()
+        elif number_of_results > 0:
+            ViewTournament.print_number_of_results(results)
+            ControllerTournament.print_matching_results(results)
+
+    def get_tournament():
+
+        """A function to retrieve a tournament
+        in models/tournaments_database.json database.
+
+        The research can be based on the name,
+        the location or the year of the tournament."""
+
+        choice = ViewTournament.define_search_criteria()
+
+        if choice in "aA":
+            ControllerTournament.search_tournament_by_name()
+
+        elif choice in "bB":
+            ControllerTournament.search_tournament_by_location()
+
+        elif choice in "cC":
+            ControllerTournament.search_tournament_by_year()
+
+    def get_all_tournaments():
+
+        """A function to retrieve all the tournaments
+        available in models/tournaments_database.json database."""
+
+        all_tournaments = ModelTournament.tournaments_database.all()
+
+        ViewTournament.print_tournaments_database(all_tournaments)
+
+        see_tournament_details = ViewTournament.see_tournament_details
+
+        tournament_choice = see_tournament_details(all_tournaments)
+
+        searched_tournament = all_tournaments[int(tournament_choice)-1]
+
+        ModelTournament.deserialize_matches_and_rounds(searched_tournament)

@@ -27,7 +27,7 @@ class ViewMenu:
                               + "    Tournaments Database [3]"
                               + "    Quit Program [4]\n\n").center(80))
         while str(option_choice) not in "1234":
-            print("Choose a number between 1 and 4")
+            print("Choose a number between 1 and 4\n")
             option_choice = input(("Generate Tournament [1]"
                                   + "    Players Database [2]"
                                   + "    Tournaments Database [3]"
@@ -54,7 +54,7 @@ class ViewMenu:
                               + "    Change player ranking [2]"
                               + "    Add new player [3]\n\n")
         while str(option_choice) not in "123":
-            print("Choose a number between 1 and 3")
+            print("Choose a number between 1 and 3\n")
             option_choice = input("See all players [1]"
                                   + "    Change Player Ranking [2]"
                                   + "    Add new player [3]\n\n")
@@ -71,7 +71,7 @@ class ViewMenu:
         option_choice = input("See all tournaments [1]    "
                               + "See tournament players [2]\n\n")
         while str(option_choice) not in "12":
-            print("Choose a number between 1 and 2")
+            print("Choose a number between 1 and 2\n")
             option_choice = input("See all tournaments [1]     See tournament"
                                   + " players [2]\n\n")
             continue
