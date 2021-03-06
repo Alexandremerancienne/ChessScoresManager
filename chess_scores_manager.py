@@ -1,8 +1,11 @@
+import sys
+
 from models.model_player import ModelPlayer
 from controllers.controller_tournament import ControllerTournament
 from controllers.controller_player import ControllerPlayer
 from views.view_menu import ViewMenu
 from models.model_tournament import ModelTournament
+
 
 """Chess Scores Manager Program.
 
@@ -44,12 +47,12 @@ class ControllerMenu:
             ViewMenu.print_welcome_page()
             stay is True
 
-        # The user quits the program
+    # The user quits the program
 
         elif return_choice in "nN":
             ViewMenu.quit_program()
-            stay is False
-
+            sys.exit()
+            
 # Welcome page
 
 
