@@ -187,13 +187,13 @@ class ModelPlayer:
         Player = Query()
         p_d = ModelPlayer.players_database
 
-        print(f"Number of results: {len(players)}")
+        print(f"\nNumber of results: {len(players)}\n")
         i = 1
         for player in players:
-            print(f"\n[{i}] Player {player['id_number']} :"
-                  + f" {player['first_name']} {player['last_name']}\n")
+            print(f"[{i}] Player {player['id_number']} :"
+                  + f" {player['first_name']} {player['last_name']}")
             i += 1
-        player_chosen = input("Choose number to select a player\n")
+        player_chosen = input("\nChoose number to select a player\n")
         while not (isinstance(player_chosen, int)):
             try:
                 player_chosen = int(player_chosen)

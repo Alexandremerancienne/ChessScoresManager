@@ -184,8 +184,111 @@ class ViewPlayer():
         print("Database players (sorted by last name)")
 
     @staticmethod
+    def print_sorted_players(player):
+
+        """A static method to print a sorted player."""
+
+        print(f"Player {player.id_number} : "
+              + f"{player.first_name} {player.last_name}"
+              + f" - Ranking: {player.ranking}")        
+
+    @staticmethod
+    def see_more_results():
+
+        """A function to see the next results of a research."""
+
+        see_more = input("\nSee next results ? (Y/N)\n")
+        while see_more not in "yYnN":
+            see_more = input("\nSee next results ? (Y/N)\n")
+            continue
+        return see_more
+
+    @staticmethod
     def print_all_players_by_ranking():
 
         """A static method to print all players sorted by ranking."""
 
-        print("Database players (sorted by ranking)")
+        print("Database players (sorted by ranking)\n")
+
+    @staticmethod
+    def print_number_of_results(results):
+
+        """A static method to print the number of results from a research."""
+
+        print(f"\nNumber of results: {len(results)}\n")
+
+    @staticmethod
+    def print_players_options(player):
+
+        """A static method to print all the players with an option number
+        associated to each player."""
+
+        print(f"[{i}] Player {player['id_number']} :"
+              + f" {player['first_name']} {player['last_name']}")
+
+    @staticmethod
+    def choose_player():
+
+        """A static method to choose a player among the options proposed."""
+
+        player_chosen = input("\nChoose number to select a player\n")
+        while not (isinstance(player_chosen, int)):
+            try:
+                player_chosen = int(player_chosen)
+                while int(player_chosen) not in range(1, len(players) +1):
+                    player_chosen = input("Choose number to select a player\n")
+                    continue
+                break
+            except Exception:
+                player_chosen = input("Choose number to select a"
+                                      + " player\n")
+        return player_chosen
+
+    @staticmethod
+    def search_last_name():
+
+        """A static method to search the last name of a player."""
+
+        last_name = input("Enter player last name: ")
+        while not last_name.isalpha() is True:
+            print("Value Error.")
+            last_name = input("Enter player last name: ")
+            continue
+        return last_name
+
+    @staticmethod
+    def search_id_number():
+
+        """A static method to search the ID number of a player."""
+
+        id_number = input("Enter player ID number: ")
+        while not isinstance(id_number, int):
+            try:
+                id_number = int(id_number)
+                break
+            except Exception:
+                id_number = input("Enter player ID (positive number): ")
+                continue
+        return id_number
+
+    @staticmethod
+    def return_no_player():
+
+        """A static method to indicate no player has been found."""
+
+        print("No player found\n")
+
+    @staticmethod
+    def search_player():
+
+        """A static method to search a player by last name or ID number."""
+
+        option_number = input("\nSearch player (Enter option number): \n\n"
+                              + "By last name [1]\n"
+                              + "By ID number [2]\n\n")
+        while option_number not in "12":
+            option_number = input("Search player (Enter option number): \n\n"
+                                  + "By last name [1]\n"
+                                  + "By ID number [2]\n")
+            continue
+        return option_number

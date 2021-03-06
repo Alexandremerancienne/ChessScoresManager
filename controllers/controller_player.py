@@ -189,6 +189,34 @@ class ControllerPlayer:
 
         return elem[3]
 
+    def slice_results(list_to_slice):
+
+        """A function to split a list into 40 chunks."""
+
+        lts = list_to_slice
+        return [lts[i:i + 39] for i in range(0, len(lts), 39)]
+
+    def see_chunks_items(chunked_list):
+
+        """A function to see the items of a list sliced into chunks."""
+
+        if len(chunked_list) <= 40:
+            for chunk in chunked_list:
+                ViewPlayer.print_sorted_players(chunk)
+        elif len(chunked_list) > 40:
+            chunks = ControllerPlayer.slice_results(chunked_list)
+            for elt in chunks[0]:
+                ViewPlayer.print_sorted_players(elt)
+            i = 1
+            while i < len(chunks):
+                see_more = ViewPlayer.see_more_results()
+                if see_more in "yY":
+                    for elt in (chunks[i]):
+                        ViewPlayer.print_sorted_players(elt)
+                    i += 1
+                elif see_more in "nN":
+                    break
+
     def sort_players_by_ranking(database):
 
         """A function to sort the players of a tournament by ranking."""
@@ -199,10 +227,7 @@ class ControllerPlayer:
             deserialized_players.append(deserialized_player)
         sorted_players = sorted(deserialized_players,
                                 key=attrgetter("ranking"), reverse=True)
-        for sorted_player in sorted_players:
-            print(f"Player {sorted_player.id_number} : "
-                  + f"{sorted_player.first_name} {sorted_player.last_name}"
-                  + f" - Ranking: {sorted_player.ranking}")
+        ControllerPlayer.see_chunks_items(sorted_players)
 
     def sort_all_players_by_ranking():
 
@@ -221,9 +246,7 @@ class ControllerPlayer:
             deserialized_players.append(deserialized_player)
         sorted_players = sorted(deserialized_players,
                                 key=attrgetter("last_name"))
-        for sorted_player in sorted_players:
-            print(f"Player {sorted_player.id_number} : "
-                  + f"{sorted_player.first_name} {sorted_player.last_name}")
+        ControllerPlayer.see_chunks_items(sorted_players)
 
     def sort_all_players_by_last_name():
 
@@ -232,3 +255,86 @@ class ControllerPlayer:
         ViewPlayer.print_all_players_by_last_name()
         database = ModelPlayer.players_database
         ControllerPlayer.sort_players_by_last_name(database)
+
+    def return_search_results(players):
+
+        """A function to return the results of a research in a database
+        depending on the content of the result.
+
+        "players" is the output of the research.
+
+        Is players is empty, a message error is printed.
+        Is none, the user is asked to select a solution
+        among the results of the research.
+
+        The solution is then serialized and returned as the final result."""
+
+        Player = Query()
+        p_d = ModelPlayer.players_database
+
+        ViewPlayer.print_number_of_results(players)
+        i = 1
+        for player in players:
+            ViewPlayer.print_players_options()
+            i += 1
+        player_chosen = ViewPlayer.choose_player()
+        searched_player = players[int(player_chosen) - 1]
+        s_player = searched_player
+        serialized_player = p_d.search(Player.id_number ==
+                                       s_player["id_number"])
+        deserialized_player = ModelPlayer.deserialize_player(s_player)
+        print(deserialized_player)
+        return serialized_player
+
+    def search_player_with_last_name():
+
+        """A function to search a player in models/players_database.json
+        based on his/her last name."""
+
+        Player = Query()
+        p_d = ModelPlayer.players_database
+
+        last_name = ViewPlayer.search_last_name()
+        players = p_d.search(Player.last_name == last_name)
+
+        if len(players) == 0:
+            ViewPlayer.return_no_player()
+
+        elif len(players) > 0:
+            serialized_player = ControllerPlayer.return_search_results(players)
+            return serialized_player
+
+    def search_player_with_id_number():
+
+        """A function to search a player in models/players_database.json
+        based on his/her ID number."""
+
+        Player = Query()
+        p_d = ModelPlayer.players_database
+
+        id_number = ViewPlayer.search_id_number()
+        players = p_d.search(Player.id_number == id_number)
+
+        if len(players) == 0:
+            ViewPlayer.return_no_player()
+
+        elif len(players) > 0:
+            serialized_player = ControllerPlayer.return_search_results(players)
+            return serialized_player
+
+    def get_player():
+
+        """A function to retrieve a serialized player
+        to players_database.json database.
+
+        The player can be found with his/her last name or ID number."""
+
+        option_number = ViewPlayer.search_player()
+
+        if option_number == "1":
+            searched_player = ControllerPlayer.search_player_with_last_name()
+            return searched_player
+
+        elif option_number == "2":
+            searched_player = ControllerPlayer.search_player_with_id_number()
+            return searched_player
