@@ -248,6 +248,17 @@ class ViewTournament():
         return see_more
 
     @staticmethod
+    def see_details_or_not():
+
+        """A static method to choose to see tournament details (or not)."""
+
+        choice = input("See tournament details ? (Y/N)\n")
+        while choice not in "yYnN":
+            choice = input("See tournament details ? (Y/N)\n")
+            continue
+        return choice
+
+    @staticmethod
     def see_tournament_details(all_tournaments):
 
         """A static method to see tournament details."""

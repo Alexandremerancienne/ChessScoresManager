@@ -82,9 +82,9 @@ class ViewMenu:
 
         """A static method to propose to quit the current page."""
 
-        quit_current_page = input("\nReturn to Main Page ? [Y/N]\n")
+        quit_current_page = input("\nReturn to Main Page ? (Y/N)\n")
         while quit_current_page not in "yYnN":
-            quit_current_page = input("Return to Main Page ? [Y/N]\n")
+            quit_current_page = input("Return to Main Page ? (Y/N)\n")
             continue
         return quit_current_page
 

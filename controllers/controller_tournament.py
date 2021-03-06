@@ -400,10 +400,14 @@ class ControllerTournament:
 
         ControllerTournament.see_chunks_items(all_tournaments)
 
-        see_tournament_details = ViewTournament.see_tournament_details
+        see_details_or_not = ViewTournament.see_details_or_not()
 
-        tournament_choice = see_tournament_details(all_tournaments)
+        if see_details_or_not in "yY":
 
-        searched_tournament = all_tournaments[int(tournament_choice)-1]
+            see_tournament_details = ViewTournament.see_tournament_details
 
-        ModelTournament.deserialize_matches_and_rounds(searched_tournament)
+            tournament_choice = see_tournament_details(all_tournaments)
+
+            searched_tournament = all_tournaments[int(tournament_choice)-1]
+
+            ModelTournament.deserialize_matches_and_rounds(searched_tournament)
