@@ -379,8 +379,7 @@ class ModelTournament:
 
         # Then all deserialized rounds are added to the tournament
         tournament['rounds'] = tournament_deserialized_rounds
-        print(f"{tournament['name']} of {tournament['location']}")
-        print("\n")
+        print(f"\n{tournament['name']} of {tournament['location']}\n")
 
         # Finally, the tournament is deserialized
         deserialized_trnmt = ModelTournament.deserialize_tournament(tournament)

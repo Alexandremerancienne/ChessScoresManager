@@ -137,18 +137,6 @@ class ViewTournament():
         return tournament_choice
 
     @staticmethod
-    def print_matching_tournaments(results):
-
-        """A static method to print the tournaments matching a research."""
-
-        i = 1
-        for result in results:
-            print(f"[{i}] {result['name']} of {result['location']}")
-            print(f"Start : {result['start_date']}")
-            print(f"End : {result['end_date']}\n")
-            i += 1
-
-    @staticmethod
     def define_sorting_option():
 
         """A static method to define a sorting option."""
@@ -252,9 +240,9 @@ class ViewTournament():
 
         """A static method to choose to see tournament details (or not)."""
 
-        choice = input("See tournament details ? (Y/N)\n")
+        choice = input("\nSee tournament details ? (Y/N)\n")
         while choice not in "yYnN":
-            choice = input("See tournament details ? (Y/N)\n")
+            choice = input("\nSee tournament details ? (Y/N)\n")
             continue
         return choice
 
@@ -263,18 +251,18 @@ class ViewTournament():
 
         """A static method to see tournament details."""
 
-        tournament_choice = input("Choose a number to see tournament"
+        tournament_choice = input("\nChoose a number to see tournament"
                                   + " details\n")
         while not (isinstance(tournament_choice, int)):
             try:
                 tournament_choice = int(tournament_choice)
                 x = len(all_tournaments)
                 while int(tournament_choice) not in range(1, x+1):
-                    tournament_choice = input("Choose a number to see"
+                    tournament_choice = input("\nChoose a number to see"
                                               + " tournament details\n")
                     continue
                 break
             except Exception:
-                tournament_choice = input("Choose a number to see"
+                tournament_choice = input("\nChoose a number to see"
                                           + " tournament details\n")
         return tournament_choice

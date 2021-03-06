@@ -250,10 +250,6 @@ class ControllerTournament:
         """A function to print the results of a research in a database
         depending on the option chosen by the user."""
 
-        # All matching tournaments are printed
-
-        ViewTournament.print_matching_tournaments(results)
-
         # The user selects a tournament among the matching tournaments
 
         tournament_choice = ViewTournament.choose_tournament(results)
@@ -275,23 +271,6 @@ class ControllerTournament:
         elif players_sorted in "bB":
             ControllerTournament.order_players_by_last_name(search_result)
 
-    def print_number_of_results(results):
-
-        """A function to print the results of a research
-        in models/tournaments_database.json database,
-        depending on the content of the results.
-
-        "results" is the output of the research."""
-
-        number_of_results = 0
-        if len(results) == 0:
-            ViewTournament.return_no_tournament()
-        elif len(results) > 0:
-            for result in results:
-                number_of_results += 1
-            ViewTournament.print_number_of_results(number_of_results)
-            ControllerTournament.print_matching_results(results)
-
     def search_tournament_by_name():
 
         """A function to search a tournament
@@ -303,7 +282,12 @@ class ControllerTournament:
         name = ViewTournament.enter_tournament_name()
         name = name.title()
         results = t_d.search(Tournament.name == name)
-        ControllerTournament.print_number_of_results(results)
+        if len(results) == 0:
+            ViewTournament.return_no_tournament()
+        elif len(results) > 0:
+            ViewTournament.print_number_of_results(len(results))
+            ControllerTournament.see_chunks_items(results)
+            ControllerTournament.print_matching_results(results)
 
     def search_tournament_by_location():
 
@@ -316,7 +300,12 @@ class ControllerTournament:
         location = ViewTournament.enter_tournament_location()
         location = location.capitalize()
         results = t_d.search(Tournament.location == location)
-        ControllerTournament.print_number_of_results(results)
+        if len(results) == 0:
+            ViewTournament.return_no_tournament()
+        elif len(results) > 0:
+            ViewTournament.print_number_of_results(len(results))
+            ControllerTournament.see_chunks_items(results)
+            ControllerTournament.print_matching_results(results)
 
     def search_tournament_by_year():
 
@@ -335,7 +324,8 @@ class ControllerTournament:
         if number_of_results == 0:
             ViewTournament.return_no_tournament()
         elif number_of_results > 0:
-            ViewTournament.print_number_of_results(results)
+            ViewTournament.print_number_of_results(len(results))
+            ControllerTournament.see_chunks_items(results)
             ControllerTournament.print_matching_results(results)
 
     def get_tournament():
