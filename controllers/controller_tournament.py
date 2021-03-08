@@ -373,8 +373,9 @@ class ControllerTournament:
             while j < len(chunks):
                 see_more = ViewTournament.see_more_results()
                 if see_more in "yY":
+                    print("\n")
                     for elt in (chunks[j]):
-                        ViewTournament.print_chunk_tournaments(elt, i+j)
+                        ViewTournament.print_chunk_tournaments(elt, i+j-1)
                         j += 1
                 elif see_more in "nN":
                     break
@@ -401,3 +402,6 @@ class ControllerTournament:
             searched_tournament = all_tournaments[int(tournament_choice)-1]
 
             ModelTournament.deserialize_matches_and_rounds(searched_tournament)
+
+        elif see_details_or_not in "nN":
+            pass

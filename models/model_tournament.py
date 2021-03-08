@@ -51,11 +51,11 @@ class ModelTournament:
                + f"Dates: from {self.start_date} to {self.end_date} \n\n"
                + f"Description: {self.description}\n\n"
                + f"Time control: {self.time_control}\n\n"
-               + f"Participants: {self.players_list[0]}, "
-               + f"{self.players_list[1]}, {self.players_list[2]}"
-               + f"{self.players_list[3]}, {self.players_list[4]}"
-               + f"{self.players_list[5]}, {self.players_list[6]}"
-               + f"{self.players_list[7]}\n\n"
+               + f"Participants: \n{self.players_list[0]}, "
+               + f"\n{self.players_list[1]}, \n{self.players_list[2]}"
+               + f"\n{self.players_list[3]}, \n{self.players_list[4]}"
+               + f"\n{self.players_list[5]}, \n{self.players_list[6]}"
+               + f"\n{self.players_list[7]}\n\n"
                + "Results:"
                + f"{self.rounds[0]}\n"
                + f"{self.rounds[1]}\n"
@@ -383,4 +383,7 @@ class ModelTournament:
 
         # Finally, the tournament is deserialized
         deserialized_trnmt = ModelTournament.deserialize_tournament(tournament)
+        line = (100*"-")
+        print(line)
         print(deserialized_trnmt)
+        print(line)
