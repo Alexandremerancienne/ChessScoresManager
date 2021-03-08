@@ -385,5 +385,17 @@ class ModelTournament:
         deserialized_trnmt = ModelTournament.deserialize_tournament(tournament)
         line = (100*"-")
         print(line)
-        print(deserialized_trnmt)
+        print(f"\nTournament name: {deserialized_trnmt.name}")        
+        print(f"\nLocation: {deserialized_trnmt.location}")
+        print(f"\nDescription: {deserialized_trnmt.description}")
+        print(f"\nTime Control: {deserialized_trnmt.time_control}")
+        print("\nParticipants:\n")
+        dt_players_list = deserialized_trnmt.players_list
+        for i in range(0,8):
+            print(f"({dt_players_list[i][1]})"
+                  + f" {dt_players_list[i][0]}"
+                  + f" - ranking: {dt_players_list[i][2]}")
+        print("\nResults\n")
+        for round in deserialized_trnmt.rounds:
+            print(round)
         print(line)
