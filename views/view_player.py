@@ -22,12 +22,12 @@ class ViewPlayer():
         return id_number
 
     @staticmethod
-    def get_player_inputs(database):
+    def get_player_inputs():
 
         """A static method to get all the details of a player."""
 
         print(ViewPlayer.line)
-        print("New Player")
+        print("New Player\n")
 
         last_name = input("Enter player's last name: ")
         while last_name.isalpha() is False:
@@ -93,6 +93,44 @@ class ViewPlayer():
                ranking, score)
 
     @staticmethod
+    def generate_player():
+
+        """A static method to announce the creation of a player."""
+
+        print("Generating new player...\n")
+
+    @staticmethod
+    def return_unknown_id():
+
+        """A static method to indicate an ID number has not been recognized."""
+
+        print("ID number not recognized")
+
+    @staticmethod
+    def return_successful_identification():
+
+        """A static method to indicate an identification is successful."""
+
+        print("\nIdentification successful")
+        print("\nPlayer details:\n")
+
+    @staticmethod
+    def return_player_already_registered():
+
+        """A static method to indicate a player has already been registered
+        to a tournament."""
+
+        print("Player already registered in tournament")
+
+    @staticmethod
+    def announce_next_player():
+
+        """A static method to indicate a player has already been registered
+        to a tournament."""
+
+        print("\nNext player:\n")     
+
+    @staticmethod
     def print_player(player):
 
         """A static method to print a player."""
@@ -150,7 +188,7 @@ class ViewPlayer():
         """A static method to confirm the ranking of a player
         has been changed."""
 
-        print("\nRanking successfully changed !")
+        print("\nRanking successfully changed !\n")
 
     @staticmethod
     def print_player_new_ranking(last_name, id_number, new_ranking):

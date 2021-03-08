@@ -46,7 +46,7 @@ class ControllerPlayer:
         # Player with no ID
 
         if int(id_number_tested) == 0:
-            print("Generating new player...\n")
+            ViewPlayer.generate_player()
             player = ControllerPlayer.add_player_to_tournament()
             serialized_player = ModelPlayer.serialize_player(player)
             ModelPlayer.save_player_to_database(serialized_player)
@@ -59,8 +59,8 @@ class ControllerPlayer:
         # No matching result with the ID entered
 
         if len(results_p_d) == 0:
-            print("ID number not recognized")
-            print("Generating new player...\n")
+            ViewPlayer.return_unknown_id()
+            ViewPlayer.generate_player()
             player = ControllerPlayer.add_player_to_tournament()
             serialized_player = ModelPlayer.serialize_player(player)
             ModelPlayer.save_player_to_database(serialized_player)
@@ -75,19 +75,20 @@ class ControllerPlayer:
             # The player is recognized and added to the tournament
 
             if len(results_t_p) == 0:
-                print("\nIdentification successful")
-                print("\nPlayer details:\n")
+                ViewPlayer.return_successful_identification()
                 for result in results_p_d:
                     player = ModelPlayer.deserialize_player(result)
                     ViewPlayer.print_player(player)
+                    print(ViewPlayer.line)
+                    print("\nNext player:\n")                    
                 return result
 
             # The player has already been added to the tournament
             # A new player is generated
 
             elif len(results_t_p) == 1:
-                print("Player already registered in tournament")
-                print("Generating new player...\n")
+                ViewPlayer.return_player_already_registered()
+                ViewPlayer.generate_player()
                 player = ControllerPlayer.add_player_to_tournament()
                 serialized_player = ModelPlayer.serialize_player(player)
                 ModelPlayer.save_player_to_database(serialized_player)
@@ -99,9 +100,9 @@ class ControllerPlayer:
         to a JSON database."""
 
         p_d = ModelPlayer.players_database
-        player_features = ViewPlayer.get_player_inputs(p_d)
+        player_features = ViewPlayer.get_player_inputs()
         p_f = player_features
-        player_index = len(ModelPlayer.players_database)
+        player_index = len(p_d)
         id_number = players_id_database[player_index]
         player = ModelPlayer(p_f[0], p_f[1], id_number, p_f[2], p_f[3],
                              p_f[4])
