@@ -30,13 +30,13 @@ class ViewPlayer():
         print("New Player\n")
 
         last_name = input("Enter player's last name: ")
-        while last_name.isalpha() is False:
+        while all(x.isalpha() or x.isspace() for x in last_name) is False:
             print("Please enter a valid last name.")
             last_name = input("Enter player's last name: ")
             continue
 
         first_name = input("Enter player's first name: ")
-        while first_name.isalpha() is False:
+        while all(x.isalpha() or x.isspace() for x in first_name) is False:
             print("Please enter a valid first name.")
             first_name = input("Enter player's first name: ")
             continue

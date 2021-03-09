@@ -52,17 +52,17 @@ class ModelPlayer:
 
     @last_name.setter
     def last_name(self, new_last_name):
-        if new_last_name.isalpha() is False:
+        if all(x.isalpha() or x.isspace() for x in new_last_name) is False:
             print("Please enter a valid last name.")
         self._last_name = new_last_name
 
     @property
     def first_name(self):
-        return self._first_name.capitalize()
+        return self._first_name.title()
 
     @first_name.setter
     def first_name(self, new_first_name):
-        if new_first_name.isalpha() is False:
+        if all(x.isalpha() or x.isspace() for x in new_first_name) is False:
             print("Please enter a valid first name.")
         self._first_name = new_first_name
 

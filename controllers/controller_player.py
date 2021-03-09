@@ -236,7 +236,7 @@ class ControllerPlayer:
                                 key=attrgetter("ranking"), reverse=True)
         chunks = ControllerPlayer.see_chunks_items(sorted_players)
         if chunks is None:
-        	pass
+            pass
 
     def sort_all_players_by_ranking():
 
@@ -282,13 +282,20 @@ class ControllerPlayer:
         p_d = ModelPlayer.players_database
 
         ViewPlayer.print_number_of_results(players)
-        i = 1
-        for player in players:
-            ViewPlayer.print_players_options(player, i)
-            i += 1
-        player_chosen = ViewPlayer.choose_player(players)
-        searched_player = players[int(player_chosen) - 1]
-        s_player = searched_player
+
+        if len(players) == 1:
+            searched_player = players[0]
+            s_player = searched_player
+
+        elif len(players) > 1:
+            i = 1
+            for player in players:
+                ViewPlayer.print_players_options(player, i)
+                i += 1
+            player_chosen = ViewPlayer.choose_player(players)
+            searched_player = players[int(player_chosen) - 1]
+            s_player = searched_player
+
         serialized_player = p_d.search(Player.id_number ==
                                        s_player["id_number"])
         deserialized_player = ModelPlayer.deserialize_player(s_player)
