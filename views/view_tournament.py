@@ -144,7 +144,7 @@ class ViewTournament():
         players_sorted = input("Sort tournament players:\n\n"
                                + "By ranking [A]\n"
                                + "By last name [B]\n\n")
-        while players_sorted not in "aAbB":
+        while players_sorted not in "aAbB" or players_sorted in "":
             players_sorted = input("Sort tournament players:\n\n"
                                    + "By ranking [A]\n"
                                    + "By last name [B]\n\n")
@@ -199,7 +199,7 @@ class ViewTournament():
                        + "By location [B]\n"
                        + "By year [C]\n\n")
 
-        while choice not in "aAbBcC":
+        while choice not in "aAbBcC" or choice in "":
             print("Choose a correct number.")
             choice = input("\nSearch tournament (Enter option number): \n\n"
                            + "By name [A]\n"
@@ -230,7 +230,7 @@ class ViewTournament():
         """A function to see the next results of a research."""
 
         see_more = input("\nSee next results ? (Y/N)\n")
-        while see_more not in "yYnN":
+        while see_more not in "yYnN" or see_more in "":
             see_more = input("\nSee next results ? (Y/N)\n")
             continue
         return see_more
@@ -241,7 +241,7 @@ class ViewTournament():
         """A static method to choose to see tournament details (or not)."""
 
         choice = input("\nSee tournament details ? (Y/N)\n")
-        while choice not in "yYnN":
+        while choice not in "yYnN" or choice in "":
             choice = input("\nSee tournament details ? (Y/N)\n")
             continue
         return choice

@@ -26,7 +26,7 @@ class ViewMenu:
                               + "    Players Database [2]"
                               + "    Tournaments Database [3]"
                               + "    Quit Program [4]\n\n").center(80))
-        while str(option_choice) not in "1234":
+        while str(option_choice) not in "1234" or str(option_choice) in "":
             print("Choose a number between 1 and 4\n")
             option_choice = input(("Generate Tournament [1]"
                                   + "    Players Database [2]"
@@ -53,7 +53,7 @@ class ViewMenu:
         option_choice = input("See all players [1]"
                               + "    Change player ranking [2]"
                               + "    Add new player [3]\n\n")
-        while str(option_choice) not in "123":
+        while str(option_choice) not in "123" or str(option_choice) in "":
             print("Choose a number between 1 and 3\n")
             option_choice = input("See all players [1]"
                                   + "    Change Player Ranking [2]"
@@ -70,7 +70,7 @@ class ViewMenu:
         print("\nTournaments database\n")
         option_choice = input("See all tournaments [1]    "
                               + "See tournament players [2]\n\n")
-        while str(option_choice) not in "12":
+        while str(option_choice) not in "12" or str(option_choice) in "":
             print("Choose a number between 1 and 2\n")
             option_choice = input("See all tournaments [1]     See tournament"
                                   + " players [2]\n\n")
@@ -83,7 +83,7 @@ class ViewMenu:
         """A static method to propose to quit the current page."""
 
         quit_current_page = input("\nReturn to Main Page ? (Y/N)\n")
-        while quit_current_page not in "yYnN":
+        while quit_current_page not in "yYnN" or quit_current_page in "":
             quit_current_page = input("Return to Main Page ? (Y/N)\n")
             continue
         return quit_current_page
@@ -98,7 +98,7 @@ class ViewMenu:
                        + "By location [B]\n"
                        + "By year [C]\n\n")
 
-        while choice not in "aAbBcC":
+        while choice not in "aAbBcC" or choice in "":
             print("Choose a correct number.")
             choice = input("\nSearch tournament (Enter option number): \n\n"
                            + "By name [A]\n"
@@ -117,8 +117,8 @@ class ViewMenu:
         print("\nSort players:\n")
         option_choice = input("By ranking [A]"
                               + "    By last name [B]\n\n")
-        while str(option_choice) not in "aAbB":
-            print("Choose a letter between A and B")
+        while str(option_choice) not in "aAbB" or str(option_choice) in "":
+            print("Choose a letter between A and B\n")
             option_choice = input("By ranking [A]"
                                   + "    By last name [B]\n\n")
             continue

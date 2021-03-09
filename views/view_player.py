@@ -236,7 +236,7 @@ class ViewPlayer():
         """A function to see the next results of a research."""
 
         see_more = input("\nSee next results ? (Y/N)\n")
-        while see_more not in "yYnN":
+        while see_more not in "yYnN" or see_more in "":
             see_more = input("\nSee next results ? (Y/N)\n")
             continue
         return see_more
@@ -278,7 +278,7 @@ class ViewPlayer():
                     continue
                 break
             except Exception:
-                player_chosen = input("Choose number to select a"
+                player_chosen = input("\nChoose number to select a"
                                       + " player\n")
         return int(player_chosen)
 
@@ -287,10 +287,10 @@ class ViewPlayer():
 
         """A static method to search the last name of a player."""
 
-        last_name = input("Enter player last name: ")
+        last_name = input("\nEnter player last name: ")
         while not last_name.isalpha() is True:
             print("Value Error.")
-            last_name = input("Enter player last name: ")
+            last_name = input("\nEnter player last name: ")
             continue
         return last_name
 
@@ -299,13 +299,13 @@ class ViewPlayer():
 
         """A static method to search the ID number of a player."""
 
-        id_number = input("Enter player ID number: ")
+        id_number = input("\nEnter player ID number: ")
         while not isinstance(id_number, int):
             try:
                 id_number = int(id_number)
                 break
             except Exception:
-                id_number = input("Enter player ID (positive number): ")
+                id_number = input("\nEnter player ID (positive number): ")
                 continue
         return id_number
 
@@ -314,7 +314,7 @@ class ViewPlayer():
 
         """A static method to indicate no player has been found."""
 
-        print("No player found\n")
+        print("\nNo player found\n")
 
     @staticmethod
     def search_player():
@@ -324,7 +324,7 @@ class ViewPlayer():
         option_number = input("\nSearch player (Enter option number): \n\n"
                               + "By last name [1]\n"
                               + "By ID number [2]\n\n")
-        while option_number not in "12":
+        while option_number not in "12" or option_number in "":
             option_number = input("Search player (Enter option number): \n\n"
                                   + "By last name [1]\n"
                                   + "By ID number [2]\n")
