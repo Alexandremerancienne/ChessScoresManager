@@ -174,7 +174,7 @@ class ControllerPlayer:
         To change the ranking of a player at the end of a tournament,
         See set_new_rankings() function above."""
 
-        player = ModelPlayer.get_player()
+        player = ControllerPlayer.get_player()
         if player is not None:
             player = player[0]
             new_ranking = ViewPlayer.change_player_ranking()
