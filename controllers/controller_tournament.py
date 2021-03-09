@@ -252,9 +252,13 @@ class ControllerTournament:
 
         # The user selects a tournament among the matching tournaments
 
-        tournament_choice = ViewTournament.choose_tournament(results)
-        search_result = results[tournament_choice-1]
-        print("\n")
+        if len(results) == 1:
+            search_result = results[0]
+
+        elif len(results) > 1:
+            tournament_choice = ViewTournament.choose_tournament(results)
+            search_result = results[tournament_choice-1]
+            print("\n")
 
         # The user can print the player of the tournament selected.
         # The players can be ordered by ranking or by last name.

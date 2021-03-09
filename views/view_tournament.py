@@ -15,7 +15,7 @@ class ViewTournament():
             continue
 
         location = input("Please enter tournament location: ")
-        while location.isalpha() is False:
+        while all(x.isalpha() or x.isspace() for x in location) is False:
             print("Please enter a valid location.")
             location = input("Please enter tournament location: ")
             continue

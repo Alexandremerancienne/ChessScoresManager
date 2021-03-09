@@ -78,7 +78,7 @@ class ModelTournament:
 
     @location.setter
     def location(self, new_location):
-        if new_location.isalpha() is False:
+        if all(x.isalpha() or x.isspace() for x in location) is False:
             print("Please enter a valid location.")
         self._location = new_location
 
