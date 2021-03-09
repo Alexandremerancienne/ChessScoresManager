@@ -27,9 +27,10 @@ Once the program launched, the welcome page presents the following options:
 This option allows the creation of a new tournament of 8 players:
 * Each tournament includes 4 rounds of 2 matches;
 * The matches are generated according to a Swiss-pairing algorithm.
-* Optional sections have been added in controllers/controller_tournament.py and models/model_tournament
+* Optional sections have been added in controllers/controller_tournament.py and models/model_tournament  
 to visualize the functioning of the algorithm. 
-* All optional sections have been identified and can be deleted without affecting the program, so as to guarantee a more user-friendly interface.
+* All optional sections have been identified and can be deleted without affecting the program,  
+so as to guarantee a more user-friendly interface.
 
 ## Players Database
 
