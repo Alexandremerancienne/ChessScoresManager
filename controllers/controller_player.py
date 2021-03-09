@@ -284,9 +284,9 @@ class ControllerPlayer:
         ViewPlayer.print_number_of_results(players)
         i = 1
         for player in players:
-            ViewPlayer.print_players_options()
+            ViewPlayer.print_players_options(player, i)
             i += 1
-        player_chosen = ViewPlayer.choose_player()
+        player_chosen = ViewPlayer.choose_player(players)
         searched_player = players[int(player_chosen) - 1]
         s_player = searched_player
         serialized_player = p_d.search(Player.id_number ==

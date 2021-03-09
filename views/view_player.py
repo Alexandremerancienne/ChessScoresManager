@@ -256,7 +256,7 @@ class ViewPlayer():
         print(f"\nNumber of results: {len(results)}\n")
 
     @staticmethod
-    def print_players_options(player):
+    def print_players_options(player, i):
 
         """A static method to print all the players with an option number
         associated to each player."""
@@ -265,22 +265,22 @@ class ViewPlayer():
               + f" {player['first_name']} {player['last_name']}")
 
     @staticmethod
-    def choose_player():
+    def choose_player(players):
 
         """A static method to choose a player among the options proposed."""
 
         player_chosen = input("\nChoose number to select a player\n")
-        while not (isinstance(player_chosen, int)):
+        while not isinstance(player_chosen, int):
             try:
                 player_chosen = int(player_chosen)
-                while int(player_chosen) not in range(1, len(players) +1):
+                while player_chosen not in range(1, len(players) +1):
                     player_chosen = input("Choose number to select a player\n")
                     continue
                 break
             except Exception:
                 player_chosen = input("Choose number to select a"
                                       + " player\n")
-        return player_chosen
+        return int(player_chosen)
 
     @staticmethod
     def search_last_name():
