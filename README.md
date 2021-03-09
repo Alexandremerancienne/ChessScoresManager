@@ -29,7 +29,7 @@ This option allows the creation of a new tournament of 8 players:
 * The matches are generated according to a Swiss-pairing algorithm.
 * Optional sections have been added in controllers/controller_tournament.py and models/model_tournament
 to visualize the functioning of the algorithm. 
-* These sections can be deleted without affecting the program, so as to guarantee a more user-friendly interface.
+* All optional sections have been identified and can be deleted without affecting the program, so as to guarantee a more user-friendly interface.
 
 ## Players Database
 
