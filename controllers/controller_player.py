@@ -80,7 +80,7 @@ class ControllerPlayer:
                     player = ModelPlayer.deserialize_player(result)
                     ViewPlayer.print_player(player)
                     print(ViewPlayer.line)
-                    print("\nNext player:\n")                    
+                    print("\nNext player:\n")
                 return result
 
             # The player has already been added to the tournament

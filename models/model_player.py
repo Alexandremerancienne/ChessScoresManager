@@ -1,6 +1,6 @@
 import json
 from datetime import datetime
-from tinydb import TinyDB, Query
+from tinydb import TinyDB
 
 
 class ModelPlayer:

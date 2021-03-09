@@ -4,7 +4,6 @@ from models.model_player import ModelPlayer
 from controllers.controller_tournament import ControllerTournament
 from controllers.controller_player import ControllerPlayer
 from views.view_menu import ViewMenu
-from models.model_tournament import ModelTournament
 
 
 """Chess Scores Manager Program.
@@ -52,7 +51,7 @@ class ControllerMenu:
         elif return_choice in "nN":
             ViewMenu.quit_program()
             sys.exit()
-            
+
 # Welcome page
 
 
@@ -74,7 +73,7 @@ while stay is True:
 
         ControllerTournament.generate_new_tournament()
 
-        # Once the tournament is played, 
+        # Once the tournament is played,
         # return to welcome page or leave the program
 
         ControllerMenu.quit_current_page()

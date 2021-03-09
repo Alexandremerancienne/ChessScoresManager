@@ -47,8 +47,10 @@ class ViewPlayer():
             while (100 > current_year - int(year_of_birth) > 18) is False:
                 print("Enter a valid date of birth")
                 year_of_birth = input("Enter player's year of birth (YYYY): ")
-                if year_of_birth.isdigit() is True: continue
-                else: break
+                if year_of_birth.isdigit() is True:
+                    continue
+                else:
+                    break
         year_of_birth = str(year_of_birth)
         month_of_birth = input("Enter player's month of birth (MM): ")
         if len(month_of_birth) == 1:
@@ -128,7 +130,7 @@ class ViewPlayer():
         """A static method to indicate a player has already been registered
         to a tournament."""
 
-        print("\nNext player:\n")     
+        print("\nNext player:\n")
 
     @staticmethod
     def print_player(player):
@@ -228,7 +230,7 @@ class ViewPlayer():
 
         print(f"Player {player.id_number} : "
               + f"{player.first_name} {player.last_name}"
-              + f" - Ranking: {player.ranking}")        
+              + f" - Ranking: {player.ranking}")
 
     @staticmethod
     def see_more_results():
@@ -273,7 +275,7 @@ class ViewPlayer():
         while not isinstance(player_chosen, int):
             try:
                 player_chosen = int(player_chosen)
-                while player_chosen not in range(1, len(players) +1):
+                while player_chosen not in range(1, len(players) + 1):
                     player_chosen = input("Choose number to select a player\n")
                     continue
                 break

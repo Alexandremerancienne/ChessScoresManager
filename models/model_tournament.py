@@ -3,7 +3,7 @@ from models.model_round import ModelRound
 from datetime import datetime
 from operator import attrgetter
 from operator import itemgetter
-from tinydb import TinyDB, Query
+from tinydb import TinyDB
 import json
 
 
@@ -74,11 +74,11 @@ class ModelTournament:
 
     @property
     def location(self):
-        return self._location.capitalize()
+        return self._location.title()
 
     @location.setter
     def location(self, new_location):
-        if all(x.isalpha() or x.isspace() for x in location) is False:
+        if all(x.isalpha() or x.isspace() for x in new_location) is False:
             print("Please enter a valid location.")
         self._location = new_location
 
@@ -385,13 +385,13 @@ class ModelTournament:
         deserialized_trnmt = ModelTournament.deserialize_tournament(tournament)
         line = (100*"-")
         print(line)
-        print(f"\nTournament name: {deserialized_trnmt.name}")        
+        print(f"\nTournament name: {deserialized_trnmt.name}")
         print(f"\nLocation: {deserialized_trnmt.location}")
         print(f"\nDescription: {deserialized_trnmt.description}")
         print(f"\nTime Control: {deserialized_trnmt.time_control}")
         print("\nParticipants:\n")
         dt_players_list = deserialized_trnmt.players_list
-        for i in range(0,8):
+        for i in range(0, 8):
             print(f"({dt_players_list[i][1]})"
                   + f" {dt_players_list[i][0]}"
                   + f" - ranking: {dt_players_list[i][2]}")

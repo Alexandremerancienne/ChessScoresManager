@@ -126,8 +126,8 @@ class ViewTournament():
         while not (isinstance(tournament_choice, int)):
             try:
                 tournament_choice = int(tournament_choice)
-                while int(tournament_choice) not in range(1, len(results) +1):
-                    tournament_choice = input("Choose number to select" 
+                while int(tournament_choice) not in range(1, len(results) + 1):
+                    tournament_choice = input("Choose number to select"
                                               + " a tournament\n")
                     continue
                 break

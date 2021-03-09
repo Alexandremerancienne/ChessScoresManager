@@ -44,7 +44,7 @@ class ControllerMatch:
             result = ModelMatch.first_player_wins(match)
             first_player.score += 1
             match = ModelMatch(f_p, 1, s_p, 0)
-            ViewMatch.print_first_player_wins_and_score(f_p, first_id, 
+            ViewMatch.print_first_player_wins_and_score(f_p, first_id,
                                                         s_p, second_id)
             return match
 
@@ -52,7 +52,7 @@ class ControllerMatch:
             result = ModelMatch.second_player_wins(match)
             second_player.score += 1
             match = ModelMatch(f_p, 0, s_p, 1)
-            ViewMatch.print_first_player_wins_and_score(f_p, first_id, 
+            ViewMatch.print_first_player_wins_and_score(f_p, first_id,
                                                         s_p, second_id)
             return match
 

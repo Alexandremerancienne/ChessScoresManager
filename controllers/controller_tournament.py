@@ -9,7 +9,7 @@ from controllers.controller_player import ControllerPlayer
 from controllers.controller_match import ControllerMatch
 from controllers.controller_round import ControllerRound
 from datetime import datetime
-from tinydb import TinyDB, Query
+from tinydb import Query
 
 
 class ControllerTournament:
@@ -79,7 +79,6 @@ class ControllerTournament:
         """A function to print the ending message of a tournament."""
 
         return ViewTournament.print_ending_message()
-
 
     def generate_new_tournament():
 
@@ -203,10 +202,10 @@ class ControllerTournament:
                                              new_ranking))
 
         ViewTournament.print_tournament_results(t_i[0], t_i[1],
-                                                      start_date, end_date,
-                                                      t_i[2], t_i[3],
-                                                      tournament_players_names,
-                                                      deserialized_rounds)
+                                                start_date, end_date,
+                                                t_i[2], t_i[3],
+                                                tournament_players_names,
+                                                deserialized_rounds)
 
         tournament = ModelTournament(t_i[0], t_i[1], start_date, end_date,
                                      t_i[2], t_i[3], tournament_players_names)
@@ -218,7 +217,6 @@ class ControllerTournament:
         s_t = serialized_tournment
 
         ModelTournament.save_tournament_to_tournaments_database(s_t)
-
 
     def take_third(elem):
 
