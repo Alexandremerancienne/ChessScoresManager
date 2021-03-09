@@ -358,11 +358,15 @@ class ControllerTournament:
 
         """A function to see the items of a list sliced into chunks."""
 
-        if len(chunked_list) <= 9:
+        if len(chunked_list) == 0:
+            ViewTournament.return_no_tournament()
+
+        elif len(chunked_list) > 0 and len(chunked_list) <= 9:
             i = 1
             for chunk in chunked_list:
                 ViewTournament.print_chunk_tournaments(chunk, i)
                 i += 1
+
         elif len(chunked_list) > 9:
             i = 1
             chunks = ControllerTournament.slice_results(chunked_list)
@@ -380,6 +384,8 @@ class ControllerTournament:
                 elif see_more in "nN":
                     break
 
+            return len(chunked_list)
+
     def get_all_tournaments():
 
         """A function to retrieve all the tournaments
@@ -389,19 +395,24 @@ class ControllerTournament:
 
         all_tournaments = ModelTournament.tournaments_database.all()
 
-        ControllerTournament.see_chunks_items(all_tournaments)
+        chunks = ControllerTournament.see_chunks_items(all_tournaments)
 
-        see_details_or_not = ViewTournament.see_details_or_not()
-
-        if see_details_or_not in "yY":
-
-            see_tournament_details = ViewTournament.see_tournament_details
-
-            tournament_choice = see_tournament_details(all_tournaments)
-
-            searched_tournament = all_tournaments[int(tournament_choice)-1]
-
-            ModelTournament.deserialize_matches_and_rounds(searched_tournament)
-
-        elif see_details_or_not in "nN":
+        if chunks is None:
             pass
+
+        else:
+            see_details_or_not = ViewTournament.see_details_or_not()
+
+            if see_details_or_not in "yY":
+
+                see_tournament_details = ViewTournament.see_tournament_details
+
+                tournament_choice = see_tournament_details(all_tournaments)
+
+                searched_tournament = all_tournaments[int(tournament_choice)-1]
+
+                s_t = searched_tournament
+                ModelTournament.deserialize_matches_and_rounds(s_t)
+
+            elif see_details_or_not in "nN":
+                pass

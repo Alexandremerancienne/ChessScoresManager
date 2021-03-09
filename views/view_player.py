@@ -219,7 +219,7 @@ class ViewPlayer():
 
         """A static method to print all players sorted by last name."""
 
-        print("Database players (sorted by last name)")
+        print("Database players (sorted by last name)\n")
 
     @staticmethod
     def print_sorted_players(player):

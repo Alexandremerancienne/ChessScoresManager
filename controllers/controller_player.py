@@ -201,9 +201,13 @@ class ControllerPlayer:
 
         """A function to see the items of a list sliced into chunks."""
 
+        if len(chunked_list) == 0:
+            ViewPlayer.return_no_player()
+
         if len(chunked_list) <= 40:
             for chunk in chunked_list:
                 ViewPlayer.print_sorted_players(chunk)
+
         elif len(chunked_list) > 40:
             chunks = ControllerPlayer.slice_results(chunked_list)
             for elt in chunks[0]:
@@ -218,6 +222,8 @@ class ControllerPlayer:
                 elif see_more in "nN":
                     break
 
+        return len(chunked_list)
+
     def sort_players_by_ranking(database):
 
         """A function to sort the players of a tournament by ranking."""
@@ -228,7 +234,9 @@ class ControllerPlayer:
             deserialized_players.append(deserialized_player)
         sorted_players = sorted(deserialized_players,
                                 key=attrgetter("ranking"), reverse=True)
-        ControllerPlayer.see_chunks_items(sorted_players)
+        chunks = ControllerPlayer.see_chunks_items(sorted_players)
+        if chunks is None:
+        	pass
 
     def sort_all_players_by_ranking():
 
