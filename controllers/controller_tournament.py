@@ -124,6 +124,16 @@ class ControllerTournament:
             if len(ModelTournament.rounds_list) == 0:
                 d_p = deserialized_players
                 round_pairs = ModelTournament.generate_pairs_by_ranking(d_p)
+
+                # Optional section to print the round pairs
+                # And visualize the functioning of Swiss-pairing algorithm
+
+                print("Round pairs\n")
+                print(round_pairs)
+                print("\n")
+
+                # End of section
+
                 ControllerTournament.generate_pairs(round_pairs)
                 pairs_list.extend(round_pairs)
 
@@ -131,6 +141,16 @@ class ControllerTournament:
                 gen_pairs_by_score = ModelTournament.generate_pairs_by_score
                 round_pairs = gen_pairs_by_score(ModelTournament, d_p,
                                                  pairs_list)
+
+                # Optional section to print the round pairs
+                # And visualize the functioning of Swiss-pairing algorithm
+
+                print("Round pairs\n")
+                print(round_pairs)
+                print("\n")
+
+                # End of section
+
                 ControllerTournament.generate_pairs(round_pairs)
                 pairs_list.extend(round_pairs)
 
