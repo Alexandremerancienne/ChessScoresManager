@@ -23,8 +23,12 @@ To run chess_scores_manager program:
 ## Generate random variables and database
 
 Some functions - such as the review of the players and the tournaments - are really useful only after generating a database.  
+
 In addition to the program, a set of random variables (players, matches, rounds) has been added to generate random tournaments.  
-To generate a random tournament, launch random_tournament.py file from the terminal, once in the top-level folder of the project: `python random_tournament.py`  
+
+To generate a random tournament, launch random_tournament.py file from the terminal, once in the top-level folder of the project:  
+`python random_tournament.py`  
+
 The script will generate a set of 50 random players and 10 random tournaments.  
 
 # Functions
