@@ -24,7 +24,7 @@ class ControllerPlayer:
         self.model = ModelPlayer
         self.view = ViewPlayer
 
-    def check_id_number():
+    def check_id_number(i):
 
         """A function to check the ID number of a player.
 
@@ -80,7 +80,10 @@ class ControllerPlayer:
                     player = ModelPlayer.deserialize_player(result)
                     ViewPlayer.print_player(player)
                     print(ViewPlayer.line)
-                    print("\nNext player:\n")
+                    if i < 8:
+                        ViewPlayer.announce_next_player()
+                    elif i == 8:
+                        pass
                 return result
 
             # The player has already been added to the tournament

@@ -96,8 +96,8 @@ class ControllerTournament:
 
         ModelPlayer.tournament_players.truncate()
 
-        for _ in range(1, 9):
-            player = ControllerPlayer.check_id_number()
+        for i in range(1, 9):
+            player = ControllerPlayer.check_id_number(i)
             ModelPlayer.save_tournament_player(player)
 
         ModelTournament.rounds_list = []
@@ -206,6 +206,8 @@ class ControllerTournament:
 
         end_date = ControllerTournament.end_tournament()
         tournament_players_names = []
+
+        ModelRound.number_of_rounds = 0
 
         ControllerTournament.print_ending_message()
 
