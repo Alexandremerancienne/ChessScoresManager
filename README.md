@@ -76,7 +76,7 @@ flake8-html is a flake8 plugin to generate HTML reports of flake8 violations.
 
 To generate flake8-html report:
 
-1. Install flake8-html plugin in your virtual environment (plugin available on [Pypi.org](https://pypi.org/project/flake8-html/) website);
+1. Install flake8-html plugin in your virtual environment (plugin available on [Pypi.org](https://pypi.org/project/flake8-html/) website): `pip install flake8-html` 
 2. Run flake8 from the top_level folder of chess_scores_manager program:  
 
    `flake8 --format=html --htmldir=<report_location>`  
