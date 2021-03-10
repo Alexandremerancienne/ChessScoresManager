@@ -7,13 +7,9 @@ Program monitoring scores for a chess tournament, using Swiss pairing algorithm.
 
 To run chess_scores_manager program:
 
-1. Download chess_manager_program in target folder:    
-
-   Click on the green "Code" download button on the right of the top-level Github page of the project.  
-   Choose the "Download ZIP" option from the Code pull-down menu.  
-   
+1. Clone chess_manager_program in target folder: `git clone [https://github.com/Alexandremerancienne/chess_tournament](https://github.com/Alexandremerancienne/chess_tournament)`     
 2. Open your terminal and head to target folder.  
-3. Create a virtual environment to install required packages:  
+3. Create a virtual environment to install required packages: 
     
    Required packages are listed in requirements.txt file.  
    To create and activate a virtual environment, you can check the explanations provided in the following [README](https://github.com/Alexandremerancienne/scraping_program).  
