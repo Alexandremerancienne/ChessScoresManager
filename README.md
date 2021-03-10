@@ -3,6 +3,8 @@ Program monitoring scores for a chess tournament, using Swiss pairing algorithm.
 
 # Run program
 
+## Run program from scratch
+
 To run chess_scores_manager program:
 
 1. Download chess_manager_program in target folder.    
@@ -16,8 +18,15 @@ To run chess_scores_manager program:
    Required packages are listed in requirements.txt file.  
    To create and activate a virtual environment, you can check the explanations provided in the following [README](https://github.com/Alexandremerancienne/scraping_program).  
 
-4. Once required packages have been installed, run command (Windows OS) : `python chess_scores_manager.py`
- 
+4. Once required packages have been installed, run command (Windows OS): `python chess_scores_manager.py`
+
+## Generate random variables and database
+
+Some functions - such as the review of the players and the tournaments - are really useful only after generating a database.  
+In addition to the program, a set of random variables (players, matches, rounds) has been added to generate random tournaments.  
+To generate a random tournament, launch random_tournament.py file from the terminal, once in the top-level folder of the project: `python random_tournament.py`  
+The script will generate a set of 50 random players and 10 random tournaments.  
+
 # Functions
 
 Once the program launched, the welcome page presents the following options:
