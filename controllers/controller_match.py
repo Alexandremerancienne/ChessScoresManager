@@ -40,14 +40,16 @@ class ControllerMatch:
             result = ModelMatch.first_player_wins(match)
             first_player.score += 1
             match = ModelMatch(first_player.last_name, 1, second_player.last_name, 0)
-            ViewMatch.print_first_player_wins_and_score(first_player.last_name, first_id, second_player.last_name, second_id)
+            ViewMatch.print_first_player_wins_and_score(first_player.last_name, first_id,
+                                                        second_player.last_name, second_id)
             return match
 
         elif result in "lL":
             result = ModelMatch.second_player_wins(match)
             second_player.score += 1
             match = ModelMatch(first_player.last_name, 0, second_player.last_name, 1)
-            ViewMatch.print_first_player_wins_and_score(first_player.last_name, first_id, second_player.last_name, second_id)
+            ViewMatch.print_first_player_wins_and_score(first_player.last_name, first_id,
+                                                        second_player.last_name, second_id)
             return match
 
         elif result in "dD":
