@@ -20,8 +20,7 @@ class ModelPlayer:
     players_database = TinyDB("models/players_database.json")
     tournament_players = TinyDB("models/tournament_players.json")
 
-    def __init__(self, last_name, first_name, id_number, birth_date,
-                 gender, ranking):
+    def __init__(self, last_name, first_name, id_number, birth_date, gender, ranking):
         self._last_name = last_name
         self._first_name = first_name
         self._id_number = id_number
@@ -147,11 +146,8 @@ class ModelPlayer:
         gender = serialized_player["gender"]
         ranking = serialized_player["ranking"]
         score = serialized_player["score"]
-        deserialized_player = ModelPlayer(last_name=last_name,
-                                          first_name=first_name,
-                                          id_number=id_number,
-                                          birth_date=birth_date,
-                                          gender=gender, ranking=ranking)
+        deserialized_player = ModelPlayer(last_name=last_name, first_name=first_name, id_number=id_number,
+                                          birth_date=birth_date, gender=gender, ranking=ranking)
         deserialized_player.score = score
         return deserialized_player
 

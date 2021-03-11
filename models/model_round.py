@@ -24,14 +24,11 @@ class ModelRound:
         self._end_date = end_date
 
     def __repr__(self):
-        return(f"{self.round_name} \n- From {self.start_date}"
-               + f" to {self.end_date}\n- Matches: {self.matches}")
+        return(f"{self.round_name} \n- From {self.start_date} to {self.end_date}\n- Matches: {self.matches}")
 
     def __str__(self):
-        return(f"\n{self.round_name}: from {self.start_date}"
-               + f" to {self.end_date}"
-               + f" \nMatches: {self.matches[0]}, {self.matches[1]},"
-               + f" {self.matches[2]}, {self.matches[3]}")
+        return(f"\n{self.round_name}: from {self.start_date} to {self.end_date}"
+               + f" \nMatches: {self.matches[0]}, {self.matches[1]}, {self.matches[2]}, {self.matches[3]}")
 
     @property
     def matches(self):
@@ -89,10 +86,8 @@ class ModelRound:
         serialized_round = {}
         json.dumps(serialized_round, default=str)
         serialized_round["matches"] = self.matches
-        serialized_round["start_date"] = self.start_date.strftime("%Y.%m.%d " +
-                                                                  "(%H:%M:%S)")
-        serialized_round["end_date"] = self.end_date.strftime("%Y.%m.%d " +
-                                                              "(%H:%M:%S)")
+        serialized_round["start_date"] = self.start_date.strftime("%Y.%m.%d (%H:%M:%S)")
+        serialized_round["end_date"] = self.end_date.strftime("%Y.%m.%d (%H:%M:%S)")
         return serialized_round
 
     def deserialize_round(serialized_round):
@@ -102,7 +97,5 @@ class ModelRound:
         matches = serialized_round["matches"]
         start_date = serialized_round["start_date"]
         end_date = serialized_round["end_date"]
-        deserialized_round = ModelRound(matches=matches,
-                                        start_date=start_date,
-                                        end_date=end_date)
+        deserialized_round = ModelRound(matches=matches, start_date=start_date, end_date=end_date)
         return deserialized_round

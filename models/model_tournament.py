@@ -33,8 +33,7 @@ class ModelTournament:
     number_of_rounds = 0
     rounds_list = []
 
-    def __init__(self, name, location, start_date,
-                 end_date, description, time_control, players_list):
+    def __init__(self, name, location, start_date, end_date, description, time_control, players_list):
         ModelTournament.number_of_rounds += 1
         self._name = name
         self._location = location
@@ -46,20 +45,15 @@ class ModelTournament:
         self._rounds = []
 
     def __str__(self):
-        return(f"Tournament name: {self.name}\n\n"
-               + f"Location: {self.location} \n\n"
+        return(f"Tournament name: {self.name}\n\n Location: {self.location} \n\n"
                + f"Dates: from {self.start_date} to {self.end_date} \n\n"
                + f"Description: {self.description}\n\n"
                + f"Time control: {self.time_control}\n\n"
                + f"Participants: \n{self.players_list[0]}, "
-               + f"\n{self.players_list[1]}, \n{self.players_list[2]}"
-               + f"\n{self.players_list[3]}, \n{self.players_list[4]}"
-               + f"\n{self.players_list[5]}, \n{self.players_list[6]}"
+               + f"\n{self.players_list[1]}, \n{self.players_list[2]} \n{self.players_list[3]}, "
+               + f"\n{self.players_list[4]} \n{self.players_list[5]}, \n{self.players_list[6]}"
                + f"\n{self.players_list[7]}\n\n"
-               + "Results:"
-               + f"{self.rounds[0]}\n"
-               + f"{self.rounds[1]}\n"
-               + f"{self.rounds[2]}\n"
+               + f"Results: {self.rounds[0]}\n {self.rounds[1]}\n {self.rounds[2]}\n"
                + f"{self.rounds[3]}\n")
 
     @property
@@ -89,8 +83,7 @@ class ModelTournament:
     @start_date.setter
     def start_date(self, new_date):
         try:
-            strdate = "%Y.%m.%d (%H:%M:%S)"
-            new_date = datetime.strptime(new_date, strdate).date()
+            new_date = datetime.strptime(new_date, "%Y.%m.%d (%H:%M:%S)").date()
         except ValueError:
             print("Please enter a valid start date (YYYY.MM.DD (HH:MM:SS))")
         self._start_date = new_date
@@ -102,8 +95,7 @@ class ModelTournament:
     @end_date.setter
     def end_date(self, new_date):
         try:
-            strdate = "%Y.%m.%d (%H:%M:%S)"
-            new_date = datetime.strptime(new_date, strdate).date()
+            new_date = datetime.strptime(new_date, "%Y.%m.%d (%H:%M:%S)").date()
         except ValueError:
             print("Please enter a valid start date (YYYY.MM.DD (HH:MM:SS))")
         self._end_date = new_date
@@ -163,8 +155,7 @@ class ModelTournament:
 
         (1,5) (2,6) (3,7) (4,8)"""
 
-        rankings_to_sort = sorted(players, key=attrgetter("ranking"),
-                                  reverse=True)
+        rankings_to_sort = sorted(players, key=attrgetter("ranking"), reverse=True)
 
         first_half = rankings_to_sort[:4]
         second_half = rankings_to_sort[4:]
@@ -234,24 +225,19 @@ class ModelTournament:
         the same logic applies backwards :
         7 plays with 6 (and 8 plays with 5)"""
 
-        rankings_sorted = sorted(players, key=attrgetter("ranking"),
-                                 reverse=True)
+        rankings_sorted = sorted(players, key=attrgetter("ranking"), reverse=True)
         scores_to_sort = [(player, player.score) for player in rankings_sorted]
-        players_by_score = sorted(scores_to_sort, key=itemgetter(1),
-                                  reverse=True)
+        players_by_score = sorted(scores_to_sort, key=itemgetter(1), reverse=True)
         players_by_score = [pair[0] for pair in players_by_score]
-        score_pairs = [(players_by_score[i], players_by_score[i+1])
-                       for i in range(0, 7, 2)]
+        score_pairs = [(players_by_score[i], players_by_score[i+1]) for i in range(0, 7, 2)]
         round_pairs = [players_by_score, score_pairs]
 
         players_by_score = round_pairs[0]
-        pbs = players_by_score
         round_pairs = round_pairs[1]
-        r_p = round_pairs
 
         for pair in round_pairs:
             inverted_pair = ModelTournament.invert_pair(pair)
-            pair_index = r_p.index(pair)
+            pair_index = round_pairs.index(pair)
             n = pair_index
 
             if (pair or inverted_pair) in pairs_list:
@@ -259,62 +245,57 @@ class ModelTournament:
                 # Optional section to vizualize the functioning
                 # of the algorithm
                 print("Redundant pair: ")
-                print(f"{pair[0].last_name} ({pair[0].id_number})"
-                      + f" vs {pair[1].last_name} ({pair[1].id_number})\n")
+                print(f"{pair[0].last_name} ({pair[0].id_number}) vs {pair[1].last_name} ({pair[1].id_number})\n")
                 # End of section
 
                 if n in range(0, 2):
-                    ModelTournament.swiss_pair(r_p, n, pbs, 1, 2, 3)
-                    inverted_pair = ModelTournament.invert_pair(r_p[n])
+                    ModelTournament.swiss_pair(round_pairs, n, players_by_score, 1, 2, 3)
+                    inverted_pair = ModelTournament.invert_pair(round_pairs[n])
 
-                    if (r_p[n] or inverted_pair) in pairs_list:
+                    if (round_pairs[n] or inverted_pair) in pairs_list:
 
                         # Optional section
                         print("Redundant pair: ")
-                        print(f"{r_p[n][0].last_name} ({r_p[n][0].id_number})"
-                              + f" vs {r_p[n][1].last_name}"
-                              + f" ({r_p[n][1].id_number})\n")
+                        print(f"{round_pairs[n][0].last_name} ({round_pairs[n][0].id_number})"
+                              + f" vs {round_pairs[n][1].last_name} ({round_pairs[n][1].id_number})\n")
                         # End of section
 
-                        ModelTournament.swiss_pair(r_p, n, pbs, 1, 3, 2)
+                        ModelTournament.swiss_pair(round_pairs, n, players_by_score, 1, 3, 2)
 
-                        if (r_p[n] or inverted_pair) in pairs_list:
+                        if (round_pairs[n] or inverted_pair) in pairs_list:
 
                             # Optional section
                             print("Redundant pair:")
-                            print(f"{r_p[n][0].last_name}"
-                                  + f" ({r_p[n][0].id_number})"
-                                  + f" vs {r_p[n][1].last_name}"
-                                  + f" ({r_p[n][1].id_number})\n")
+                            print(f"{round_pairs[n][0].last_name} ({round_pairs[n][0].id_number})"
+                                  + f" vs {round_pairs[n][1].last_name} ({round_pairs[n][1].id_number})\n")
                             # End of section
 
                             if n in range(0, 2):
-                                ModelTournament.swiss_pair(r_p, n, pbs,
-                                                           2, 4, 5)
-                                r_p[n+1] = (pbs[2*n+2], pbs[2*n+3])
+                                ModelTournament.swiss_pair(round_pairs, n, players_by_score, 2, 4, 5)
+                                round_pairs[n+1] = (players_by_score[2*n+2], players_by_score[2*n+3])
                             elif n == 2:
-                                ModelTournament.swiss_pair(r_p, n, pbs,
+                                ModelTournament.swiss_pair(round_pairs, n, players_by_score,
                                                            -1, -1, -2)
-                                r_p[n+1] = (pbs[2*n+2], pbs[2*n+3])
+                                round_pairs[n+1] = (players_by_score[2*n+2], players_by_score[2*n+3])
 
                 elif n == 3:
-                    ModelTournament.swiss_pair(r_p, n, pbs, -1, -1, -2)
-                    inverted_pair = ModelTournament.invert_pair(r_p[n])
-                    if (r_p[n] or inverted_pair) in pairs_list:
+                    ModelTournament.swiss_pair(round_pairs, n, players_by_score, -1, -1, -2)
+                    inverted_pair = ModelTournament.invert_pair(round_pairs[n])
+                    if (round_pairs[n] or inverted_pair) in pairs_list:
 
                         # Optional section
-                        print(f"Redundant pair: {r_p[n]}\n")
+                        print(f"Redundant pair: {round_pairs[n]}\n")
                         # End of section
 
-                        ModelTournament.swiss_pair(r_p, n, pbs, -1, -2, -1)
-                        if (r_p[n] or inverted_pair) in pairs_list:
+                        ModelTournament.swiss_pair(round_pairs, n, players_by_score, -1, -2, -1)
+                        if (round_pairs[n] or inverted_pair) in pairs_list:
 
                             # Optional section
-                            print(f"Redundant pair: {r_p[n]}\n")
+                            print(f"Redundant pair: {round_pairs[n]}\n")
                             # End of section
 
-                            ModelTournament.swiss_pair(r_p, n, pbs, -2, -3, -4)
-                            r_p[n-1] = (pbs[4], pbs[5])
+                            ModelTournament.swiss_pair(round_pairs, n, players_by_score, -2, -3, -4)
+                            round_pairs[n-1] = (players_by_score[4], players_by_score[5])
 
         return round_pairs
 
@@ -336,9 +317,8 @@ class ModelTournament:
         json.dumps(serialized_tournament, default=str)
         serialized_tournament["name"] = self.name
         serialized_tournament["location"] = self.location
-        strdate = "%Y.%m.%d (%H:%M:%S)"
-        serialized_tournament["start_date"] = self.start_date.strftime(strdate)
-        serialized_tournament["end_date"] = self.end_date.strftime(strdate)
+        serialized_tournament["start_date"] = self.start_date.strftime("%Y.%m.%d (%H:%M:%S)")
+        serialized_tournament["end_date"] = self.end_date.strftime("%Y.%m.%d (%H:%M:%S)")
         serialized_tournament["description"] = self.description
         serialized_tournament["time_control"] = self.time_control
         serialized_tournament["players_list"] = self.players_list
@@ -357,12 +337,9 @@ class ModelTournament:
         time_control = serialized_tournament["time_control"]
         players_list = serialized_tournament["players_list"]
         rounds = serialized_tournament["rounds"]
-        deserialized_tournament = ModelTournament(name=name, location=location,
-                                                  start_date=start_date,
-                                                  end_date=end_date,
-                                                  description=description,
-                                                  time_control=time_control,
-                                                  players_list=players_list)
+        deserialized_tournament = ModelTournament(name=name, location=location, start_date=start_date,
+                                                  end_date=end_date, description=description,
+                                                  time_control=time_control, players_list=players_list)
         deserialized_tournament.rounds = rounds
         return deserialized_tournament
 

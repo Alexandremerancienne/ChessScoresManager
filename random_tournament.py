@@ -15,12 +15,9 @@ from tinydb import Query
    then random tournaments for chess_scores_manager program.
 
     The script uses ControllerTournament.generate_new_tournament() function
-    and includes random variables generated with the functions
-    defined in random_variables.py
+    and includes random variables generated with the functions defined in random_variables.py
 
-    Before playing tournaments,
-    100 random players are generated
-    with Random.generate_random_player() function
+    Before playing tournaments, 100 random players are generated with Random.generate_random_player() function
     then added to ModelPlayer.players_database database of all players."""
 
 
@@ -38,26 +35,18 @@ class RandomTournament:
 
     # Database of tournament names
 
-    tournament_names = ['Grand Tournoi', 'Grand Prix', 'Chess international',
-                        'Grand Chess Tour', 'Grand Prix', 'Champ', 'Classic',
-                        'Cup', 'Chess Olympiads', 'WCF Tournoi',
-                        'Champions tournament', 'Chess cup', 'Chess Tour',
-                        'Grand Tour', 'Chess Masters',
-                        'Chess Academy Tournament', 'Chess Grand Tour',
-                        'WCF Grand Prix', 'WCF Grand Tour', 'Chess Games',
-                        'WCF Games']
+    tournament_names = ['Grand Tournoi', 'Grand Prix', 'Chess international', 'Grand Chess Tour', 'Grand Prix',
+                        'Champ', 'Classic', 'Cup', 'Chess Olympiads', 'WCF Tournoi', 'Champions tournament',
+                        'Chess cup', 'Chess Tour', 'Grand Tour', 'Chess Masters', 'Chess Academy Tournament',
+                        'Chess Grand Tour', 'WCF Grand Prix', 'WCF Grand Tour', 'Chess Games', 'WCF Games']
 
     # Database of tournament locations
 
-    tournament_locations = ['Riga', 'Helsinki', 'Paris', 'Bilbao', 'Prague',
-                            'Moscow', 'Kigali', 'Johannesburg', 'Montreal',
-                            'Sofia', 'Dakar', 'Abidjan', 'Brasilia', 'Madrid',
-                            'Denver', 'Tokyo', 'Roma', 'Mexico', 'Washington',
-                            'Pristina', 'Santiago', 'Bogota', 'Medellin',
-                            'London', 'Malibu', 'Chicago', 'Nairobi', 'Oslo',
-                            'Gaborone', 'Dubai', 'Tehran', 'Milano',
-                            'Riyad', 'Mascate', 'Tbilisi', 'Dushanbe', 'Tunis',
-                            ' Cape Town', 'Sao Paulo', 'Rio de Janeiro',
+    tournament_locations = ['Riga', 'Helsinki', 'Paris', 'Bilbao', 'Prague', 'Moscow', 'Kigali', 'Johannesburg',
+                            'Montreal', 'Sofia', 'Dakar', 'Abidjan', 'Brasilia', 'Madrid', 'Denver', 'Tokyo', 'Roma',
+                            'Mexico', 'Washington', 'Pristina', 'Santiago', 'Bogota', 'Medellin', 'London', 'Malibu',
+                            'Chicago', 'Nairobi', 'Oslo', 'Gaborone', 'Dubai', 'Tehran', 'Milano', 'Riyad', 'Mascate',
+                            'Tbilisi', 'Dushanbe', 'Tunis', ' Cape Town', 'Sao Paulo', 'Rio de Janeiro',
                             'Saint Louis', 'New York']
 
     # Database of start dates
@@ -109,8 +98,7 @@ class RandomTournament:
         random_end_date = RandomTournament.random_end_dates[j]
         RandomTournament.random_dates_attributed.append(random_start_date)
 
-        return(random_name, random_location, random_start_date,
-               random_end_date, description, random_time_control)
+        return(random_name, random_location, random_start_date, random_end_date, description, random_time_control)
 
     def serialize_random_tournament(self):
 
@@ -147,7 +135,7 @@ class RandomTournament:
             # Step 1 : Starting a tournament with random details
             # (name, location, start date, end date, description, time control)
 
-            t_i = RandomTournament.generate_random_tournament_inputs()
+            random_tournament_inputs = RandomTournament.generate_random_tournament_inputs()
 
             # Step 2: Adding 8 random players to the tournament
             # Each player has been previously generated randomly
@@ -157,25 +145,22 @@ class RandomTournament:
 
             ModelPlayer.tournament_players.truncate()
 
-            x = len(ModelPlayer.players_database)
-            random_id_numbers = players_id_database[:x]
+            random_id_numbers = players_id_database[:len(ModelPlayer.players_database)]
 
             tournament_random_id_numbers = random.sample(random_id_numbers, 8)
 
             for random_id_number in tournament_random_id_numbers:
-                random_id = random_id_number
                 Player = Query()
-                t_d = ModelPlayer.players_database
-                results_t_d = t_d.search(Player.id_number == int(random_id))
-                print(results_t_d)
-                for result in results_t_d:
+                results_players_database = ModelPlayer.players_database.search(Player.id_number ==
+                                                                               int(random_id_number))
+                print(results_players_database)
+                for result in results_players_database:
                     ModelPlayer.save_tournament_player(result)
 
             ModelTournament.rounds_list = []
             pairs_list = []
 
             deserialized_players = []
-            d_p = deserialized_players
 
             for player in ModelPlayer.tournament_players:
                 deserialized_player = ModelPlayer.deserialize_player(player)
@@ -197,12 +182,12 @@ class RandomTournament:
 
                 if len(ModelTournament.rounds_list) == 0:
                     generate_pairs = ModelTournament.generate_pairs_by_ranking
-                    round_pairs = generate_pairs(d_p)
+                    round_pairs = generate_pairs(deserialized_players)
                     pairs_list.extend(round_pairs)
 
                 elif len(ModelTournament.rounds_list) in range(1, 5):
                     gen_pairs = ModelTournament.generate_pairs_by_score
-                    round_pairs = gen_pairs(ModelTournament, d_p, pairs_list)
+                    round_pairs = gen_pairs(ModelTournament, deserialized_players, pairs_list)
                     pairs_list.extend(round_pairs)
 
                 # Step 6 : Playing the matches of the round
@@ -212,25 +197,21 @@ class RandomTournament:
                 for k in range(0, 4):
 
                     first_player = round_pairs[k][0]
-                    f_p = first_player
                     second_player = round_pairs[k][1]
-                    s_p = second_player
 
-                    match = RandomMatch.generate_random_match(f_p, s_p)
+                    match = RandomMatch.generate_random_match(first_player, second_player)
 
                     serialized_match = ModelMatch.serialize_match(match)
-                    s_m = serialized_match
-                    ModelRound.list_of_matches.append(s_m)
+                    ModelRound.list_of_matches.append(serialized_match)
 
-                    deserialized_match = ModelMatch.deserialize_match(s_m)
+                    deserialized_match = ModelMatch.deserialize_match(serialized_match)
                     deserialized_matches.append(deserialized_match)
 
                 # Step 7 : Ending the round before starting the next one
 
                 end_date = random_round[1]
 
-                round = ModelRound(deserialized_matches,
-                                   start_date, end_date)
+                round = ModelRound(deserialized_matches, start_date, end_date)
 
                 deserialized_rounds.append(round)
 
@@ -255,21 +236,18 @@ class RandomTournament:
                 new_ranking = player["ranking"] + player["score"]
                 player_name = player["last_name"]
                 player_id_number = player["id_number"]
-                tournament_players_names.append((player_name, player_id_number,
-                                                 new_ranking))
+                tournament_players_names.append((player_name, player_id_number, new_ranking))
 
-            tournament = ModelTournament(t_i[0], t_i[1], t_i[2], t_i[3],
-                                         t_i[4], t_i[5],
+            tournament = ModelTournament(random_tournament_inputs[0], random_tournament_inputs[1],
+                                         random_tournament_inputs[2], random_tournament_inputs[3],
+                                         random_tournament_inputs[4], random_tournament_inputs[5],
                                          tournament_players_names)
 
             tournament.rounds = ModelTournament.rounds_list
 
-            serialize_r = RandomTournament.serialize_random_tournament
-            serialized_tournment = serialize_r(tournament)
+            serialized_tournament = RandomTournament.serialize_random_tournament(tournament)
 
-            s_t = serialized_tournment
-
-            ModelTournament.save_tournament_to_tournaments_database(s_t)
+            ModelTournament.save_tournament_to_tournaments_database(serialized_tournament)
 
 
 if __name__ == "__main__":

@@ -24,12 +24,10 @@ class ModelMatch:
         self._second_score = second_score
 
     def __repr__(self):
-        return(f"[({self.first_player}, {self.first_score}),"
-               + f"({self.second_player}, {self.second_score})]")
+        return(f"[({self.first_player}, {self.first_score}), ({self.second_player}, {self.second_score})]")
 
     def __str__(self):
-        return(f"[({self.first_player}, {self.first_score}),"
-               + f"({self.second_player}, {self.second_score})]")
+        return(f"[({self.first_player}, {self.first_score}), ({self.second_player}, {self.second_score})]")
 
     @property
     def first_score(self):
@@ -89,8 +87,6 @@ class ModelMatch:
         first_score = serialized_match["first_score"]
         second_player = serialized_match["second_player"]
         second_score = serialized_match["second_score"]
-        deserialized_match = ModelMatch(first_player=first_player,
-                                        first_score=first_score,
-                                        second_player=second_player,
-                                        second_score=second_score)
+        deserialized_match = ModelMatch(first_player=first_player, first_score=first_score,
+                                        second_player=second_player, second_score=second_score)
         return deserialized_match

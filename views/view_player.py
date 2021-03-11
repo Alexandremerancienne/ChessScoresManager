@@ -17,8 +17,7 @@ class ViewPlayer():
                 break
             except Exception:
                 print("Please enter a valid ID number.")
-                id_number = input("Enter player's ID number"
-                                  + "(if None, enter 0): ")
+                id_number = input("Enter player's ID number (if None, enter 0): ")
         return id_number
 
     @staticmethod
@@ -68,8 +67,7 @@ class ViewPlayer():
                 year_of_birth = input("Enter player's year of birth (YYYY): ")
                 month_of_birth = input("Enter player's month of birth (MM): ")
                 day_of_birth = input("Enter player's day of birth (DD): ")
-                birth_date = (f"{year_of_birth}-{month_of_birth}-"
-                              + f"{day_of_birth}")
+                birth_date = (f"{year_of_birth}-{month_of_birth}-{day_of_birth}")
         date_tuple = (year_of_birth, month_of_birth, day_of_birth)
         birth_date = ".".join(date_tuple)
 
@@ -228,9 +226,7 @@ class ViewPlayer():
 
         """A static method to print a sorted player."""
 
-        print(f"Player {player.id_number} : "
-              + f"{player.first_name} {player.last_name}"
-              + f" - Ranking: {player.ranking}")
+        print(f"Player {player.id_number} : {player.first_name} {player.last_name} - Ranking: {player.ranking}")
 
     @staticmethod
     def see_more_results():
@@ -263,8 +259,7 @@ class ViewPlayer():
         """A static method to print all the players with an option number
         associated to each player."""
 
-        print(f"[{i}] Player {player['id_number']} :"
-              + f" {player['first_name']} {player['last_name']}")
+        print(f"[{i}] Player {player['id_number']} : {player['first_name']} {player['last_name']}")
 
     @staticmethod
     def choose_player(players):
@@ -280,8 +275,7 @@ class ViewPlayer():
                     continue
                 break
             except Exception:
-                player_chosen = input("\nChoose number to select a"
-                                      + " player\n")
+                player_chosen = input("\nChoose number to select a player\n")
         return int(player_chosen)
 
     @staticmethod
@@ -323,12 +317,8 @@ class ViewPlayer():
 
         """A static method to search a player by last name or ID number."""
 
-        option_number = input("\nSearch player (Enter option number): \n\n"
-                              + "By last name [1]\n"
-                              + "By ID number [2]\n\n")
+        option_number = input("\nSearch player (Enter option number): \n\nBy last name [1]\nBy ID number [2]\n\n")
         while option_number not in "12" or option_number in "":
-            option_number = input("Search player (Enter option number): \n\n"
-                                  + "By last name [1]\n"
-                                  + "By ID number [2]\n")
+            option_number = input("Search player (Enter option number): \n\nBy last name [1]\nBy ID number [2]\n")
             continue
         return option_number

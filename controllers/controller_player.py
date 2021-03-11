@@ -53,12 +53,11 @@ class ControllerPlayer:
             return serialized_player
 
         Player = Query()
-        p_d = ModelPlayer.players_database
-        results_p_d = p_d.search(Player.id_number == int(id_number_tested))
+        results_players_database = ModelPlayer.players_database.search(Player.id_number == int(id_number_tested))
 
         # No matching result with the ID entered
 
-        if len(results_p_d) == 0:
+        if len(results_players_database) == 0:
             ViewPlayer.return_unknown_id()
             ViewPlayer.generate_player()
             player = ControllerPlayer.add_player_to_tournament()
@@ -68,7 +67,7 @@ class ControllerPlayer:
 
         # Matching results with the ID entered
 
-        elif len(results_p_d) == 1:
+        elif len(results_players_database) == 1:
             t_p = ModelPlayer.tournament_players
             results_t_p = t_p.search(Player.id_number == int(id_number_tested))
 
@@ -76,7 +75,7 @@ class ControllerPlayer:
 
             if len(results_t_p) == 0:
                 ViewPlayer.return_successful_identification()
-                for result in results_p_d:
+                for result in results_players_database:
                     player = ModelPlayer.deserialize_player(result)
                     ViewPlayer.print_player(player)
                     print(ViewPlayer.line)
@@ -102,13 +101,11 @@ class ControllerPlayer:
         """A function to add a new player
         to a JSON database."""
 
-        p_d = ModelPlayer.players_database
         player_features = ViewPlayer.get_player_inputs()
-        p_f = player_features
-        player_index = len(p_d)
+        player_index = len(ModelPlayer.players_database)
         id_number = players_id_database[player_index]
-        player = ModelPlayer(p_f[0], p_f[1], id_number, p_f[2], p_f[3],
-                             p_f[4])
+        player = ModelPlayer(player_features[0], player_features[1], id_number,
+                             player_features[2], player_features[3], player_features[4])
         ViewPlayer.print_player(player)
         return player
 
@@ -137,12 +134,10 @@ class ControllerPlayer:
 
         ViewPlayer.get_player_ranking()
         player_name = ViewPlayer.get_player_name()
-        p_n = player_name
         for i in range(0, 8):
-            if p_n in ModelPlayer.tournament_players[i].last_name:
+            if player_name in ModelPlayer.tournament_players[i].last_name:
                 player_ranking = ModelPlayer.tournament_players[i].ranking
-                p_r = player_ranking
-                return ViewPlayer.print_player_ranking(p_n, p_r)
+                return ViewPlayer.print_player_ranking(player_name, player_ranking)
 
     def announce_new_rankings():
 
@@ -166,8 +161,7 @@ class ControllerPlayer:
         new_ranking = ViewPlayer.change_player_ranking()
         id_number = player["id_number"]
         Player = Query()
-        p_d = ModelPlayer.players_database
-        p_d.update({'ranking': new_ranking}, Player.id_number == id_number)
+        ModelPlayer.players_database.update({'ranking': new_ranking}, Player.id_number == id_number)
         ViewPlayer.confirm_ranking_change()
         return new_ranking
 
@@ -183,8 +177,7 @@ class ControllerPlayer:
             new_ranking = ViewPlayer.change_player_ranking()
             id_number = player["id_number"]
             Player = Query()
-            p_d = ModelPlayer.players_database
-            p_d.update({'ranking': new_ranking}, Player.id_number == id_number)
+            ModelPlayer.players_database.update({'ranking': new_ranking}, Player.id_number == id_number)
             ViewPlayer.confirm_ranking_change()
 
     def take_fourth(elem):
@@ -197,8 +190,7 @@ class ControllerPlayer:
 
         """A function to split a list into 40 chunks."""
 
-        lts = list_to_slice
-        return [lts[i:i + 39] for i in range(0, len(lts), 39)]
+        return [list_to_slice[i:i + 39] for i in range(0, len(list_to_slice), 39)]
 
     def see_chunks_items(chunked_list):
 
@@ -235,8 +227,7 @@ class ControllerPlayer:
         for player in database:
             deserialized_player = ModelPlayer.deserialize_player(player)
             deserialized_players.append(deserialized_player)
-        sorted_players = sorted(deserialized_players,
-                                key=attrgetter("ranking"), reverse=True)
+        sorted_players = sorted(deserialized_players, key=attrgetter("ranking"), reverse=True)
         chunks = ControllerPlayer.see_chunks_items(sorted_players)
         if chunks is None:
             pass
@@ -256,8 +247,7 @@ class ControllerPlayer:
         for player in database:
             deserialized_player = ModelPlayer.deserialize_player(player)
             deserialized_players.append(deserialized_player)
-        sorted_players = sorted(deserialized_players,
-                                key=attrgetter("last_name"))
+        sorted_players = sorted(deserialized_players, key=attrgetter("last_name"))
         ControllerPlayer.see_chunks_items(sorted_players)
 
     def sort_all_players_by_last_name():
@@ -282,13 +272,11 @@ class ControllerPlayer:
         The solution is then serialized and returned as the final result."""
 
         Player = Query()
-        p_d = ModelPlayer.players_database
 
         ViewPlayer.print_number_of_results(players)
 
         if len(players) == 1:
             searched_player = players[0]
-            s_player = searched_player
 
         elif len(players) > 1:
             i = 1
@@ -297,11 +285,9 @@ class ControllerPlayer:
                 i += 1
             player_chosen = ViewPlayer.choose_player(players)
             searched_player = players[int(player_chosen) - 1]
-            s_player = searched_player
 
-        serialized_player = p_d.search(Player.id_number ==
-                                       s_player["id_number"])
-        deserialized_player = ModelPlayer.deserialize_player(s_player)
+        serialized_player = ModelPlayer.players_database.search(Player.id_number == searched_player["id_number"])
+        deserialized_player = ModelPlayer.deserialize_player(searched_player)
         print(deserialized_player)
         return serialized_player
 
@@ -311,10 +297,9 @@ class ControllerPlayer:
         based on his/her last name."""
 
         Player = Query()
-        p_d = ModelPlayer.players_database
 
         last_name = ViewPlayer.search_last_name()
-        players = p_d.search(Player.last_name == last_name)
+        players = ModelPlayer.players_database.search(Player.last_name == last_name)
 
         if len(players) == 0:
             ViewPlayer.return_no_player()
@@ -329,10 +314,9 @@ class ControllerPlayer:
         based on his/her ID number."""
 
         Player = Query()
-        p_d = ModelPlayer.players_database
 
         id_number = ViewPlayer.search_id_number()
-        players = p_d.search(Player.id_number == id_number)
+        players = ModelPlayer.players_database.search(Player.id_number == id_number)
 
         if len(players) == 0:
             ViewPlayer.return_no_player()

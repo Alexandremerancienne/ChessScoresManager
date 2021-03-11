@@ -11,9 +11,6 @@ class RandomMatch:
         """A function to generate a random match
         between two random players."""
 
-        f_p = first_player.last_name
-        s_p = second_player.last_name
-
         match = ModelMatch("", "", "", "")
 
         score_options = ["W", "L", "D"]
@@ -23,18 +20,18 @@ class RandomMatch:
         if result == "W":
             result = ModelMatch.first_player_wins(match)
             first_player.score += 1
-            match = ModelMatch(f_p, 1, s_p, 0)
+            match = ModelMatch(first_player.last_name, 1, second_player.last_name, 0)
             return match
 
         elif result == "L":
             result = ModelMatch.second_player_wins(match)
             second_player.score += 1
-            match = ModelMatch(f_p, 0, s_p, 1)
+            match = ModelMatch(first_player.last_name, 0, second_player.last_name, 1)
             return match
 
         elif result == "D":
             result = ModelMatch.draw(match)
             first_player.score += 0.5
             second_player.score += 0.5
-            match = ModelMatch(f_p, 0.5, s_p, 0.5)
+            match = ModelMatch(first_player.last_name, 0.5, second_player.last_name, 0.5)
             return match

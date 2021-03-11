@@ -36,5 +36,4 @@ class ControllerRound:
 
         """A function to print the results of a round."""
 
-        return ViewRound.print_round_results(i, start_date, end_date,
-                                             list_of_matches)
+        return ViewRound.print_round_results(i, start_date, end_date, list_of_matches)

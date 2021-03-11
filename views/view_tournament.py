@@ -61,8 +61,7 @@ class ViewTournament():
 
         """A static method to print the pairs of a match."""
 
-        print(f"Match {i}: {pair[0][0]} ({pair[0][1]})"
-              + f" vs {pair[1][0]} ({pair[1][1]})")
+        print(f"Match {i}: {pair[0][0]} ({pair[0][1]}) vs {pair[1][0]} ({pair[1][1]})")
 
     @staticmethod
     def print_ending_message():
@@ -74,8 +73,7 @@ class ViewTournament():
         print("\n")
 
     @staticmethod
-    def print_tournament_results(name, location, start_date, end_date,
-                                 description, time_control, players_list,
+    def print_tournament_results(name, location, start_date, end_date, description, time_control, players_list,
                                  rounds):
 
         """A static method to print the results of a tournament."""
@@ -103,9 +101,7 @@ class ViewTournament():
 
         for player in players:
 
-            print(f"Player {player[1]} : "
-                  + f"{player[0]}"
-                  + f" - Ranking: {player[2]}")
+            print(f"Player {player[1]} : {player[0]} - Ranking: {player[2]}")
 
     @staticmethod
     def order_players_by_last_name(players):
@@ -114,8 +110,7 @@ class ViewTournament():
 
         print("Tournament players sorted by last name\n")
         for player in players:
-            print(f"Player {player[1]} : "
-                  + f"{player[0]}")
+            print(f"Player {player[1]} : {player[0]}")
 
     @staticmethod
     def choose_tournament(results):
@@ -127,13 +122,11 @@ class ViewTournament():
             try:
                 tournament_choice = int(tournament_choice)
                 while int(tournament_choice) not in range(1, len(results) + 1):
-                    tournament_choice = input("Choose number to select"
-                                              + " a tournament\n")
+                    tournament_choice = input("Choose number to select a tournament\n")
                     continue
                 break
             except Exception:
-                tournament_choice = input("Enter tournament number to see"
-                                          + " players\n")
+                tournament_choice = input("Enter tournament number to see players\n")
         return tournament_choice
 
     @staticmethod
@@ -141,13 +134,9 @@ class ViewTournament():
 
         """A static method to define a sorting option."""
 
-        players_sorted = input("Sort tournament players:\n\n"
-                               + "By ranking [A]\n"
-                               + "By last name [B]\n\n")
+        players_sorted = input("Sort tournament players:\n\nBy ranking [A]\nBy last name [B]\n\n")
         while players_sorted not in "aAbB" or players_sorted in "":
-            players_sorted = input("Sort tournament players:\n\n"
-                                   + "By ranking [A]\n"
-                                   + "By last name [B]\n\n")
+            players_sorted = input("Sort tournament players:\n\nBy ranking [A]\nBy last name [B]\n\n")
             continue
         return players_sorted
 
@@ -194,16 +183,11 @@ class ViewTournament():
 
         """A static method to define search criteria for a tournament."""
 
-        choice = input("\nSearch tournament (Enter option number): \n\n"
-                       + "By name [A]\n"
-                       + "By location [B]\n"
-                       + "By year [C]\n\n")
+        choice = input("\nSearch tournament (Enter option number): \n\nBy name [A]\nBy location [B]\nBy year [C]\n\n")
 
         while choice not in "aAbBcC" or choice in "":
             print("Choose a correct number.")
-            choice = input("\nSearch tournament (Enter option number): \n\n"
-                           + "By name [A]\n"
-                           + "By location [B]\n"
+            choice = input("\nSearch tournament (Enter option number): \n\nBy name [A]\nBy location [B]\n"
                            + "By year [C]\n\n")
             continue
         return choice
@@ -258,11 +242,9 @@ class ViewTournament():
                 tournament_choice = int(tournament_choice)
                 x = len(all_tournaments)
                 while int(tournament_choice) not in range(1, x+1):
-                    tournament_choice = input("\nChoose a number to see"
-                                              + " tournament details\n")
+                    tournament_choice = input("\nChoose a number to see tournament details\n")
                     continue
                 break
             except Exception:
-                tournament_choice = input("\nChoose a number to see"
-                                          + " tournament details\n")
+                tournament_choice = input("\nChoose a number to see tournament details\n")
         return tournament_choice
