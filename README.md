@@ -85,3 +85,5 @@ To generate flake8-html report:
    If you want to ignore the presence of a file or a folder when running flake8-html, add `--exclude` option to the command:  
 
    `flake8 --exclude=<file or folder to exclude> --format=html --htmldir=<name_of_holding_folder>`  
+   
+   The parameters of flake8 screening (such as maximum line length) are defined in setup.cfg file
